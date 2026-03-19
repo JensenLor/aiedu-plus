@@ -4,126 +4,183 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>罗辑智造社 - 培养面向未来的科技创新能力</title>
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            line-height: 1.6;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.8;
             color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #FFF9F5;
             min-height: 100vh;
         }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+        
+        /* 导航栏 - 手绘风格 */
         nav {
-            background: rgba(255,255,255,0.95);
-            padding: 15px 0;
-            border-radius: 10px;
+            background: white;
+            padding: 20px 30px;
+            border-radius: 20px;
             margin-bottom: 30px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 4px 4px 0px #FF8C42;
+            border: 3px solid #333;
         }
         nav ul {
             list-style: none;
             display: flex;
             justify-content: center;
-            gap: 30px;
+            gap: 25px;
             flex-wrap: wrap;
         }
         nav a {
             text-decoration: none;
-            color: #667eea;
-            font-weight: 600;
-            font-size: 16px;
-            transition: color 0.3s;
+            color: #333;
+            font-weight: 700;
+            font-size: 17px;
+            padding: 8px 16px;
+            border-radius: 10px;
+            transition: all 0.3s;
+            border: 2px solid transparent;
         }
-        nav a:hover { color: #764ba2; }
+        nav a:hover {
+            background: #FF8C42;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        /* 主标题区域 - 手绘卡片风格 */
         .hero {
-            background: rgba(255,255,255,0.95);
-            padding: 60px 40px;
-            border-radius: 15px;
+            background: white;
+            padding: 50px 40px;
+            border-radius: 25px;
             text-align: center;
             margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 6px 6px 0px #FF8C42;
+            border: 3px solid #333;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero:before {
+            content: "🧠";
+            font-size: 80px;
+            display: block;
+            margin-bottom: 20px;
         }
         .hero h1 {
             font-size: 48px;
-            color: #667eea;
+            color: #FF6B35;
             margin-bottom: 15px;
-            font-weight: 700;
+            font-weight: 900;
+            font-family: 'ZCOOL KuaiLe', cursive;
+            text-shadow: 2px 2px 0px #FFD93D;
         }
         .hero .slogan {
-            font-size: 24px;
-            color: #555;
-            margin-bottom: 20px;
-            font-weight: 300;
+            font-size: 22px;
+            color: #FF8C42;
+            margin-bottom: 25px;
+            font-weight: 600;
+            padding: 10px 20px;
+            background: #FFF3E0;
+            border-radius: 15px;
+            display: inline-block;
+            border: 2px dashed #FF8C42;
         }
         .hero p {
             font-size: 16px;
-            color: #666;
-            max-width: 800px;
+            color: #555;
+            max-width: 750px;
             margin: 0 auto;
-            line-height: 1.8;
+            line-height: 2;
         }
+        
+        /* 板块区域 - 手绘卡片 */
         .sections {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 25px;
             margin-bottom: 30px;
         }
         .section-card {
-            background: rgba(255,255,255,0.95);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
+            background: white;
+            padding: 35px 25px;
+            border-radius: 20px;
+            box-shadow: 5px 5px 0px #FFB347;
+            border: 3px solid #333;
+            transition: all 0.3s;
             cursor: pointer;
             text-decoration: none;
             color: inherit;
             display: block;
+            position: relative;
         }
         .section-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            transform: translate(-3px, -3px);
+            box-shadow: 8px 8px 0px #FF8C42;
         }
         .section-card h3 {
-            font-size: 24px;
-            color: #667eea;
+            font-size: 26px;
+            color: #FF6B35;
             margin-bottom: 15px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            font-weight: 800;
         }
-        .section-card p { color: #666; line-height: 1.7; }
-        .emoji { font-size: 32px; }
+        .section-card p {
+            color: #666;
+            line-height: 1.9;
+            font-size: 15px;
+        }
+        .emoji {
+            font-size: 40px;
+            filter: drop-shadow(2px 2px 0px #FFD93D);
+        }
+        
+        /* 装饰元素 */
+        .decoration {
+            position: fixed;
+            font-size: 60px;
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
         footer {
-            background: rgba(255,255,255,0.9);
-            padding: 20px;
-            border-radius: 10px;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
             text-align: center;
             color: #666;
             font-size: 14px;
+            border: 3px solid #333;
+            box-shadow: 4px 4px 0px #FFB347;
         }
+        
         @media (max-width: 768px) {
             .hero h1 { font-size: 32px; }
-            .hero .slogan { font-size: 18px; }
-            nav ul { gap: 15px; }
+            .hero .slogan { font-size: 16px; }
+            nav ul { gap: 12px; }
+            nav a { font-size: 14px; padding: 6px 12px; }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- 导航栏 -->
         <nav>
             <ul>
                 <li><a href="index.html">🏠 首页</a></li>
-                <li><a href="diary.html">📖 养成日记</a></li>
+                <li><a href="diary.html">📖 每周周志</a></li>
                 <li><a href="resources.html">🎓 学习资源</a></li>
-                <li><a href="cases.html">👨‍🎓 学员案例</a></li>
-                <li><a href="team.html">🤖 数字员工</a></li>
+                <li><a href="cases.html">🏆 教学成果</a></li>
+                <li><a href="team.html">🤖 赛博同志</a></li>
+                <li><a href="finance.html">📊 财务日报</a></li>
             </ul>
         </nav>
         
+        <!-- 主标题区域 -->
         <div class="hero">
-            <h1>🧠 罗辑智造社</h1>
-            <p class="slogan">培养面向未来的科技创新能力，一起成为未来的创造者</p>
+            <h1>罗辑智造社</h1>
+            <div class="slogan">培养面向未来的科技创新能力，一起成为未来的创造者</div>
             <p>
                 罗辑智造社是一个专注于科技教育的创新平台。我们致力于将人工智能、硬件开发、软件编程、3D 建模等前沿科技，以简单易懂的方式传递给中小学生、大学生和所有对科技感兴趣的普通人。
                 <br><br>
@@ -131,28 +188,35 @@
             </p>
         </div>
         
+        <!-- 核心板块 -->
         <div class="sections">
             <a href="diary.html" class="section-card">
-                <h3><span class="emoji">📖</span> 养成日记</h3>
-                <p>记录 AI 数字团队的成长历程，从 0 到 1 的搭建过程，真实分享科技教育的探索与实践。</p>
+                <h3><span class="emoji">📖</span> 每周周志</h3>
+                <p>记录 AI 数字团队的每周成长，真实分享科技教育的探索与实践历程。</p>
             </a>
             
             <a href="resources.html" class="section-card">
                 <h3><span class="emoji">🎓</span> 学习资源</h3>
-                <p>精选全球优质科技学习资源，涵盖机械、电子、编程、AI 等领域的视频、书籍、工具和竞赛信息。</p>
+                <p>精选全球优质科技学习资源，涵盖机械、电子、编程、AI 等领域的视频、书籍、工具。</p>
             </a>
             
             <a href="cases.html" class="section-card">
-                <h3><span class="emoji">👨‍🎓</span> 学员案例</h3>
-                <p>见证学员从 0 到 1 的创造之旅，记录他们的作品、成长和奇思妙想。</p>
+                <h3><span class="emoji">🏆</span> 教学成果</h3>
+                <p>见证学员从 0 到 1 的创造之旅，展示学员案例与比赛获奖成果。</p>
             </a>
             
             <a href="team.html" class="section-card">
-                <h3><span class="emoji">🤖</span> 数字员工</h3>
+                <h3><span class="emoji">🤖</span> 赛博同志</h3>
                 <p>了解我们的 6 位 AI 助手团队：运营官、教务官、内容官、技术官、知识官、财务官。</p>
+            </a>
+            
+            <a href="finance.html" class="section-card">
+                <h3><span class="emoji">📊</span> 财务日报</h3>
+                <p>每日 TOKEN 消耗统计与成本分析，透明公开每一笔支出。</p>
             </a>
         </div>
         
+        <!-- 页脚 -->
         <footer>
             <p>📧 联系邮箱：402479707@qq.com | 🌐 域名：www.aiedu.plus</p>
             <p>© 2026 罗辑智造社 - 让前沿科技触手可及</p>
