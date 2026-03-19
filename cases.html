@@ -3,117 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>学员案例 - 罗辑智造社</title>
+    <title>教学成果 - 罗辑智造社</title>
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             line-height: 1.8;
             color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #FFF9F5;
             min-height: 100vh;
             padding: 20px;
         }
-        .container { max-width: 900px; margin: 0 auto; }
+        .container { max-width: 1000px; margin: 0 auto; }
         nav {
-            background: rgba(255,255,255,0.95);
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+            background: white;
+            padding: 20px 30px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            box-shadow: 4px 4px 0px #FF8C42;
+            border: 3px solid #333;
             text-align: center;
         }
         nav a {
-            margin: 0 10px;
+            margin: 0 12px;
             text-decoration: none;
-            color: #667eea;
-            font-weight: 600;
+            color: #333;
+            font-weight: 700;
+            font-size: 16px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            transition: all 0.3s;
         }
+        nav a:hover { background: #FF8C42; color: white; }
         .content {
-            background: rgba(255,255,255,0.95);
-            padding: 40px;
+            background: white;
+            padding: 45px 35px;
+            border-radius: 25px;
+            box-shadow: 6px 6px 0px #FF8C42;
+            border: 3px solid #333;
+        }
+        h1 {
+            color: #FF6B35;
+            margin-bottom: 15px;
+            font-size: 38px;
+            font-weight: 900;
+            font-family: 'ZCOOL KuaiLe', cursive;
+            text-align: center;
+            text-shadow: 2px 2px 0px #FFD93D;
+        }
+        .intro {
+            text-align: center;
+            color: #666;
+            margin-bottom: 35px;
+            font-size: 17px;
+            padding: 15px;
+            background: #FFF3E0;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border: 2px dashed #FF8C42;
         }
-        h1 { color: #667eea; margin-bottom: 20px; font-size: 32px; text-align: center; }
-        .intro { text-align: center; color: #666; margin-bottom: 30px; }
-        .case {
-            border: 2px solid #eee;
-            border-radius: 10px;
-            padding: 25px;
-            margin: 25px 0;
-            background: #fafafa;
+        .tabs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            justify-content: center;
         }
-        .case h2 { color: #667eea; margin-bottom: 10px; }
-        .case .meta { color: #999; font-size: 14px; margin-bottom: 15px; }
-        .case p { color: #666; margin-bottom: 10px; }
-        .tag {
-            display: inline-block;
-            background: #667eea;
+        .tab {
+            padding: 12px 30px;
+            background: white;
+            border: 3px solid #FF8C42;
+            border-radius: 15px;
+            font-weight: 700;
+            color: #FF6B35;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 3px 3px 0px #FFB347;
+        }
+        .tab:hover, .tab.active {
+            background: #FF8C42;
             color: white;
-            padding: 4px 12px;
+            transform: translate(-2px, -2px);
+            box-shadow: 5px 5px 0px #FF6B35;
+        }
+        .section {
+            border: 3px solid #333;
             border-radius: 20px;
-            font-size: 12px;
-            margin-right: 8px;
+            padding: 30px;
+            margin: 25px 0;
+            background: #FFF9F5;
+            box-shadow: 4px 4px 0px #FFB347;
+        }
+        .section h2 {
+            color: #FF6B35;
+            margin-bottom: 20px;
+            font-size: 26px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         .coming-soon {
             text-align: center;
-            padding: 40px;
+            padding: 50px 20px;
             color: #999;
-            font-style: italic;
         }
+        .coming-soon .emoji { font-size: 80px; margin-bottom: 20px; }
+        .coming-soon p { font-size: 18px; color: #666; margin-bottom: 10px; }
+        .coming-soon .small { font-size: 14px; color: #999; }
+        .cta-box {
+            background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin-top: 30px;
+            border: 3px solid #333;
+            box-shadow: 5px 5px 0px #333;
+        }
+        .cta-box h3 { font-size: 22px; margin-bottom: 15px; font-weight: 800; }
+        .cta-box ul { margin-left: 20px; margin-top: 15px; }
+        .cta-box li { margin-bottom: 8px; opacity: 0.95; }
         .back-link {
             display: block;
             text-align: center;
             margin-top: 30px;
-            color: #667eea;
+            color: #FF6B35;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 16px;
+            padding: 12px 25px;
+            background: white;
+            border-radius: 12px;
+            border: 2px solid #FF8C42;
+            transition: all 0.3s;
         }
+        .back-link:hover { background: #FF8C42; color: white; }
     </style>
 </head>
 <body>
     <div class="container">
         <nav>
             <a href="index.html">🏠 首页</a>
-            <a href="diary.html">📖 养成日记</a>
+            <a href="diary.html">📖 每周周志</a>
             <a href="resources.html">🎓 学习资源</a>
-            <a href="cases.html">👨‍🎓 学员案例</a>
-            <a href="team.html">🤖 数字员工</a>
+            <a href="cases.html">🏆 教学成果</a>
+            <a href="team.html">🤖 赛博同志</a>
+            <a href="finance.html">📊 财务日报</a>
         </nav>
         
         <div class="content">
-            <h1>👨‍🎓 学员案例</h1>
+            <h1>🏆 教学成果</h1>
             <p class="intro">
-                在罗辑智造社，每个学员都是小小的创造者。这里记录他们的作品、他们的成长、他们的奇思妙想。
+                在罗辑智造社，每个学员都是小小的创造者。这里展示他们的作品、成长和荣誉。
             </p>
             
-            <div class="coming-soon">
-                <p style="font-size: 48px; margin-bottom: 20px;">🚀</p>
-                <p><strong>首期学员案例即将上线！</strong></p>
-                <p style="margin-top: 15px; font-size: 14px;">
-                    我们正在整理第一批学员的优秀作品和成长故事<br>
-                    敬请期待，或联系主公投稿您的作品！
-                </p>
+            <div class="tabs">
+                <div class="tab active">📁 学员案例</div>
+                <div class="tab">🏅 比赛获奖</div>
             </div>
             
-            <div class="case" style="border-left: 4px solid #667eea;">
-                <h2>📝 案例征集</h2>
-                <p>
-                    如果您是罗辑智造社的学员，或者有科技作品想要分享，欢迎联系我们！
-                </p>
-                <p>
-                    我们期待看到：
-                </p>
-                <ul style="color: #666; margin-left: 20px; margin-top: 10px;">
+            <div class="section">
+                <h2>📁 学员案例</h2>
+                <div class="coming-soon">
+                    <div class="emoji">🚀</div>
+                    <p><strong>首期学员案例即将上线！</strong></p>
+                    <p class="small">我们正在整理第一批学员的优秀作品和成长故事<br>敬请期待，或联系主公投稿您的作品！</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>🏅 比赛获奖</h2>
+                <div class="coming-soon">
+                    <div class="emoji">🏆</div>
+                    <p><strong>获奖记录收集中！</strong></p>
+                    <p class="small">如果您或您的孩子在科技竞赛中获奖，欢迎联系我们分享喜悦！</p>
+                </div>
+            </div>
+            
+            <div class="cta-box">
+                <h3>📝 案例征集</h3>
+                <p>如果您是罗辑智造社的学员，或者有科技作品想要分享，欢迎联系我们！</p>
+                <p>我们期待看到：</p>
+                <ul>
                     <li>机器人作品</li>
                     <li>3D 建模作品</li>
                     <li>编程项目</li>
                     <li>电子制作</li>
                     <li>任何科技创新作品</li>
+                    <li>科技竞赛获奖证书/照片</li>
                 </ul>
-                <p style="margin-top: 15px;">
-                    📧 投稿邮箱：402479707@qq.com
-                </p>
+                <p style="margin-top: 20px; font-weight: 700;">📧 投稿邮箱：402479707@qq.com</p>
             </div>
             
             <a href="index.html" class="back-link">← 返回首页</a>
