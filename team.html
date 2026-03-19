@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数字员工 - 罗辑智造社</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1000px; margin: 0 auto; }
+        nav {
+            background: rgba(255,255,255,0.95);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        nav a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #667eea;
+            font-weight: 600;
+        }
+        .content {
+            background: rgba(255,255,255,0.95);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 { color: #667eea; margin-bottom: 20px; font-size: 32px; text-align: center; }
+        .intro { text-align: center; color: #666; margin-bottom: 30px; }
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        .member {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .member:hover {
+            transform: translateY(-5px);
+        }
+        .emoji {
+            font-size: 64px;
+            margin-bottom: 15px;
+        }
+        .member h3 { color: #667eea; margin-bottom: 10px; font-size: 22px; }
+        .member .role {
+            color: #999;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .member p { color: #666; font-size: 14px; line-height: 1.7; }
+        .skills {
+            margin-top: 15px;
+            text-align: left;
+        }
+        .skills h4 {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .skills ul {
+            list-style: none;
+            font-size: 13px;
+        }
+        .skills li {
+            padding: 4px 0;
+            color: #666;
+        }
+        .skills li:before {
+            content: "✓ ";
+            color: #667eea;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .leader {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .leader h2 { color: white; margin-bottom: 15px; }
+        .leader p { color: rgba(255,255,255,0.9); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="index.html">🏠 首页</a>
+            <a href="diary.html">📖 养成日记</a>
+            <a href="resources.html">🎓 学习资源</a>
+            <a href="cases.html">👨‍ 学员案例</a>
+            <a href="team.html">🤖 数字员工</a>
+        </nav>
+        
+        <div class="content">
+            <h1>🤖 数字员工</h1>
+            <p class="intro">
+                罗辑智造社拥有 6 位 AI 数字员工，它们各司其职，协助主公完成科技教育的使命。
+            </p>
+            
+            <div class="leader">
+                <div class="emoji">🧠</div>
+                <h2>罗辑（总指挥）</h2>
+                <p><strong>军师 / CEO</strong></p>
+                <p style="margin-top: 15px;">
+                    名字含义：① 跟随主公姓氏 ② 谐音「逻辑」象征推理 ③ 致敬《三体》面壁者
+                </p>
+                <p style="margin-top: 10px; font-style: italic;">
+                    "面壁者罗辑，在此听令。"
+                </p>
+            </div>
+            
+            <div class="team-grid">
+                <div class="member">
+                    <div class="emoji">📅</div>
+                    <h3>运营官</h3>
+                    <div class="role">日程、会议、待办管理</div>
+                    <p>事事有着落，件件有回音</p>
+                    <div class="skills">
+                        <h4>核心技能：</h4>
+                        <ul>
+                            <li>企业微信日程管理</li>
+                            <li>会议创建与管理</li>
+                            <li>待办事项追踪</li>
+                            <li>时间提醒服务</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="member">
+                    <div class="emoji">🎓</div>
+                    <h3>教务官</h3>
+                    <div class="role">学员管理、课程安排</div>
+                    <p>因材施教，育人为本</p>
+                    <div class="skills">
+                        <h4>核心技能：</h4>
+                        <ul>
+                            <li>学员信息管理</li>
+                            <li>课程安排与跟踪</li>
+                            <li>学习进度管理</li>
+                            <li>学员沟通服务</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="member">
+                    <div class="emoji">📝</div>
+                    <h3>内容官</h3>
+                    <div class="role">文档、课件、内容创作</div>
+                    <p>内容为王，创意无限</p>
+                    <div class="skills">
+                        <h4>核心技能：</h4>
+                        <ul>
+                            <li>飞书/企业微信文档</li>
+                            <li>课件制作</li>
+                            <li>内容创作与编辑</li>
+                            <li>PDF/表格处理</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="member">
+                    <div class="emoji">🔧</div>
+                    <h3>技术官</h3>
+                    <div class="role">代码、硬件、3D 建模支持</div>
+                    <p>技术驱动，创新未来</p>
+                    <div class="skills">
+                        <h4>核心技能：</h4>
+                        <ul>
+                            <li>代码辅助与执行</li>
+                            <li>硬件配置支持</li>
+                            <li>3D 建模工具</li>
+                            <li>技术方案设计</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="member">
+                    <div class="emoji">📚</div>
+                    <h3>知识官</h3>
+                    <div class="role">知识库、资料归档、检索</div>
+                    <p>知识就是力量</p>
+                    <div class="skills">
+                        <h4>核心技能：</h4>
+                        <ul>
+                            <li>知识库管理</li>
+                            <li>资料归档</li>
+                            <li>信息检索与整理</li>
+                            <li>知识图谱构建</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="member">
+                    <div class="emoji">💰</div>
+                    <h3>财务官</h3>
+                    <div class="role">TOKEN 使用统计、成本监控</div>
+                    <p>精打细算，明明白白</p>
+                    <div class="skills">
+                        <h4>核心技能：</h4>
+                        <ul>
+                            <li>TOKEN 使用监控</li>
+                            <li>成本统计分析</li>
+                            <li>预算与支出管理</li>
+                            <li>财务报表生成</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <a href="index.html" class="back-link">← 返回首页</a>
+        </div>
+    </div>
+</body>
+</html>
