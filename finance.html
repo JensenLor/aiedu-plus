@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>财务日报 - 罗辑智造社</title>
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: #FFF9F5;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1100px; margin: 0 auto; }
+        nav {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            box-shadow: 4px 4px 0px #FF8C42;
+            border: 3px solid #333;
+            text-align: center;
+        }
+        nav a {
+            margin: 0 12px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 700;
+            font-size: 16px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        nav a:hover { background: #FF8C42; color: white; }
+        .content {
+            background: white;
+            padding: 45px 35px;
+            border-radius: 25px;
+            box-shadow: 6px 6px 0px #FF8C42;
+            border: 3px solid #333;
+            margin-bottom: 25px;
+        }
+        h1 {
+            color: #FF6B35;
+            margin-bottom: 15px;
+            font-size: 38px;
+            font-weight: 900;
+            font-family: 'ZCOOL KuaiLe', cursive;
+            text-align: center;
+            text-shadow: 2px 2px 0px #FFD93D;
+        }
+        .intro {
+            text-align: center;
+            color: #666;
+            margin-bottom: 35px;
+            font-size: 17px;
+            padding: 15px;
+            background: #FFF3E0;
+            border-radius: 15px;
+            border: 2px dashed #FF8C42;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            border: 3px solid #333;
+            box-shadow: 4px 4px 0px #333;
+        }
+        .stat-card .label { font-size: 14px; opacity: 0.9; margin-bottom: 10px; }
+        .stat-card .value { font-size: 36px; font-weight: 900; }
+        .stat-card .unit { font-size: 14px; opacity: 0.8; }
+        .chart-container {
+            background: #FFF9F5;
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid #FFE5CC;
+            margin-bottom: 25px;
+        }
+        .chart-container h3 {
+            color: #FF6B35;
+            margin-bottom: 20px;
+            font-size: 20px;
+            font-weight: 800;
+            text-align: center;
+        }
+        .report-section {
+            margin-top: 35px;
+        }
+        .report-section h2 {
+            color: #FF6B35;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: 800;
+        }
+        .report-item {
+            background: #FFF9F5;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border-left: 4px solid #FF8C42;
+        }
+        .report-item .date {
+            color: #FF6B35;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        .report-item p { color: #666; font-size: 15px; }
+        .coming-soon {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+        .coming-soon .emoji { font-size: 60px; margin-bottom: 15px; }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            color: #FF6B35;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            padding: 12px 25px;
+            background: white;
+            border-radius: 12px;
+            border: 2px solid #FF8C42;
+            transition: all 0.3s;
+        }
+        .back-link:hover { background: #FF8C42; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="index.html">🏠 首页</a>
+            <a href="diary.html">📖 每周周志</a>
+            <a href="resources.html">🎓 学习资源</a>
+            <a href="cases.html">🏆 教学成果</a>
+            <a href="team.html">🤖 赛博同志</a>
+            <a href="finance.html">📊 财务日报</a>
+        </nav>
+        
+        <div class="content">
+            <h1>📊 财务日报</h1>
+            <p class="intro">
+                每日 TOKEN 消耗统计与成本分析，透明公开每一笔支出
+            </p>
+            
+            <!-- 统计卡片 -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="label">今日消耗</div>
+                    <div class="value">--</div>
+                    <div class="unit">tokens</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">本周累计</div>
+                    <div class="value">--</div>
+                    <div class="unit">tokens</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">本月累计</div>
+                    <div class="value">--</div>
+                    <div class="unit">tokens</div>
+                </div>
+                <div class="stat-card">
+                    <div class="label">预估成本</div>
+                    <div class="value">--</div>
+                    <div class="unit">元</div>
+                </div>
+            </div>
+            
+            <!-- 图表区域 -->
+            <div class="chart-container">
+                <h3>📈 近 7 日 TOKEN 消耗趋势</h3>
+                <canvas id="tokenChart"></canvas>
+            </div>
+            
+            <div class="chart-container">
+                <h3>📊 各角色 TOKEN 使用占比</h3>
+                <canvas id="pieChart"></canvas>
+            </div>
+            
+            <!-- 日报列表 -->
+            <div class="report-section">
+                <h2>📋 近期日报</h2>
+                <div class="coming-soon">
+                    <div class="emoji">📝</div>
+                    <p><strong>财务日报即将上线！</strong></p>
+                    <p style="font-size: 14px; margin-top: 10px;">财务官正在整理数据，敬请期待每日更新</p>
+                </div>
+            </div>
+            
+            <a href="index.html" class="back-link">← 返回首页</a>
+        </div>
+    </div>
+    
+    <script>
+        // 示例图表数据（待财务官填充真实数据）
+        const tokenCtx = document.getElementById('tokenChart').getContext('2d');
+        new Chart(tokenCtx, {
+            type: 'line',
+            data: {
+                labels: ['第 1 天', '第 2 天', '第 3 天', '第 4 天', '第 5 天', '第 6 天', '第 7 天'],
+                datasets: [{
+                    label: 'TOKEN 消耗',
+                    data: [0, 0, 0, 0, 0, 0, 0],
+                    borderColor: '#FF6B35',
+                    backgroundColor: 'rgba(255, 107, 53, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+        
+        const pieCtx = document.getElementById('pieChart').getContext('2d');
+        new Chart(pieCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['罗辑', '运营官', '教务官', '内容官', '技术官', '知识官', '财务官'],
+                datasets: [{
+                    data: [0, 0, 0, 0, 0, 0, 0],
+                    backgroundColor: ['#FF6B35', '#FF8C42', '#FFB347', '#FFD93D', '#FFE5CC', '#FFF3E0', '#FFF9F5'],
+                    borderWidth: 2,
+                    borderColor: '#333'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom' }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
