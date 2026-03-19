@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文档百科 - 罗辑智造社</title>
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: #FFF9F5;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        nav {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            box-shadow: 4px 4px 0px #FF8C42;
+            border: 3px solid #333;
+            text-align: center;
+        }
+        nav a {
+            margin: 0 12px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 700;
+            font-size: 16px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        nav a:hover { background: #FF8C42; color: white; }
+        .content {
+            background: white;
+            padding: 45px 35px;
+            border-radius: 25px;
+            box-shadow: 6px 6px 0px #FF8C42;
+            border: 3px solid #333;
+        }
+        h1 {
+            color: #FF6B35;
+            margin-bottom: 15px;
+            font-size: 38px;
+            font-weight: 900;
+            font-family: 'ZCOOL KuaiLe', cursive;
+            text-align: center;
+            text-shadow: 2px 2px 0px #FFD93D;
+        }
+        .intro {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 17px;
+            padding: 20px;
+            background: #FFF3E0;
+            border-radius: 15px;
+            border: 2px dashed #FF8C42;
+        }
+        .wiki-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        .wiki-card {
+            background: white;
+            border-radius: 20px;
+            border: 3px solid #333;
+            box-shadow: 5px 5px 0px #FFB347;
+            overflow: hidden;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+        }
+        .wiki-card:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 8px 8px 0px #FF8C42;
+        }
+        .card-header {
+            background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
+            padding: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 3px solid #333;
+        }
+        .card-icon {
+            font-size: 48px;
+            filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.2));
+        }
+        .card-title {
+            color: white;
+            font-size: 24px;
+            font-weight: 800;
+            flex: 1;
+        }
+        .card-body {
+            padding: 25px;
+            flex: 1;
+        }
+        .card-desc {
+            color: #666;
+            font-size: 15px;
+            line-height: 2.2;
+            text-align: justify;
+        }
+        .card-footer {
+            padding: 15px 25px;
+            background: #FFF9F5;
+            border-top: 2px solid #FFE5CC;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .visit-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #FF6B35;
+            font-weight: 700;
+            font-size: 15px;
+        }
+        .wiki-card:hover .visit-btn { color: #FF8C42; }
+        .arrow {
+            font-size: 20px;
+            transition: transform 0.3s;
+        }
+        .wiki-card:hover .arrow { transform: translateX(5px); }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 35px;
+            color: #FF6B35;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            padding: 12px 25px;
+            background: white;
+            border-radius: 12px;
+            border: 2px solid #FF8C42;
+            transition: all 0.3s;
+        }
+        .back-link:hover { background: #FF8C42; color: white; }
+        @media (max-width: 768px) {
+            .wiki-grid { grid-template-columns: 1fr; }
+            h1 { font-size: 28px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="index.html">🏠 首页</a>
+            <a href="diary.html">📖 每周周志</a>
+            <a href="resources.html">🎓 学习资源</a>
+            <a href="cases.html">🏆 教学成果</a>
+            <a href="team.html">🤖 赛博同志</a>
+            <a href="finance.html">📊 财务日报</a>
+        </nav>
+        
+        <div class="content">
+            <h1>📚 文档百科</h1>
+            <p class="intro">
+                精选全球优质科技教育文档资源，涵盖教程、指南、知识库等，帮助你系统学习科技知识。
+            </p>
+            
+            <div class="wiki-grid">
+                <!-- MG Space 文档库 -->
+                <a href="http://mgspace.wiki/docs/?post_type=docs" target="_blank" class="wiki-card">
+                    <div class="card-header">
+                        <div class="card-icon">📖</div>
+                        <div class="card-title">MG Space 文档库</div>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-desc">
+                            MG Space 自主学习导航的文档资源库，包含丰富的科技教育资料、教程和指南。涵盖机械、电子、编程、3D 建模等多个领域，是中小学生科技创新学习的优质资源平台。
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="visit-btn">访问文档库 <span class="arrow">→</span></span>
+                    </div>
+                </a>
+                
+                <!-- GitHub 文档 -->
+                <a href="https://docs.github.com/" target="_blank" class="wiki-card">
+                    <div class="card-header">
+                        <div class="card-icon">🐙</div>
+                        <div class="card-title">GitHub 文档</div>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-desc">
+                            GitHub 官方文档，包含 Git 版本控制、代码托管、协作开发等完整教程。学习编程和软件开发的必备资源，适合所有阶段的开发者。
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="visit-btn">访问文档库 <span class="arrow">→</span></span>
+                    </div>
+                </a>
+                
+                <!-- Arduino 文档 -->
+                <a href="https://www.arduino.cc/reference/" target="_blank" class="wiki-card">
+                    <div class="card-header">
+                        <div class="card-icon">📟</div>
+                        <div class="card-title">Arduino 参考文档</div>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-desc">
+                            Arduino 官方参考文档，包含编程语言、库函数、硬件说明等。学习硬件编程和电子制作的权威资料，适合创客和硬件爱好者。
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="visit-btn">访问文档库 <span class="arrow">→</span></span>
+                    </div>
+                </a>
+                
+                <!-- SolidWorks 教程 -->
+                <a href="https://www.solidworks.com/support/learning" target="_blank" class="wiki-card">
+                    <div class="card-header">
+                        <div class="card-icon">📐</div>
+                        <div class="card-title">SolidWorks 学习中心</div>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-desc">
+                            SolidWorks 官方学习资源，包含 3D 建模教程、认证培训、视频课程等。学习机械设计和 3D 制图的专业平台，适合工程师和学生。
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="visit-btn">访问文档库 <span class="arrow">→</span></span>
+                    </div>
+                </a>
+                
+                <!-- Python 文档 -->
+                <a href="https://docs.python.org/zh-cn/3/" target="_blank" class="wiki-card">
+                    <div class="card-header">
+                        <div class="card-icon">🐍</div>
+                        <div class="card-title">Python 官方文档</div>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-desc">
+                            Python 编程语言官方文档（中文版），包含完整的教学教程、库参考、安装指南等。学习 Python 编程的权威资料，适合初学者和进阶开发者。
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="visit-btn">访问文档库 <span class="arrow">→</span></span>
+                    </div>
+                </a>
+                
+                <!-- 维基百科 -->
+                <a href="https://zh.wikipedia.org/" target="_blank" class="wiki-card">
+                    <div class="card-header">
+                        <div class="card-icon">🌍</div>
+                        <div class="card-title">维基百科</div>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-desc">
+                            全球知名的自由百科全书，涵盖科学、技术、文化等各个领域的知识条目。查找科技概念、历史背景、人物介绍等信息的优质资源。
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="visit-btn">访问文档库 <span class="arrow">→</span></span>
+                    </div>
+                </a>
+            </div>
+            
+            <a href="resources.html" class="back-link">← 返回学习资源</a>
+        </div>
+    </div>
+</body>
+</html>
