@@ -4,70 +4,167 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>学习资源 - 罗辑智造社</title>
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             line-height: 1.8;
             color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #FFF9F5;
             min-height: 100vh;
             padding: 20px;
         }
-        .container { max-width: 1000px; margin: 0 auto; }
+        .container { max-width: 1200px; margin: 0 auto; }
         nav {
-            background: rgba(255,255,255,0.95);
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+            background: white;
+            padding: 20px 30px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            box-shadow: 4px 4px 0px #FF8C42;
+            border: 3px solid #333;
             text-align: center;
         }
         nav a {
-            margin: 0 10px;
+            margin: 0 12px;
             text-decoration: none;
-            color: #667eea;
-            font-weight: 600;
+            color: #333;
+            font-weight: 700;
+            font-size: 16px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            transition: all 0.3s;
         }
+        nav a:hover { background: #FF8C42; color: white; }
         .content {
-            background: rgba(255,255,255,0.95);
-            padding: 40px;
+            background: white;
+            padding: 45px 35px;
+            border-radius: 25px;
+            box-shadow: 6px 6px 0px #FF8C42;
+            border: 3px solid #333;
+        }
+        h1 {
+            color: #FF6B35;
+            margin-bottom: 15px;
+            font-size: 38px;
+            font-weight: 900;
+            font-family: 'ZCOOL KuaiLe', cursive;
+            text-align: center;
+            text-shadow: 2px 2px 0px #FFD93D;
+        }
+        .intro {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 17px;
+            padding: 20px;
+            background: #FFF3E0;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border: 2px dashed #FF8C42;
         }
-        h1 { color: #667eea; margin-bottom: 20px; font-size: 32px; text-align: center; }
-        .intro { text-align: center; color: #666; margin-bottom: 30px; }
-        .grid {
+        .resource-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
         }
-        .card {
-            background: #f8f9fa;
+        .resource-card {
+            background: white;
+            border-radius: 20px;
+            border: 3px solid #333;
+            box-shadow: 5px 5px 0px #FFB347;
+            overflow: hidden;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        .resource-card:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 8px 8px 0px #FF8C42;
+        }
+        .card-header {
+            background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
+            padding: 20px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 3px solid #333;
+        }
+        .card-icon {
+            font-size: 42px;
+            filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.2));
+        }
+        .card-title {
+            color: white;
+            font-size: 22px;
+            font-weight: 800;
+            flex: 1;
+        }
+        .card-body {
             padding: 25px;
+            flex: 1;
+        }
+        .card-desc {
+            color: #666;
+            font-size: 15px;
+            line-height: 2;
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+        .card-links {
+            margin-top: 15px;
+        }
+        .link-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background: #FFF9F5;
             border-radius: 10px;
-            border-left: 4px solid #667eea;
-        }
-        .card h3 { color: #667eea; margin-bottom: 15px; font-size: 20px; }
-        .card ul { list-style: none; }
-        .card li {
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
-            color: #555;
-        }
-        .card li:last-child { border-bottom: none; }
-        .card a {
-            color: #667eea;
+            margin-bottom: 10px;
             text-decoration: none;
+            color: #333;
+            border: 2px solid #FFE5CC;
+            transition: all 0.3s;
         }
-        .card a:hover { text-decoration: underline; }
+        .link-item:hover {
+            background: #FF8C42;
+            color: white;
+            border-color: #FF6B35;
+            transform: translateX(5px);
+        }
+        .link-item:last-child { margin-bottom: 0; }
+        .link-icon {
+            font-size: 24px;
+            margin-right: 12px;
+        }
+        .link-text {
+            font-size: 15px;
+            font-weight: 600;
+            flex: 1;
+        }
+        .link-arrow {
+            color: #FF6B35;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .link-item:hover .link-arrow { color: white; }
         .back-link {
             display: block;
             text-align: center;
-            margin-top: 30px;
-            color: #667eea;
+            margin-top: 35px;
+            color: #FF6B35;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 16px;
+            padding: 12px 25px;
+            background: white;
+            border-radius: 12px;
+            border: 2px solid #FF8C42;
+            transition: all 0.3s;
+        }
+        .back-link:hover { background: #FF8C42; color: white; }
+        @media (max-width: 768px) {
+            .resource-grid { grid-template-columns: 1fr; }
+            h1 { font-size: 28px; }
         }
     </style>
 </head>
@@ -75,61 +172,318 @@
     <div class="container">
         <nav>
             <a href="index.html">🏠 首页</a>
-            <a href="diary.html">📖 养成日记</a>
+            <a href="diary.html">📖 每周周志</a>
             <a href="resources.html">🎓 学习资源</a>
-            <a href="cases.html">👨‍🎓 学员案例</a>
-            <a href="team.html">🤖 数字员工</a>
+            <a href="cases.html">🏆 教学成果</a>
+            <a href="team.html">🤖 赛博同志</a>
+            <a href="finance.html">📊 财务日报</a>
         </nav>
         
         <div class="content">
             <h1>🎓 学习资源</h1>
             <p class="intro">
-                精选全球优质科技学习资源，涵盖机械、电子、编程、AI 等多个领域。
+                精选全球优质科技学习资源，涵盖机械、电子、编程、AI 等多个领域，助力每个学员成为未来的创造者。
             </p>
             
-            <div class="grid">
-                <div class="card">
-                    <h3>🎬 视频推荐</h3>
-                    <ul>
-                        <li>《工作原理 How Things Work》</li>
-                        <li>《妙想科学秀 Brainchild》</li>
-                        <li>《比克曼的科学世界》</li>
-                        <li>《人类大历史 Big History》</li>
-                        <li>《艺术创想 Art Attack》</li>
-                    </ul>
+            <div class="resource-grid">
+                <!-- 推荐视频 -->
+                <div class="resource-card">
+                    <div class="card-header">
+                        <div class="card-icon">🎬</div>
+                        <div class="card-title">推荐视频</div>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-desc">
+                            视频是最直观的学习方式之一。我们精心挑选了全球优质的科普视频、纪录片、教学节目，讲解机械原理、电路元件、万物原理等内容，通过 3D 动画展示，生动有趣，适合各年龄段学员学习。
+                        </p>
+                        <div class="card-links">
+                            <a href="#" class="link-item">
+                                <span class="link-icon">📺</span>
+                                <span class="link-text">工作原理 How Things Work</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                            <a href="#" class="link-item">
+                                <span class="link-icon">🔬</span>
+                                <span class="link-text">妙想科学秀 Brainchild</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                            <a href="#" class="link-item">
+                                <span class="link-icon">⚗️</span>
+                                <span class="link-text">比克曼的科学世界</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                            <a href="#" class="link-item">
+                                <span class="link-icon">🌍</span>
+                                <span class="link-text">人类大历史 Big History</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                            <a href="#" class="link-item">
+                                <span class="link-icon">🎨</span>
+                                <span class="link-text">艺术创想 Art Attack</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="card">
-                    <h3>📚 书籍推荐</h3>
-                    <ul>
-                        <li>《三体》系列 - 刘慈欣</li>
-                        <li>《浪潮之巅》- 吴军</li>
-                        <li>《黑客与画家》- Paul Graham</li>
-                        <li>《编程珠玑》- Jon Bentley</li>
-                        <li>《人工智能：现代方法》</li>
-                    </ul>
+                <!-- 书籍推荐 -->
+                <div class="resource-card">
+                    <div class="card-header">
+                        <div class="card-icon">📚</div>
+                        <div class="card-title">书籍推荐</div>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-desc">
+                            读书是人类进步的阶梯。此栏目包含了在罗辑智造社所学习的知识点的相关优质书籍，包含机械、电子、编程、AI 等多方面的内容，还有适合和家长一起读的图书。书籍均为豆瓣链接，可以看到书籍介绍，感兴趣的同学可以去书店或线上网站购买。
+                        </p>
+                        <div class="card-links">
+                            <a href="#" class="link-item">
+                                <span class="link-icon">📖</span>
+                                <span class="link-text">《三体》系列 - 刘慈欣</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                            <a href="#" class="link-item">
+                                <span class="link-icon">💻</span>
+                                <span class="link-text">《黑客与画家》- Paul Graham</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                            <a href="#" class="link-item">
+                                <span class="link-icon">🤖</span>
+                                <span class="link-text">《人工智能：现代方法》</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                            <a href="#" class="link-item">
+                                <span class="link-icon">🔧</span>
+                                <span class="link-text">《编程珠玑》- Jon Bentley</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                            <a href="#" class="link-item">
+                                <span class="link-icon">📊</span>
+                                <span class="link-text">《浪潮之巅》- 吴军</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="card">
-                    <h3>🛠️ 工具推荐</h3>
-                    <ul>
-                        <li>SolidWorks - 3D 建模</li>
-                        <li>Arduino IDE - 硬件编程</li>
-                        <li>Mixly - 图形化编程</li>
-                        <li>Tinkercad - 在线 3D 设计</li>
-                        <li>GitHub - 代码托管</li>
-                    </ul>
+                <!-- 科技竞赛 -->
+                <div class="resource-card">
+                    <div class="card-header">
+                        <div class="card-icon">🏆</div>
+                        <div class="card-title">科技竞赛</div>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-desc">
+                            对于创客方面的竞赛，有很多是针对中小学生的。你在罗辑智造社沉淀的作品，可以进行优化参赛。会有不同类型的比赛，有些偏向电子、有些偏向创客创造、有些是机械制图、有些是 IoT、人工智能方面。你可以挑选自己感兴趣或者擅长的比赛进行了解。这里列出了面向中小学生的比赛项目，以及报名入口。
+                        </p>
+                        <div class="card-links">
+                            <a href="#" class="link-item">
+                                <span class="link-icon">🥇</span>
+                                <span class="link-text">全国青少年科技创新大赛</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                            <a href="#" class="link-item">
+                                <span class="link-icon">🤖</span>
+                                <span class="link-text">世界机器人大会青少年赛</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                            <a href="#" class="link-item">
+                                <span class="link-icon">💻</span>
+                                <span class="link-text">蓝桥杯软件和信息技术大赛</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                            <a href="#" class="link-item">
+                                <span class="link-icon">🎨</span>
+                                <span class="link-text">全国中小学生电脑制作活动</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                            <a href="#" class="link-item">
+                                <span class="link-icon">🧠</span>
+                                <span class="link-text">青少年人工智能挑战赛</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="card">
-                    <h3>🏆 竞赛信息</h3>
-                    <ul>
-                        <li>全国青少年科技创新大赛</li>
-                        <li>世界机器人大会青少年赛</li>
-                        <li>蓝桥杯全国软件和信息技术大赛</li>
-                        <li>全国中小学生电脑制作活动</li>
-                        <li>青少年人工智能挑战赛</li>
-                    </ul>
+                <!-- 技术博客 -->
+                <div class="resource-card">
+                    <div class="card-header">
+                        <div class="card-icon">✍️</div>
+                        <div class="card-title">技术博客</div>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-desc">
+                            通过在罗辑智造社制作一个个有趣的作品，你从中学习到了很多知识点，培养了很多有用的技能。但最终我们希望看到的，是你自己能够将这些内容应用起来，自己能够自主的完成一些创作。如果没有材料，不妨将之前的旧作品回收利用。如果觉得没有想法，此栏目推荐的网站希望能够帮到你，比如 DF 社区，或者国外很火的 Instructables 开源项目社区，其中有很多机械、电子相关的项目都可以参考。
+                        </p>
+                        <div class="card-links">
+                            <a href="#" class="link-item">
+                                <span class="link-icon">🔧</span>
+                                <span class="link-text">Instructables 开源项目社区</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                            <a href="#" class="link-item">
+                                <span class="link-icon">📡</span>
+                                <span class="link-text">DFRobot 创客社区</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                            <a href="#" class="link-item">
+                                <span class="link-icon">🎯</span>
+                                <span class="link-text">GitHub 开源项目</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                            <a href="#" class="link-item">
+                                <span class="link-icon">💡</span>
+                                <span class="link-text">CSDN 技术博客</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 学习资源 -->
+                <div class="resource-card">
+                    <div class="card-header">
+                        <div class="card-icon">🌐</div>
+                        <div class="card-title">学习资源</div>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-desc">
+                            相信通过罗辑智造社的学习，你已经掌握了独立学习的能力和信心。在互联网上，有很多优质的学习资源和网站，其中有很多工程相关的课程。本栏目中列出了一些常用的网站和学习平台，帮助你持续提升技能。
+                        </p>
+                        <div class="card-links">
+                            <a href="#" class="link-item">
+                                <span class="link-icon">🎓</span>
+                                <span class="link-text">Coursera 工程课程</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                            <a href="#" class="link-item">
+                                <span class="link-icon">📹</span>
+                                <span class="link-text">Bilibili 科技区</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                            <a href="#" class="link-item">
+                                <span class="link-icon">🐦</span>
+                                <span class="link-text">Khan Academy 可汗学院</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                            <a href="#" class="link-item">
+                                <span class="link-icon">🔬</span>
+                                <span class="link-text">MIT OpenCourseWare</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 实用工具 -->
+                <div class="resource-card">
+                    <div class="card-header">
+                        <div class="card-icon">🛠️</div>
+                        <div class="card-title">实用工具</div>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-desc">
+                            在我们平常的创作中，利用这些工具，可以提高我们的效率。此处列出了一些常用的有用网站，比如计算欧姆定律、分压电阻、数学函数的图象绘制、平面设计 app 等实用网站，帮助你在创作过程中事半功倍。
+                        </p>
+                        <div class="card-links">
+                            <a href="#" class="link-item">
+                                <span class="link-icon">⚡</span>
+                                <span class="link-text">欧姆定律计算器</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                            <a href="#" class="link-item">
+                                <span class="link-icon">📈</span>
+                                <span class="link-text">Desmos 函数图像绘制</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                            <a href="#" class="link-item">
+                                <span class="link-icon">🎨</span>
+                                <span class="link-text">Figma 平面设计工具</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                            <a href="#" class="link-item">
+                                <span class="link-icon">🔌</span>
+                                <span class="link-text">分压电阻计算器</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 3D 模型下载 -->
+                <div class="resource-card">
+                    <div class="card-header">
+                        <div class="card-icon">📦</div>
+                        <div class="card-title">3D 模型下载</div>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-desc">
+                            在 3D 建模方面，你其实可以从一些网站上下载很多有意思的模型，而不必自己绘制。此栏目列出了一些机械模型相关的下载渠道，包含免费和付费资源，帮助你快速找到需要的模型，或者获取灵感进行二次创作。
+                        </p>
+                        <div class="card-links">
+                            <a href="#" class="link-item">
+                                <span class="link-icon">🔩</span>
+                                <span class="link-text">Thingiverse 免费模型</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                            <a href="#" class="link-item">
+                                <span class="link-icon">⚙️</span>
+                                <span class="link-text">GrabCAD 工程模型</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                            <a href="#" class="link-item">
+                                <span class="link-icon">🎭</span>
+                                <span class="link-text">Sketchfab 3D 模型库</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                            <a href="#" class="link-item">
+                                <span class="link-icon">🔧</span>
+                                <span class="link-text">MyMiniFactory</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 软件下载 -->
+                <div class="resource-card">
+                    <div class="card-header">
+                        <div class="card-icon">💾</div>
+                        <div class="card-title">软件下载</div>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-desc">
+                            在 21 世纪，软件已经成为了生产力离不开的工具，几乎一些东西都已经数字化。利用不同的软件，我们可以高效、准确的完成很多工作。在罗辑智造社的学习中，你已经使用过很多软件了，比如专业的 3D 制图软件 SolidWorks、硬件编程软件 Mixly 或 Arduino IDE 等。此处列出了这些软件的下载地址，你可以将对自己有用的软件安装在电脑上，在家也可以自己搞起来！
+                        </p>
+                        <div class="card-links">
+                            <a href="#" class="link-item">
+                                <span class="link-icon">📐</span>
+                                <span class="link-text">SolidWorks 3D 制图</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                            <a href="#" class="link-item">
+                                <span class="link-icon"></span>
+                                <span class="link-text">Arduino IDE 硬件编程</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                            <a href="#" class="link-item">
+                                <span class="link-icon">🎯</span>
+                                <span class="link-text">Mixly 图形化编程</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                            <a href="#" class="link-item">
+                                <span class="link-icon">🎨</span>
+                                <span class="link-text">Tinkercad 在线 3D 设计</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                            <a href="#" class="link-item">
+                                <span class="link-icon">🔧</span>
+                                <span class="link-text">Fusion 360 CAD/CAM</span>
+                                <span class="link-arrow">→</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
             
