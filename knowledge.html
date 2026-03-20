@@ -4,152 +4,142 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>知识库 - 罗辑智造社</title>
-    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            line-height: 1.8;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
             color: #333;
-            background: #FFF9F5;
+            background: #f5f5f5;
             min-height: 100vh;
             padding: 20px;
         }
-        .container { max-width: 1100px; margin: 0 auto; }
+        .container { max-width: 1200px; margin: 0 auto; }
         nav {
             background: white;
-            padding: 20px 30px;
-            border-radius: 20px;
+            padding: 15px 25px;
+            border-radius: 10px;
             margin-bottom: 25px;
-            box-shadow: 4px 4px 0px #FF8C42;
-            border: 3px solid #333;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             text-align: center;
         }
         nav a {
-            margin: 0 12px;
+            margin: 0 10px;
             text-decoration: none;
             color: #333;
-            font-weight: 700;
-            font-size: 16px;
+            font-weight: 600;
+            font-size: 15px;
             padding: 6px 12px;
-            border-radius: 8px;
+            border-radius: 6px;
             transition: all 0.3s;
         }
         nav a:hover { background: #FF8C42; color: white; }
         .content {
             background: white;
-            padding: 45px 35px;
-            border-radius: 25px;
-            box-shadow: 6px 6px 0px #FF8C42;
-            border: 3px solid #333;
-        }
-        h1 {
-            color: #FF6B35;
-            margin-bottom: 15px;
-            font-size: 38px;
-            font-weight: 900;
-            font-family: 'ZCOOL KuaiLe', cursive;
-            text-align: center;
-            text-shadow: 2px 2px 0px #FFD93D;
-        }
-        .intro {
-            text-align: center;
-            color: #666;
-            margin-bottom: 40px;
-            font-size: 17px;
-            padding: 20px;
-            background: #FFF3E0;
+            padding: 35px;
             border-radius: 15px;
-            border: 2px dashed #FF8C42;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        .doc-section {
-            background: white;
-            border: 3px solid #333;
-            border-radius: 20px;
-            box-shadow: 5px 5px 0px #FFB347;
-            margin-bottom: 30px;
-            overflow: hidden;
+        h4 {
+            color: #333;
+            font-size: 22px;
+            margin-bottom: 15px;
+            font-weight: 600;
         }
-        .section-header {
-            background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
-            padding: 20px 30px;
-            border-bottom: 3px solid #333;
+        h4 i { margin-right: 8px; color: #FF6B35; }
+        .section-desc {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 25px;
+            line-height: 1.8;
         }
-        .section-header h2 {
-            color: white;
-            font-size: 26px;
-            font-weight: 800;
+        .row {
             display: flex;
-            align-items: center;
+            flex-wrap: wrap;
+            margin: 0 -10px;
+        }
+        .col-sm-3 {
+            width: 25%;
+            padding: 0 10px;
+            margin-bottom: 20px;
+        }
+        .xe-widget {
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 15px;
+            transition: all 0.3s;
+            cursor: pointer;
+            height: 100%;
+        }
+        .xe-widget:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            transform: translateY(-3px);
+        }
+        .xe-comment-entry {
+            display: flex;
+            align-items: flex-start;
             gap: 12px;
         }
-        .section-desc {
-            padding: 20px 30px;
-            background: #FFF9F5;
-            color: #666;
-            font-size: 15px;
-            line-height: 2.2;
-            border-bottom: 2px solid #FFE5CC;
+        .xe-user-img img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: contain;
+            background: #f9f9f9;
+            padding: 5px;
         }
-        .doc-list {
-            padding: 20px 30px;
-        }
-        .doc-item {
-            display: flex;
-            align-items: center;
-            padding: 15px 20px;
-            background: white;
-            border: 2px solid #FFE5CC;
-            border-radius: 12px;
-            margin-bottom: 12px;
-            text-decoration: none;
+        .xe-comment { flex: 1; min-width: 0; }
+        .xe-user-name {
+            display: block;
             color: #333;
-            transition: all 0.3s;
-        }
-        .doc-item:hover {
-            background: #FF8C42;
-            color: white;
-            border-color: #FF6B35;
-            transform: translateX(8px);
-        }
-        .doc-item:last-child { margin-bottom: 0; }
-        .doc-icon {
-            font-size: 28px;
-            margin-right: 15px;
-        }
-        .doc-title {
-            font-size: 16px;
             font-weight: 600;
-            flex: 1;
+            font-size: 14px;
+            margin-bottom: 5px;
+            text-decoration: none;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-        .doc-arrow {
-            color: #FF6B35;
-            font-size: 20px;
-            font-weight: bold;
-            transition: transform 0.3s;
+        .xe-comment p {
+            color: #999;
+            font-size: 12px;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin: 0;
         }
-        .doc-item:hover .doc-arrow {
-            color: white;
-            transform: translateX(5px);
+        .section-spacer {
+            margin: 40px 0;
+            border-top: 2px solid #f0f0f0;
+            padding-top: 30px;
         }
         .back-link {
             display: block;
             text-align: center;
-            margin-top: 35px;
+            margin-top: 30px;
             color: #FF6B35;
             text-decoration: none;
-            font-weight: 700;
-            font-size: 16px;
-            padding: 12px 25px;
-            background: white;
-            border-radius: 12px;
+            font-weight: 600;
+            padding: 12px 20px;
             border: 2px solid #FF8C42;
+            border-radius: 8px;
             transition: all 0.3s;
         }
         .back-link:hover { background: #FF8C42; color: white; }
+        @media (max-width: 992px) {
+            .col-sm-3 { width: 33.33%; }
+        }
         @media (max-width: 768px) {
-            h1 { font-size: 28px; }
-            .section-header h2 { font-size: 20px; }
+            .col-sm-3 { width: 50%; }
+            h4 { font-size: 18px; }
+            nav a { font-size: 13px; margin: 0 5px; }
+        }
+        @media (max-width: 480px) {
+            .col-sm-3 { width: 100%; }
         }
     </style>
 </head>
@@ -165,200 +155,712 @@
         </nav>
         
         <div class="content">
-            <h1>📚 知识库</h1>
-            <p class="intro">
-                精选科技教育文档、教程、指南，帮助你系统学习科技知识。
+            <!-- 文章推荐 -->
+            <h4><i class="fa fa-file-text"></i>文章推荐</h4>
+            <p class="section-desc">
+                在罗辑智造社，每个孩子都是一个小小工程师，每个人都有独一无二的优点，我们可以从他人身上学习到很多，本栏目中给大家推荐一些有趣的学生的成长历程，供大家借鉴。
             </p>
-            
-            <!-- 编程教程 -->
-            <div class="doc-section">
-                <div class="section-header">
-                    <h2>💻 编程教程</h2>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://www.bilibili.com/read/cv4761032', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.bilibili.com/favicon.ico" alt="B 站">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">B 站 UP 主的自学之路</a>
+                                <p>杂谈：我是怎么喜欢上玩电子制作的，入门电子的那些事儿～</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="section-desc">
-                    从图形化编程到代码编程，循序渐进学习编程技能。包含 Scratch、Python、C++ 等语言的入门教程和项目案例。
-                </div>
-                <div class="doc-list">
-                    <a href="https://scratch.mit.edu/" target="_blank" class="doc-item">
-                        <span class="doc-icon">🐱</span>
-                        <span class="doc-title">Scratch 图形化编程</span>
-                        <span class="doc-arrow">→</span>
-                    </a>
-                    <a href="https://www.python.org/" target="_blank" class="doc-item">
-                        <span class="doc-icon">🐍</span>
-                        <span class="doc-title">Python 官方教程</span>
-                        <span class="doc-arrow">→</span>
-                    </a>
-                    <a href="https://www.arduino.cc/" target="_blank" class="doc-item">
-                        <span class="doc-icon">📟</span>
-                        <span class="doc-title">Arduino 硬件编程</span>
-                        <span class="doc-arrow">→</span>
-                    </a>
-                    <a href="https://www.codecademy.com/" target="_blank" class="doc-item">
-                        <span class="doc-icon">🎓</span>
-                        <span class="doc-title">Codecademy 在线编程</span>
-                        <span class="doc-arrow">→</span>
-                    </a>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('http://www.mgspace.wiki/study/assets/files/johnathan.mp4', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.douban.com/favicon.ico" alt="访谈">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">罗辑智造社李宗翰访谈</a>
+                                <p>罗辑智造社小工程师-Johnathan Li 的成长历程</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
-            <!-- 电子制作 -->
-            <div class="doc-section">
-                <div class="section-header">
-                    <h2>⚡ 电子制作</h2>
+            <div class="section-spacer"></div>
+            
+            <!-- 推荐视频 -->
+            <h4><i class="fa fa-youtube-play"></i>推荐视频</h4>
+            <p class="section-desc">
+                视频是最直观的学习方式之一，因此罗辑智造社专门为大家制作了影视资源库，其中包含了很多很有趣且优质的系列视频、电视节目、纪录片等，讲解机械原理、电路元件、万物原理等内容，通过 3D 动画展示，生动有趣，此栏目列出了一些电子方面的学习视频。
+            </p>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('http://mgspace.wiki/study2/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.youtube.com/s/desktop/img/favicon_144x144.png" alt="视频">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">电子 3D 动画演示系列视频</a>
+                                <p>通过该系列的视频，我们将化身为一个电子，通过 3D 动画的直观方式，了解电路的运作原理</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="section-desc">
-                    学习电路基础、电子元器件知识，动手制作有趣的电子作品。包含 Arduino、树莓派等开源硬件项目教程。
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://www.adafruit.com/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.adafruit.com/assets/images/adafruit-logo.png" alt="Adafruit">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">Adafruit-基础电子学系列</a>
+                                <p>基础电子学通识课，包括电池、电容、电流、二极管等知识。</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="doc-list">
-                    <a href="https://www.dfrobot.com.cn/" target="_blank" class="doc-item">
-                        <span class="doc-icon">🔌</span>
-                        <span class="doc-title">DFRobot 电子制作</span>
-                        <span class="doc-arrow">→</span>
-                    </a>
-                    <a href="https://www.seeedstudio.com/" target="_blank" class="doc-item">
-                        <span class="doc-icon">🔧</span>
-                        <span class="doc-title">Seeed Studio 开源硬件</span>
-                        <span class="doc-arrow">→</span>
-                    </a>
-                    <a href="https://learn.sparkfun.com/" target="_blank" class="doc-item">
-                        <span class="doc-icon">⚙️</span>
-                        <span class="doc-title">SparkFun 电子教程</span>
-                        <span class="doc-arrow">→</span>
-                    </a>
-                    <a href="https://www.instructables.com/circuits/" target="_blank" class="doc-item">
-                        <span class="doc-icon">💡</span>
-                        <span class="doc-title">Instructables 电路项目</span>
-                        <span class="doc-arrow">→</span>
-                    </a>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://www.sparkfun.com/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.sparkfun.com/favicon.ico" alt="SparkFun">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">SparkFun 基础电路教程</a>
+                                <p>电能、电流、电阻、串并联、欧姆定律等知识的讲解</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://www.youtube.com/results?search_query=how+things+work', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.youtube.com/s/desktop/img/favicon_144x144.png" alt="How Things Work">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">万物是如何工作的系列</a>
+                                <p>蓝牙、相机、电池等是如何工作的呢？一起来研究下吧！</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://www.element14.com/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.element14.com/favicon.ico" alt="element14">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">element14-电路教程</a>
+                                <p>基础电子学通识课，包括电池、电容、电流、二极管等知识。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('http://mgspace.wiki/study2/', '_blank')" style="background-color:aliceblue">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.youtube.com/s/desktop/img/favicon_144x144.png" alt="影视库">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">罗辑智造社影视资源库</a>
+                                <p>更多精彩视频、纪录片等你发现！</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
-            <!-- 3D 建模 -->
-            <div class="doc-section">
-                <div class="section-header">
-                    <h2>📐 3D 建模</h2>
+            <div class="section-spacer"></div>
+            
+            <!-- 书籍推荐 -->
+            <h4><i class="fa fa-book"></i>书籍推荐</h4>
+            <p class="section-desc">
+                读书是人类进步的阶梯，此栏目包含了在罗辑智造社所学习的知识点的相关优质书籍，包含机械、电子、编程等多方面的内容，还有适合和爸妈一起读的图书。书籍均为豆瓣链接，可以看到书籍介绍，感兴趣的同学可以去书店或线上网站购买。
+            </p>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://book.douban.com/subject/30340754/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.douban.com/favicon.ico" alt="电子入门">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">《电子入门》</a>
+                                <p>简单电路与电子实验轻松学</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="section-desc">
-                    学习 3D 设计软件，从基础建模到复杂装配，制作属于自己的 3D 模型。包含 SolidWorks、Fusion 360、Tinkercad 等软件教程。
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://book.douban.com/subject/11526136/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.douban.com/favicon.ico" alt="爱上制作">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">《爱上制作》</a>
+                                <p>MAKE 杂志中文版，75 个最棒的制作项目</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="doc-list">
-                    <a href="https://www.tinkercad.com/" target="_blank" class="doc-item">
-                        <span class="doc-icon">🎨</span>
-                        <span class="doc-title">Tinkercad 在线 3D 设计</span>
-                        <span class="doc-arrow">→</span>
-                    </a>
-                    <a href="https://www.autodesk.com/products/fusion-360/" target="_blank" class="doc-item">
-                        <span class="doc-icon">🔧</span>
-                        <span class="doc-title">Fusion 360 CAD/CAM</span>
-                        <span class="doc-arrow">→</span>
-                    </a>
-                    <a href="https://www.solidworks.com/" target="_blank" class="doc-item">
-                        <span class="doc-icon">📏</span>
-                        <span class="doc-title">SolidWorks 3D 制图</span>
-                        <span class="doc-arrow">→</span>
-                    </a>
-                    <a href="https://www.blender.org/" target="_blank" class="doc-item">
-                        <span class="doc-icon">🎭</span>
-                        <span class="doc-title">Blender 3D 建模</span>
-                        <span class="doc-arrow">→</span>
-                    </a>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://book.douban.com/subject/30340754/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.douban.com/favicon.ico" alt="爱上电子 DIY">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">《爱上电子 DIY》- 杜洋</a>
+                                <p>面包板入门电子制作</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://book.douban.com/subject/27180497/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.douban.com/favicon.ico" alt="人工智能">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">《给孩子的人工智能图解》- 森川幸人</a>
+                                <p>明天开始就想用上的 68 个关键词</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://book.douban.com/subject/27074708/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.douban.com/favicon.ico" alt="手工的艺术">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">《手工的艺术》- 凯伦·威金森</a>
+                                <p>这是特殊的导电油墨．我们鼓励你打开这本书．然后『驾』了这本书</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://book.douban.com/subject/35080089/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.douban.com/favicon.ico" alt="构建我们的世界">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">《构建我们的世界》- 琼•玛丽•加拉特</a>
+                                <p>美国国家地理 STEAM 创意思维启蒙</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://book.douban.com/subject/3137185/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.douban.com/favicon.ico" alt="阿米星星的孩子">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">《阿米 - 星星的孩子》- 琼•玛丽•加拉特</a>
+                                <p>如果一个世界的科技水平远远超过了人们的互爱精神，那个世界就会自我毁灭。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://book.douban.com/subject/28526194/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.douban.com/favicon.ico" alt="爱上电子学">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">《爱上电子学》- Charles Platt</a>
+                                <p>本书由简到繁，呈现了一系列有趣的电子实验，从简单的电阻一直讲到精巧复杂的单片机，引导读者探索各种电子元件，以及它们背后的原理。</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
-            <!-- 机器人技术 -->
-            <div class="doc-section">
-                <div class="section-header">
-                    <h2>🤖 机器人技术</h2>
+            <div class="section-spacer"></div>
+            
+            <!-- 科技竞赛 -->
+            <h4><i class="fa fa-mortar-board"></i>科技竞赛</h4>
+            <p class="section-desc">
+                对于创客方面的竞赛，有很多是针对中小学生的，你在罗辑智造社沉淀的作品，可以进行优化参赛，会有不同类型的比赛，有些偏向电子、有些偏向创客创造、有些是机械制图，有些是 IOT、人工智能方面，你可以挑选自己感兴趣或者擅长的比赛进行了解。这里列出了深圳面向中小学生的比赛项目，以及报名入口。
+            </p>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('http://www.moe.gov.cn/jyb_xxgk/s5743/s5745/202007/t20200701_469571.html', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.moe.gov.cn/favicon.ico" alt="教育部">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">面向中小学生的全国性竞赛活动名单</a>
+                                <p>教育部认可的全国性竞赛活动白名单</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="section-desc">
-                    学习机器人结构、传感器应用、运动控制等知识，搭建和编程自己的机器人。包含乐高 EV3、VEX 等机器人平台教程。
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('http://www.mgspace.wiki/study/assets/files/bisai-2021-shenzhen.pdf', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.moe.gov.cn/favicon.ico" alt="深圳市">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">2021-2022 学年度深圳市青少年科技创新教育系列活动</a>
+                                <p>学校内部报名</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="doc-list">
-                    <a href="https://education.lego.com/" target="_blank" class="doc-item">
-                        <span class="doc-icon">🧱</span>
-                        <span class="doc-title">LEGO Education 乐高教育</span>
-                        <span class="doc-arrow">→</span>
-                    </a>
-                    <a href="https://www.vexrobotics.com/" target="_blank" class="doc-item">
-                        <span class="doc-icon">🏆</span>
-                        <span class="doc-title">VEX 机器人教育</span>
-                        <span class="doc-arrow">→</span>
-                    </a>
-                    <a href="https://www.makeblock.com/" target="_blank" class="doc-item">
-                        <span class="doc-icon">🔩</span>
-                        <span class="doc-title">Makeblock 创客机器人</span>
-                        <span class="doc-arrow">→</span>
-                    </a>
-                    <a href="https://www.ubtrobot.com/" target="_blank" class="doc-item">
-                        <span class="doc-icon">🦾</span>
-                        <span class="doc-title">优必选机器人</span>
-                        <span class="doc-arrow">→</span>
-                    </a>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://baike.baidu.com/item/%E5%85%A8%E5%9B%BD%E4%B8%AD%E5%B0%8F%E5%AD%A6%E7%94%B5%E8%84%91%E5%88%B6%E4%BD%9C%E6%B4%BB%E5%8A%A8/10510041?fr=aladdin', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.douban.com/favicon.ico" alt="电脑制作">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">中小学电脑制作大赛</a>
+                                <p>采用现场制作的方式。参赛学生在规定时间内使用组委会提供的器材，通过电脑编程、硬件搭建、造型设计等创作智能实物作品。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('http://www.cysc.org.cn/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="http://www.cysc.org.cn/favicon.ico" alt="科技创新大赛">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">全国青少年科技创新大赛</a>
+                                <p>国家级青少年科技竞赛</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('http://www.worldrobotconference.com/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="http://www.worldrobotconference.com/favicon.ico" alt="WRC">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">世界机器人大会青少年赛</a>
+                                <p>国际机器人竞赛平台</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://www.lanqiao.cn/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.lanqiao.cn/favicon.ico" alt="蓝桥杯">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">蓝桥杯软件大赛</a>
+                                <p>全国性 IT 学科竞赛</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
-            <!-- 人工智能 -->
-            <div class="doc-section">
-                <div class="section-header">
-                    <h2>🧠 人工智能</h2>
+            <div class="section-spacer"></div>
+            
+            <!-- 技术博客 -->
+            <h4><i class="fa fa-rss"></i>技术博客</h4>
+            <p class="section-desc">
+                通过在罗辑智造社制作一个个有趣的作品，你从中学习到了很多知识点，培养了很多有用的技能，但最终我们希望看到的，是你自己能够将这些内容应用起来，自己能够自主的完成一些创作。如果没有材料，不妨将之前的旧作品回收利用。如果觉得没有想法，此栏目推荐的一些网站希望能够帮到你，比如 DF 社区，或者国外很火的 Instructables 开源项目社区，其中有很多机械、电子相关的项目都可以参考。
+            </p>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://www.instructables.com/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.instructables.com/assets/img/logo/touch-icon-iphone.png" alt="Instructables">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">Instructables 开源项目</a>
+                                <p>创客项目分享，步骤详细易学</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="section-desc">
-                    了解 AI 基础知识，学习机器学习、深度学习、计算机视觉等前沿技术。包含 AI 入门教程和项目实践。
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://www.dfrobot.com.cn/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.dfrobot.com.cn/image/data/logo/dfrobot-logo.png" alt="DFRobot">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">DFRobot 社区</a>
+                                <p>开源硬件项目、教程、产品</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="doc-list">
-                    <a href="https://www.coursera.org/specializations/machine-learning-introduction" target="_blank" class="doc-item">
-                        <span class="doc-icon">🎓</span>
-                        <span class="doc-title">机器学习入门课程</span>
-                        <span class="doc-arrow">→</span>
-                    </a>
-                    <a href="https://www.deeplearning.ai/" target="_blank" class="doc-item">
-                        <span class="doc-icon">🔮</span>
-                        <span class="doc-title">DeepLearning.AI 深度学习</span>
-                        <span class="doc-arrow">→</span>
-                    </a>
-                    <a href="https://www.kaggle.com/learn" target="_blank" class="doc-item">
-                        <span class="doc-icon">📊</span>
-                        <span class="doc-title">Kaggle 机器学习实战</span>
-                        <span class="doc-arrow">→</span>
-                    </a>
-                    <a href="https://www.tensorflow.org/" target="_blank" class="doc-item">
-                        <span class="doc-icon">📈</span>
-                        <span class="doc-title">TensorFlow 官方教程</span>
-                        <span class="doc-arrow">→</span>
-                    </a>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://github.com/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://github.githubassets.com/favicons/favicon.svg" alt="GitHub">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">GitHub 开源项目</a>
+                                <p>全球最大代码托管平台，开源项目宝库</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://blog.csdn.net/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://g.csdnimg.cn/static/logo/favicon.ico" alt="CSDN">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">CSDN 技术博客</a>
+                                <p>程序员技术交流平台</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
-            <!-- 创客教育 -->
-            <div class="doc-section">
-                <div class="section-header">
-                    <h2>🛠️ 创客教育</h2>
+            <div class="section-spacer"></div>
+            
+            <!-- 学习资源 -->
+            <h4><i class="fa fa-lightbulb-o"></i>学习资源</h4>
+            <p class="section-desc">
+                相信通过在罗辑智造社的学习，你已经掌握了独立学习的能力和信心，在互联网上，有很多优质的学习资源和网站，其中有很多工程相关的课程，本栏目中列出了一些常用的网站和学习平台。
+            </p>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://www.coursera.org/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://d3njjcbhbojbot.cloudfront.net/web/images/favicons/favicon-v2-32x32.png" alt="Coursera">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">Coursera 工程课程</a>
+                                <p>全球顶尖大学在线课程</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="section-desc">
-                    创客教育理念、方法和案例分析，帮助老师和家长引导孩子进行科技创新。包含项目式学习、设计思维等教育资源。
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://www.bilibili.com/v/technology/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.bilibili.com/favicon.ico" alt="Bilibili">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">Bilibili 科技区</a>
+                                <p>优质科技视频内容平台</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="doc-list">
-                    <a href="https://www.makezine.com/" target="_blank" class="doc-item">
-                        <span class="doc-icon">📰</span>
-                        <span class="doc-title">Make: Magazine 创客杂志</span>
-                        <span class="doc-arrow">→</span>
-                    </a>
-                    <a href="https://www.instructables.com/" target="_blank" class="doc-item">
-                        <span class="doc-icon">🔨</span>
-                        <span class="doc-title">Instructables 项目分享</span>
-                        <span class="doc-arrow">→</span>
-                    </a>
-                    <a href="https://www.edutopia.org/topic/maker-education" target="_blank" class="doc-item">
-                        <span class="doc-icon">🏫</span>
-                        <span class="doc-title">Edutopia 创客教育</span>
-                        <span class="doc-arrow">→</span>
-                    </a>
-                    <a href="https://www.ted.com/topics/education" target="_blank" class="doc-item">
-                        <span class="doc-icon">🎤</span>
-                        <span class="doc-title">TED 教育演讲</span>
-                        <span class="doc-arrow">→</span>
-                    </a>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://zh.khanacademy.org/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://cdn.kastatic.org/images/khan-logo-dark-background.png" alt="Khan Academy">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">可汗学院 Khan Academy</a>
+                                <p>免费优质教育资源</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://ocw.mit.edu/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://ocw.mit.edu/favicon.ico" alt="MIT OCW">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">MIT OpenCourseWare</a>
+                                <p>麻省理工开放课程</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-spacer"></div>
+            
+            <!-- 实用工具 -->
+            <h4><i class="fa fa-wrench"></i>实用工具</h4>
+            <p class="section-desc">
+                在我们平常的创作中，利用这些工具，可以提高我们的效率，此处列出了一些常用的有用网站，比如计算欧姆定律、分压电阻、数学函数的图象绘制、平面设计 app 等实用网站。
+            </p>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://www.digikey.com/zh/resources/conversion-calculators/conversion-calculator-ohms', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.digikey.com/favicon.ico" alt="Ohm Calculator">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">欧姆定律计算器</a>
+                                <p>快速计算电压、电流、电阻</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://www.desmos.com/calculator', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.desmos.com/assets/img/apps/graphing/icon-transparent.png" alt="Desmos">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">Desmos 函数图像</a>
+                                <p>在线数学函数绘制工具</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://www.figma.com/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://static.figma.com/app/icon/1/favicon.ico" alt="Figma">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">Figma 设计工具</a>
+                                <p>在线协作设计平台</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://www.allaboutcircuits.com/tools/voltage-divider-calculator/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.allaboutcircuits.com/favicon.ico" alt="Voltage Divider">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">分压电阻计算器</a>
+                                <p>电子电路设计辅助工具</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-spacer"></div>
+            
+            <!-- 3D 模型下载 -->
+            <h4><i class="fa fa-inbox"></i>3D 模型下载</h4>
+            <p class="section-desc">
+                在 3D 建模方面，你其实可以从一些网站上下载很多有意思的模型，而不必自己绘制，此栏目列出了一些机械模型相关的下载渠道。
+            </p>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://www.thingiverse.com/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.thingiverse.com/favicon.ico" alt="Thingiverse">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">Thingiverse 免费模型</a>
+                                <p>最大 3D 打印模型分享平台</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://grabcad.com/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://grabcad.com/favicon.ico" alt="GrabCAD">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">GrabCAD 工程模型</a>
+                                <p>专业工程师模型库</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://sketchfab.com/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://sketchfab.com/favicon.ico" alt="Sketchfab">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">Sketchfab 3D 模型</a>
+                                <p>在线 3D 模型展示平台</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://www.myminifactory.com/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.myminifactory.com/favicon.ico" alt="MyMiniFactory">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">MyMiniFactory</a>
+                                <p>高质量 3D 打印模型</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-spacer"></div>
+            
+            <!-- 软件下载 -->
+            <h4><i class="fa fa-download"></i>软件下载</h4>
+            <p class="section-desc">
+                在 21 世纪，软件已经成为了生产力离不开的工具，几乎一些东西都已经数字化，利用不同的软件，我们可以高效、准确的完成很多工作，在罗辑智造社的学习中，你已经使用过很多软件了，比如专业的 3D 制图软件 Solidworks、硬件编程软件 Mixly 或 Arduino IDE 等，此处列出了这些软件的下载地址，你可以将对自己有用的软件安装在电脑上，在家也可以自己搞起来！
+            </p>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://www.solidworks.com/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.solidworks.com/favicon.ico" alt="SolidWorks">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">SolidWorks 3D 制图</a>
+                                <p>专业 3D CAD 设计软件</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://www.arduino.cc/en/software', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.arduino.cc/favicon.ico" alt="Arduino">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">Arduino IDE</a>
+                                <p>硬件编程开发环境</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('http://mixly.org/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="http://mixly.org/favicon.ico" alt="Mixly">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">Mixly 图形化编程</a>
+                                <p>开源图形化编程软件</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://www.tinkercad.com/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.tinkercad.com/favicon.ico" alt="Tinkercad">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">Tinkercad 在线 3D</a>
+                                <p>免费在线 3D 设计工具</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://www.autodesk.com/products/fusion-360/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.autodesk.com/favicon.ico" alt="Fusion 360">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">Fusion 360 CAD/CAM</a>
+                                <p>云端 CAD/CAM/CAE</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section-spacer"></div>
+            
+            <!-- 电影推荐 -->
+            <h4><i class="fa fa-file-movie-o"></i>电影推荐</h4>
+            <p class="section-desc">
+                空闲时间，不妨看些电影放松一下吧！此栏目列出了罗辑智造社推荐和父母一起观看的电影。
+            </p>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://movie.douban.com/subject/1300866/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.douban.com/favicon.ico" alt="超能陆战队">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">《超能陆战队》Big Hero 6</a>
+                                <p>迪士尼动画，机器人大白</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://movie.douban.com/subject/1291561/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.douban.com/favicon.ico" alt="星际穿越">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">《星际穿越》Interstellar</a>
+                                <p>诺兰科幻，探索宇宙</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://movie.douban.com/subject/1291841/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.douban.com/favicon.ico" alt="人工智能">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">《人工智能》A.I.</a>
+                                <p>斯皮尔伯格，AI 伦理</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="xe-widget" onclick="window.open('https://movie.douban.com/subject/2131459/', '_blank')">
+                        <div class="xe-comment-entry">
+                            <div class="xe-user-img">
+                                <img src="https://www.douban.com/favicon.ico" alt="火星救援">
+                            </div>
+                            <div class="xe-comment">
+                                <a href="#" class="xe-user-name">《火星救援》The Martian</a>
+                                <p>太空生存，科学救援</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             
