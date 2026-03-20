@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>知识库 - 罗辑智造社</title>
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.8;
+            color: #333;
+            background: #FFF9F5;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1100px; margin: 0 auto; }
+        nav {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            box-shadow: 4px 4px 0px #FF8C42;
+            border: 3px solid #333;
+            text-align: center;
+        }
+        nav a {
+            margin: 0 12px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 700;
+            font-size: 16px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        nav a:hover { background: #FF8C42; color: white; }
+        .content {
+            background: white;
+            padding: 45px 35px;
+            border-radius: 25px;
+            box-shadow: 6px 6px 0px #FF8C42;
+            border: 3px solid #333;
+        }
+        h1 {
+            color: #FF6B35;
+            margin-bottom: 15px;
+            font-size: 38px;
+            font-weight: 900;
+            font-family: 'ZCOOL KuaiLe', cursive;
+            text-align: center;
+            text-shadow: 2px 2px 0px #FFD93D;
+        }
+        .intro {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 17px;
+            padding: 20px;
+            background: #FFF3E0;
+            border-radius: 15px;
+            border: 2px dashed #FF8C42;
+        }
+        .doc-section {
+            background: white;
+            border: 3px solid #333;
+            border-radius: 20px;
+            box-shadow: 5px 5px 0px #FFB347;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        .section-header {
+            background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
+            padding: 20px 30px;
+            border-bottom: 3px solid #333;
+        }
+        .section-header h2 {
+            color: white;
+            font-size: 26px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .section-desc {
+            padding: 20px 30px;
+            background: #FFF9F5;
+            color: #666;
+            font-size: 15px;
+            line-height: 2.2;
+            border-bottom: 2px solid #FFE5CC;
+        }
+        .doc-list {
+            padding: 20px 30px;
+        }
+        .doc-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background: white;
+            border: 2px solid #FFE5CC;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s;
+        }
+        .doc-item:hover {
+            background: #FF8C42;
+            color: white;
+            border-color: #FF6B35;
+            transform: translateX(8px);
+        }
+        .doc-item:last-child { margin-bottom: 0; }
+        .doc-icon {
+            font-size: 28px;
+            margin-right: 15px;
+        }
+        .doc-title {
+            font-size: 16px;
+            font-weight: 600;
+            flex: 1;
+        }
+        .doc-arrow {
+            color: #FF6B35;
+            font-size: 20px;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+        .doc-item:hover .doc-arrow {
+            color: white;
+            transform: translateX(5px);
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 35px;
+            color: #FF6B35;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            padding: 12px 25px;
+            background: white;
+            border-radius: 12px;
+            border: 2px solid #FF8C42;
+            transition: all 0.3s;
+        }
+        .back-link:hover { background: #FF8C42; color: white; }
+        @media (max-width: 768px) {
+            h1 { font-size: 28px; }
+            .section-header h2 { font-size: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="index.html">🏠 首页</a>
+            <a href="diary.html">📖 每周周志</a>
+            <a href="resources.html">🎓 学习资源</a>
+            <a href="cases.html">🏆 教学成果</a>
+            <a href="team.html">🤖 赛博同志</a>
+            <a href="finance.html">📊 财务日报</a>
+        </nav>
+        
+        <div class="content">
+            <h1>📚 知识库</h1>
+            <p class="intro">
+                精选科技教育文档、教程、指南，帮助你系统学习科技知识。
+            </p>
+            
+            <!-- 编程教程 -->
+            <div class="doc-section">
+                <div class="section-header">
+                    <h2>💻 编程教程</h2>
+                </div>
+                <div class="section-desc">
+                    从图形化编程到代码编程，循序渐进学习编程技能。包含 Scratch、Python、C++ 等语言的入门教程和项目案例。
+                </div>
+                <div class="doc-list">
+                    <a href="https://scratch.mit.edu/" target="_blank" class="doc-item">
+                        <span class="doc-icon">🐱</span>
+                        <span class="doc-title">Scratch 图形化编程</span>
+                        <span class="doc-arrow">→</span>
+                    </a>
+                    <a href="https://www.python.org/" target="_blank" class="doc-item">
+                        <span class="doc-icon">🐍</span>
+                        <span class="doc-title">Python 官方教程</span>
+                        <span class="doc-arrow">→</span>
+                    </a>
+                    <a href="https://www.arduino.cc/" target="_blank" class="doc-item">
+                        <span class="doc-icon">📟</span>
+                        <span class="doc-title">Arduino 硬件编程</span>
+                        <span class="doc-arrow">→</span>
+                    </a>
+                    <a href="https://www.codecademy.com/" target="_blank" class="doc-item">
+                        <span class="doc-icon">🎓</span>
+                        <span class="doc-title">Codecademy 在线编程</span>
+                        <span class="doc-arrow">→</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 电子制作 -->
+            <div class="doc-section">
+                <div class="section-header">
+                    <h2>⚡ 电子制作</h2>
+                </div>
+                <div class="section-desc">
+                    学习电路基础、电子元器件知识，动手制作有趣的电子作品。包含 Arduino、树莓派等开源硬件项目教程。
+                </div>
+                <div class="doc-list">
+                    <a href="https://www.dfrobot.com.cn/" target="_blank" class="doc-item">
+                        <span class="doc-icon">🔌</span>
+                        <span class="doc-title">DFRobot 电子制作</span>
+                        <span class="doc-arrow">→</span>
+                    </a>
+                    <a href="https://www.seeedstudio.com/" target="_blank" class="doc-item">
+                        <span class="doc-icon">🔧</span>
+                        <span class="doc-title">Seeed Studio 开源硬件</span>
+                        <span class="doc-arrow">→</span>
+                    </a>
+                    <a href="https://learn.sparkfun.com/" target="_blank" class="doc-item">
+                        <span class="doc-icon">⚙️</span>
+                        <span class="doc-title">SparkFun 电子教程</span>
+                        <span class="doc-arrow">→</span>
+                    </a>
+                    <a href="https://www.instructables.com/circuits/" target="_blank" class="doc-item">
+                        <span class="doc-icon">💡</span>
+                        <span class="doc-title">Instructables 电路项目</span>
+                        <span class="doc-arrow">→</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 3D 建模 -->
+            <div class="doc-section">
+                <div class="section-header">
+                    <h2>📐 3D 建模</h2>
+                </div>
+                <div class="section-desc">
+                    学习 3D 设计软件，从基础建模到复杂装配，制作属于自己的 3D 模型。包含 SolidWorks、Fusion 360、Tinkercad 等软件教程。
+                </div>
+                <div class="doc-list">
+                    <a href="https://www.tinkercad.com/" target="_blank" class="doc-item">
+                        <span class="doc-icon">🎨</span>
+                        <span class="doc-title">Tinkercad 在线 3D 设计</span>
+                        <span class="doc-arrow">→</span>
+                    </a>
+                    <a href="https://www.autodesk.com/products/fusion-360/" target="_blank" class="doc-item">
+                        <span class="doc-icon">🔧</span>
+                        <span class="doc-title">Fusion 360 CAD/CAM</span>
+                        <span class="doc-arrow">→</span>
+                    </a>
+                    <a href="https://www.solidworks.com/" target="_blank" class="doc-item">
+                        <span class="doc-icon">📏</span>
+                        <span class="doc-title">SolidWorks 3D 制图</span>
+                        <span class="doc-arrow">→</span>
+                    </a>
+                    <a href="https://www.blender.org/" target="_blank" class="doc-item">
+                        <span class="doc-icon">🎭</span>
+                        <span class="doc-title">Blender 3D 建模</span>
+                        <span class="doc-arrow">→</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 机器人技术 -->
+            <div class="doc-section">
+                <div class="section-header">
+                    <h2>🤖 机器人技术</h2>
+                </div>
+                <div class="section-desc">
+                    学习机器人结构、传感器应用、运动控制等知识，搭建和编程自己的机器人。包含乐高 EV3、VEX 等机器人平台教程。
+                </div>
+                <div class="doc-list">
+                    <a href="https://education.lego.com/" target="_blank" class="doc-item">
+                        <span class="doc-icon">🧱</span>
+                        <span class="doc-title">LEGO Education 乐高教育</span>
+                        <span class="doc-arrow">→</span>
+                    </a>
+                    <a href="https://www.vexrobotics.com/" target="_blank" class="doc-item">
+                        <span class="doc-icon">🏆</span>
+                        <span class="doc-title">VEX 机器人教育</span>
+                        <span class="doc-arrow">→</span>
+                    </a>
+                    <a href="https://www.makeblock.com/" target="_blank" class="doc-item">
+                        <span class="doc-icon">🔩</span>
+                        <span class="doc-title">Makeblock 创客机器人</span>
+                        <span class="doc-arrow">→</span>
+                    </a>
+                    <a href="https://www.ubtrobot.com/" target="_blank" class="doc-item">
+                        <span class="doc-icon">🦾</span>
+                        <span class="doc-title">优必选机器人</span>
+                        <span class="doc-arrow">→</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 人工智能 -->
+            <div class="doc-section">
+                <div class="section-header">
+                    <h2>🧠 人工智能</h2>
+                </div>
+                <div class="section-desc">
+                    了解 AI 基础知识，学习机器学习、深度学习、计算机视觉等前沿技术。包含 AI 入门教程和项目实践。
+                </div>
+                <div class="doc-list">
+                    <a href="https://www.coursera.org/specializations/machine-learning-introduction" target="_blank" class="doc-item">
+                        <span class="doc-icon">🎓</span>
+                        <span class="doc-title">机器学习入门课程</span>
+                        <span class="doc-arrow">→</span>
+                    </a>
+                    <a href="https://www.deeplearning.ai/" target="_blank" class="doc-item">
+                        <span class="doc-icon">🔮</span>
+                        <span class="doc-title">DeepLearning.AI 深度学习</span>
+                        <span class="doc-arrow">→</span>
+                    </a>
+                    <a href="https://www.kaggle.com/learn" target="_blank" class="doc-item">
+                        <span class="doc-icon">📊</span>
+                        <span class="doc-title">Kaggle 机器学习实战</span>
+                        <span class="doc-arrow">→</span>
+                    </a>
+                    <a href="https://www.tensorflow.org/" target="_blank" class="doc-item">
+                        <span class="doc-icon">📈</span>
+                        <span class="doc-title">TensorFlow 官方教程</span>
+                        <span class="doc-arrow">→</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 创客教育 -->
+            <div class="doc-section">
+                <div class="section-header">
+                    <h2>🛠️ 创客教育</h2>
+                </div>
+                <div class="section-desc">
+                    创客教育理念、方法和案例分析，帮助老师和家长引导孩子进行科技创新。包含项目式学习、设计思维等教育资源。
+                </div>
+                <div class="doc-list">
+                    <a href="https://www.makezine.com/" target="_blank" class="doc-item">
+                        <span class="doc-icon">📰</span>
+                        <span class="doc-title">Make: Magazine 创客杂志</span>
+                        <span class="doc-arrow">→</span>
+                    </a>
+                    <a href="https://www.instructables.com/" target="_blank" class="doc-item">
+                        <span class="doc-icon">🔨</span>
+                        <span class="doc-title">Instructables 项目分享</span>
+                        <span class="doc-arrow">→</span>
+                    </a>
+                    <a href="https://www.edutopia.org/topic/maker-education" target="_blank" class="doc-item">
+                        <span class="doc-icon">🏫</span>
+                        <span class="doc-title">Edutopia 创客教育</span>
+                        <span class="doc-arrow">→</span>
+                    </a>
+                    <a href="https://www.ted.com/topics/education" target="_blank" class="doc-item">
+                        <span class="doc-icon">🎤</span>
+                        <span class="doc-title">TED 教育演讲</span>
+                        <span class="doc-arrow">→</span>
+                    </a>
+                </div>
+            </div>
+            
+            <a href="resources.html" class="back-link">← 返回学习资源</a>
+        </div>
+    </div>
+</body>
+</html>
