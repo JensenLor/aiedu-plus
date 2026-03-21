@@ -1,0 +1,78 @@
+{
+  "reportDate": "2026-03-21",
+  "generatedAt": "2026-03-21T21:00:00+08:00",
+  "daily": {
+    "tokens": 309507,
+    "apiCalls": 28,
+    "avgPerCall": 11054
+  },
+  "weekly": {
+    "tokens": 17837679,
+    "days": 2,
+    "avgPerDay": 8918840
+  },
+  "monthly": {
+    "tokens": 17837679,
+    "days": 21,
+    "avgPerDay": 849413
+  },
+  "roles": [
+    {
+      "name": "罗辑 (主代理)",
+      "tokens": 260880,
+      "percentage": 84.3,
+      "apiCalls": 22,
+      "status": "active"
+    },
+    {
+      "name": "财务官 (Cron)",
+      "tokens": 48627,
+      "percentage": 15.7,
+      "apiCalls": 6,
+      "status": "running"
+    },
+    {
+      "name": "运营官",
+      "tokens": 0,
+      "percentage": 0,
+      "apiCalls": 0,
+      "status": "pending"
+    },
+    {
+      "name": "教务官",
+      "tokens": 0,
+      "percentage": 0,
+      "apiCalls": 0,
+      "status": "pending"
+    },
+    {
+      "name": "内容官",
+      "tokens": 0,
+      "percentage": 0,
+      "apiCalls": 0,
+      "status": "pending"
+    },
+    {
+      "name": "技术官",
+      "tokens": 0,
+      "percentage": 0,
+      "apiCalls": 0,
+      "status": "pending"
+    }
+  ],
+  "cost": {
+    "currency": "CNY",
+    "total": 0,
+    "note": "使用内部模型，无实际成本"
+  },
+  "history": {
+    "2026-03-20": {
+      "tokens": 17528172,
+      "apiCalls": 213
+    },
+    "2026-03-21": {
+      "tokens": 309507,
+      "apiCalls": 28
+    }
+  }
+}
