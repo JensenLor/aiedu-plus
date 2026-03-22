@@ -1,35 +1,42 @@
 {
-  "reportDate": "2026-03-21",
-  "generatedAt": "2026-03-21T23:55:00+08:00",
+  "reportDate": "2026-03-22",
+  "generatedAt": "2026-03-22T23:55:00+08:00",
   "daily": {
-    "tokens": 309507,
-    "apiCalls": 28,
-    "avgPerCall": 11054
+    "tokens": 738322,
+    "apiCalls": 47,
+    "avgPerCall": 15709
   },
   "weekly": {
-    "tokens": 17837679,
-    "days": 2,
-    "avgPerDay": 8918840
+    "tokens": 18576001,
+    "days": 3,
+    "avgPerDay": 6192000
   },
   "monthly": {
-    "tokens": 17837679,
-    "days": 21,
-    "avgPerDay": 849413
+    "tokens": 18576001,
+    "days": 22,
+    "avgPerDay": 844364
   },
   "roles": [
     {
       "name": "罗辑 (主代理)",
-      "tokens": 260880,
-      "percentage": 84.3,
-      "apiCalls": 22,
+      "tokens": 575800,
+      "percentage": 78.0,
+      "apiCalls": 35,
       "status": "active"
     },
     {
       "name": "财务官 (Cron)",
-      "tokens": 48627,
-      "percentage": 15.7,
-      "apiCalls": 6,
+      "tokens": 72949,
+      "percentage": 9.9,
+      "apiCalls": 7,
       "status": "running"
+    },
+    {
+      "name": "记忆任务会话",
+      "tokens": 37008,
+      "percentage": 5.0,
+      "apiCalls": 3,
+      "status": "completed"
     },
     {
       "name": "运营官",
@@ -73,6 +80,10 @@
     "2026-03-21": {
       "tokens": 309507,
       "apiCalls": 28
+    },
+    "2026-03-22": {
+      "tokens": 738322,
+      "apiCalls": 47
     }
   }
 }
