@@ -1,70 +1,42 @@
 {
-  "reportDate": "2026-03-23",
-  "generatedAt": "2026-03-23T23:55:00+08:00",
+  "reportDate": "2026-03-25",
+  "generatedAt": "2026-03-25T23:55:00+08:00",
   "daily": {
-    "tokens": 184606,
-    "apiCalls": 12,
-    "avgPerCall": 15384
+    "tokens": 209949,
+    "apiCalls": 15,
+    "avgPerCall": 13997
   },
   "weekly": {
-    "tokens": 18760607,
-    "days": 4,
-    "avgPerDay": 4690152
+    "tokens": 18970556,
+    "days": 6,
+    "avgPerDay": 3161759
   },
   "monthly": {
-    "tokens": 18760607,
-    "days": 23,
-    "avgPerDay": 815679
+    "tokens": 18970556,
+    "days": 25,
+    "avgPerDay": 758822
   },
   "roles": [
     {
       "name": "罗辑 (主代理)",
-      "tokens": 145200,
-      "percentage": 78.7,
-      "apiCalls": 9,
+      "tokens": 118251,
+      "percentage": 56.3,
+      "apiCalls": 8,
       "status": "active"
     },
     {
-      "name": "财务官 (Cron)",
-      "tokens": 28406,
-      "percentage": 15.4,
-      "apiCalls": 2,
-      "status": "running"
-    },
-    {
-      "name": "记忆任务会话",
-      "tokens": 11000,
-      "percentage": 5.9,
-      "apiCalls": 1,
+      "name": "课程设计师",
+      "tokens": 39694,
+      "percentage": 18.9,
+      "apiCalls": 3,
       "status": "completed"
     },
     {
-      "name": "运营官",
-      "tokens": 0,
-      "percentage": 0,
-      "apiCalls": 0,
-      "status": "pending"
-    },
-    {
-      "name": "教务官",
-      "tokens": 0,
-      "percentage": 0,
-      "apiCalls": 0,
-      "status": "pending"
-    },
-    {
-      "name": "内容官",
-      "tokens": 0,
-      "percentage": 0,
-      "apiCalls": 0,
-      "status": "pending"
-    },
-    {
-      "name": "技术官",
-      "tokens": 0,
-      "percentage": 0,
-      "apiCalls": 0,
-      "status": "pending"
+      "name": "财务官 (Cron)",
+      "tokens": 52004,
+      "percentage": 24.8,
+      "apiCalls": 4,
+      "status": "running"
     }
   ],
   "cost": {
@@ -88,14 +60,22 @@
     "2026-03-23": {
       "tokens": 184606,
       "apiCalls": 12
+    },
+    "2026-03-24": {
+      "tokens": 0,
+      "apiCalls": 0
+    },
+    "2026-03-25": {
+      "tokens": 209949,
+      "apiCalls": 15
     }
   },
   "comparison": {
     "dayOverDay": {
-      "change": -543716,
-      "percentage": -73.6
+      "change": 209949,
+      "percentage": "+∞"
     },
-    "weekAvg": 4690152,
-    "monthAvg": 815679
+    "weekAvg": 3161759,
+    "monthAvg": 758822
   }
 }
