@@ -1,42 +1,56 @@
 {
-  "reportDate": "2026-03-25",
-  "generatedAt": "2026-03-25T23:55:00+08:00",
+  "reportDate": "2026-03-26",
+  "generatedAt": "2026-03-26T23:55:00+08:00",
   "daily": {
-    "tokens": 209949,
-    "apiCalls": 15,
-    "avgPerCall": 13997
+    "tokens": 48340,
+    "apiCalls": 3,
+    "avgPerCall": 16113
   },
   "weekly": {
-    "tokens": 18970556,
-    "days": 6,
-    "avgPerDay": 3161759
+    "tokens": 19018896,
+    "days": 7,
+    "avgPerDay": 2716985
   },
   "monthly": {
-    "tokens": 18970556,
-    "days": 25,
-    "avgPerDay": 758822
+    "tokens": 19018896,
+    "days": 26,
+    "avgPerDay": 731496
   },
   "roles": [
     {
       "name": "罗辑 (主代理)",
-      "tokens": 118251,
-      "percentage": 56.3,
-      "apiCalls": 8,
-      "status": "active"
+      "tokens": 0,
+      "percentage": 0,
+      "apiCalls": 0,
+      "status": "idle"
     },
     {
       "name": "课程设计师",
-      "tokens": 39694,
-      "percentage": 18.9,
-      "apiCalls": 3,
+      "tokens": 0,
+      "percentage": 0,
+      "apiCalls": 0,
       "status": "completed"
     },
     {
       "name": "财务官 (Cron)",
-      "tokens": 52004,
-      "percentage": 24.8,
-      "apiCalls": 4,
+      "tokens": 48340,
+      "percentage": 100,
+      "apiCalls": 3,
       "status": "running"
+    },
+    {
+      "name": "运营官",
+      "tokens": 0,
+      "percentage": 0,
+      "apiCalls": 0,
+      "status": "idle"
+    },
+    {
+      "name": "内容官",
+      "tokens": 0,
+      "percentage": 0,
+      "apiCalls": 0,
+      "status": "idle"
     }
   ],
   "cost": {
@@ -68,14 +82,18 @@
     "2026-03-25": {
       "tokens": 209949,
       "apiCalls": 15
+    },
+    "2026-03-26": {
+      "tokens": 48340,
+      "apiCalls": 3
     }
   },
   "comparison": {
     "dayOverDay": {
-      "change": 209949,
-      "percentage": "+∞"
+      "change": -161609,
+      "percentage": "-77.0%"
     },
-    "weekAvg": 3161759,
-    "monthAvg": 758822
+    "weekAvg": 2716985,
+    "monthAvg": 731496
   }
 }
