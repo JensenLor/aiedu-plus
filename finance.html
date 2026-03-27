@@ -164,7 +164,11 @@
             height: 200px;
             border-radius: 50%;
             background: conic-gradient(
-                #FF6B35 0% 100%
+                #FF6B35 0% 35%,
+                #FF8C5A 35% 65%,
+                #FFB380 65% 85%,
+                #FFD9B3 85% 95%,
+                #FFE5CC 95% 100%
             );
             margin: 20px auto;
         }
@@ -201,7 +205,7 @@
         <div class="header">
             <h1>🤖 罗辑智造社 · 财务日报</h1>
             <p class="subtitle">AI 数字团队 TOKEN 消耗监控报表</p>
-            <div class="date-badge">📅 2026 年 3 月 26 日 (周四) · 23:55 更新</div>
+            <div class="date-badge">📅 2026 年 3 月 27 日 (周五) · 23:55 更新</div>
         </div>
 
         <!-- 核心指标卡片 -->
@@ -209,20 +213,20 @@
             <div class="card">
                 <div class="card-icon">📊</div>
                 <div class="card-title">今日消耗</div>
-                <div class="card-value">48,340<span class="card-unit">TOKENS</span></div>
-                <div class="card-trend trend-down">📉 较昨日 -77.0% (昨日 209,949)</div>
+                <div class="card-value">47,309<span class="card-unit">TOKENS</span></div>
+                <div class="card-trend trend-down">📉 较昨日 -77.4% (昨日 209,949)</div>
             </div>
             <div class="card">
                 <div class="card-icon">📅</div>
                 <div class="card-title">本周累计</div>
-                <div class="card-value">19,018,896<span class="card-unit">TOKENS</span></div>
-                <div class="card-trend">📊 第 7 天/7 天 (完整周)</div>
+                <div class="card-value">19,066,205<span class="card-unit">TOKENS</span></div>
+                <div class="card-trend">📊 第 8 天/7 天 (新周期第 1 天)</div>
             </div>
             <div class="card">
                 <div class="card-icon">📆</div>
                 <div class="card-title">本月累计</div>
-                <div class="card-value">19,018,896<span class="card-unit">TOKENS</span></div>
-                <div class="card-trend">📊 第 26 天/31 天</div>
+                <div class="card-value">19,066,205<span class="card-unit">TOKENS</span></div>
+                <div class="card-trend">📊 第 27 天/31 天</div>
             </div>
             <div class="card">
                 <div class="card-icon">💰</div>
@@ -270,13 +274,13 @@
                     </tr>
                     <tr>
                         <td>📊 财务官 (Cron)</td>
-                        <td>48,340</td>
+                        <td>47,309</td>
                         <td>
                             <div class="progress-bar">
                                 <div class="progress-fill" style="width: 100%"></div>
                             </div>
                         </td>
-                        <td>3</td>
+                        <td>2</td>
                         <td><span class="status-badge status-normal">运行中</span></td>
                     </tr>
                     <tr>
@@ -305,7 +309,7 @@
             </table>
             <div class="insight-box">
                 <strong>💡 今日洞察：</strong>
-                今日 TOKEN 消耗显著下降至 48,340 (-77.0%)，主要因无新增业务任务，仅财务官定时汇报运行。本周进入第 7 天（完整周），累计消耗 19.02M TOKENS，日均 2.72M。主代理罗辑今日空闲，课程设计师已完成 PPT 制作任务。
+                今日 TOKEN 消耗显著下降至 47,309 (-77.4%)，主要因无新增业务任务，仅财务官定时汇报运行。本周进入新周期第 1 天（周一开始），累计消耗 19.07M TOKENS。主代理罗辑今日空闲，课程设计师已完成 PPT 制作任务待审核。
             </div>
         </div>
 
@@ -332,11 +336,11 @@
                         </div>
                         <div class="bar" style="height: 180px;">
                             <span class="bar-value">本周</span>
-                            <span class="bar-label">19.0M</span>
+                            <span class="bar-label">19.1M</span>
                         </div>
                         <div class="bar" style="height: 180px;">
                             <span class="bar-value">本月</span>
-                            <span class="bar-label">19.0M</span>
+                            <span class="bar-label">19.1M</span>
                         </div>
                     </div>
                 </div>
@@ -358,25 +362,32 @@
                 </thead>
                 <tbody>
                     <tr class="highlight">
-                        <td>📅 2026-03-26 (今日)</td>
-                        <td>48,340</td>
-                        <td>3</td>
-                        <td>16,113</td>
+                        <td>📅 2026-03-27 (今日)</td>
+                        <td>47,309</td>
+                        <td>2</td>
+                        <td>23,655</td>
                         <td>1</td>
                     </tr>
                     <tr>
-                        <td>📅 2026-03-25 (昨日)</td>
+                        <td>📅 2026-03-26 (昨日)</td>
                         <td>209,949</td>
                         <td>15</td>
                         <td>13,997</td>
                         <td>3</td>
                     </tr>
                     <tr>
+                        <td>📅 2026-03-25</td>
+                        <td>184,606</td>
+                        <td>12</td>
+                        <td>15,384</td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
                         <td>📅 2026-03-24</td>
-                        <td>0</td>
-                        <td>0</td>
-                        <td>-</td>
-                        <td>0</td>
+                        <td>185,322</td>
+                        <td>14</td>
+                        <td>13,237</td>
+                        <td>3</td>
                     </tr>
                     <tr>
                         <td>📅 2026-03-23</td>
@@ -419,11 +430,11 @@
                     <div class="label">活跃角色</div>
                 </div>
                 <div class="summary-item">
-                    <div class="value">3</div>
+                    <div class="value">2</div>
                     <div class="label">API 调用次数</div>
                 </div>
                 <div class="summary-item">
-                    <div class="value">16,113</div>
+                    <div class="value">23,655</div>
                     <div class="label">平均每次调用</div>
                 </div>
                 <div class="summary-item">
@@ -435,7 +446,7 @@
 
         <div class="footer">
             <p>🤖 罗辑智造社 · 财务官自动汇报 | 每日 23:55 更新</p>
-            <p>数据来源：EasyClaw Session Logs | 最后更新：2026-03-26 23:55:00</p>
+            <p>数据来源：EasyClaw Session Logs | 最后更新：2026-03-27 23:55:00</p>
         </div>
     </div>
 </body>
