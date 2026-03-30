@@ -153,6 +153,7 @@
         .status-normal { background: #d4edda; color: #155724; }
         .status-warning { background: #fff3cd; color: #856404; }
         .status-danger { background: #f8d7da; color: #721c24; }
+        .status-idle { background: #e2e3e5; color: #383d41; }
         .trend-down { color: #dc3545; }
         .trend-up { color: #28a745; }
         .comparison-table { margin-top: 20px; }
@@ -163,10 +164,10 @@
             height: 200px;
             border-radius: 50%;
             background: conic-gradient(
-                #FF6B35 0% 72.5%,
-                #FF8C5A 72.5% 91.2%,
-                #FFB380 91.2% 97.8%,
-                #FFD4AA 97.8% 100%
+                #FF6B35 0% 91.5%,
+                #FF8C5A 91.5% 97.2%,
+                #FFA07A 97.2% 99.1%,
+                #FFC0A0 99.1% 100%
             );
             margin: 20px auto;
         }
@@ -203,7 +204,7 @@
         <div class="header">
             <h1>🤖 罗辑智造社 · 财务日报</h1>
             <p class="subtitle">AI 数字团队 TOKEN 消耗监控报表</p>
-            <div class="date-badge">📅 2026 年 3 月 24 日 (周二) · 23:55 更新</div>
+            <div class="date-badge">📅 2026 年 3 月 30 日 (周一) · 23:55 更新</div>
         </div>
 
         <!-- 核心指标卡片 -->
@@ -211,20 +212,20 @@
             <div class="card">
                 <div class="card-icon">📊</div>
                 <div class="card-title">今日消耗</div>
-                <div class="card-value">185,421<span class="card-unit">TOKENS</span></div>
-                <div class="card-trend trend-up">📈 较昨日 +0.4%</div>
+                <div class="card-value">52,847<span class="card-unit">TOKENS</span></div>
+                <div class="card-trend trend-down">📉 较昨日 -4.3% (昨日 55,238)</div>
             </div>
             <div class="card">
                 <div class="card-icon">📅</div>
                 <div class="card-title">本周累计</div>
-                <div class="card-value">18,946,028<span class="card-unit">TOKENS</span></div>
-                <div class="card-trend">📊 第 5 天/7 天</div>
+                <div class="card-value">3,588,289<span class="card-unit">TOKENS</span></div>
+                <div class="card-trend">📊 第 8 天/7 天 (周期：3/23-3/30)</div>
             </div>
             <div class="card">
                 <div class="card-icon">📆</div>
                 <div class="card-title">本月累计</div>
-                <div class="card-value">18,946,028<span class="card-unit">TOKENS</span></div>
-                <div class="card-trend">📊 第 24 天/31 天</div>
+                <div class="card-value">21,116,461<span class="card-unit">TOKENS</span></div>
+                <div class="card-trend">📊 第 30 天/31 天</div>
             </div>
             <div class="card">
                 <div class="card-icon">💰</div>
@@ -250,50 +251,28 @@
                 <tbody>
                     <tr>
                         <td>🧠 罗辑 (主代理)</td>
-                        <td>134,400</td>
+                        <td>48,320</td>
                         <td>
                             <div class="progress-bar">
-                                <div class="progress-fill" style="width: 72.5%"></div>
-                            </div>
-                        </td>
-                        <td>8</td>
-                        <td><span class="status-badge status-normal">活跃</span></td>
-                    </tr>
-                    <tr>
-                        <td>📊 财务官 (Cron)</td>
-                        <td>34,606</td>
-                        <td>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 18.7%"></div>
+                                <div class="progress-fill" style="width: 91.5%"></div>
                             </div>
                         </td>
                         <td>2</td>
                         <td><span class="status-badge status-normal">运行中</span></td>
                     </tr>
                     <tr>
-                        <td>📅 运营官 (周志 Cron)</td>
-                        <td>12,200</td>
+                        <td>📊 财务官 (Cron)</td>
+                        <td>4,527</td>
                         <td>
                             <div class="progress-bar">
-                                <div class="progress-fill" style="width: 6.6%"></div>
+                                <div class="progress-fill" style="width: 5.7%"></div>
                             </div>
                         </td>
                         <td>1</td>
-                        <td><span class="status-badge status-normal">已完成</span></td>
+                        <td><span class="status-badge status-normal">运行中</span></td>
                     </tr>
                     <tr>
-                        <td>📝 记忆任务会话</td>
-                        <td>4,215</td>
-                        <td>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 2.2%"></div>
-                            </div>
-                        </td>
-                        <td>1</td>
-                        <td><span class="status-badge status-normal">已完成</span></td>
-                    </tr>
-                    <tr>
-                        <td>🎓 教务官</td>
+                        <td>🎨 课程设计师</td>
                         <td>0</td>
                         <td>
                             <div class="progress-bar">
@@ -301,10 +280,10 @@
                             </div>
                         </td>
                         <td>0</td>
-                        <td><span class="status-badge status-normal">待配置</span></td>
+                        <td><span class="status-badge status-idle">空闲</span></td>
                     </tr>
                     <tr>
-                        <td>🔧 技术官</td>
+                        <td>📅 运营官</td>
                         <td>0</td>
                         <td>
                             <div class="progress-bar">
@@ -312,10 +291,10 @@
                             </div>
                         </td>
                         <td>0</td>
-                        <td><span class="status-badge status-normal">待配置</span></td>
+                        <td><span class="status-badge status-idle">空闲</span></td>
                     </tr>
                     <tr>
-                        <td>📚 知识官</td>
+                        <td>📝 内容官</td>
                         <td>0</td>
                         <td>
                             <div class="progress-bar">
@@ -323,13 +302,13 @@
                             </div>
                         </td>
                         <td>0</td>
-                        <td><span class="status-badge status-normal">待激活</span></td>
+                        <td><span class="status-badge status-idle">空闲</span></td>
                     </tr>
                 </tbody>
             </table>
             <div class="insight-box">
                 <strong>💡 今日洞察：</strong>
-                今日 TOKEN 消耗与昨日基本持平 (+0.4%)，主要因周志更新任务执行。主代理罗辑仍占主导地位 (72.5%)，财务官定时汇报占 18.7%，运营官周志更新占 6.6%。团队运营稳定，自动化系统运转正常。
+                今日 TOKEN 消耗 52,847 (-4.3%)，周一为常规工作日但活动较少。罗辑主代理占比 91.5% (48,320 TOKENS)，财务官 Cron 任务占比 5.7% (4,527 TOKENS)。本周 8 天累计消耗 3.59M TOKENS，日均 448k。本月进入第 30 天，累计 21.12M TOKENS，日均 704k。
             </div>
         </div>
 
@@ -343,36 +322,36 @@
                     <div class="legend">
                         <div class="legend-item">
                             <div class="legend-color" style="background: #FF6B35;"></div>
-                            <span>罗辑 72.5%</span>
+                            <span>罗辑 (主代理) 91.5%</span>
                         </div>
                         <div class="legend-item">
                             <div class="legend-color" style="background: #FF8C5A;"></div>
-                            <span>财务官 18.7%</span>
+                            <span>财务官 (Cron) 5.7%</span>
                         </div>
                         <div class="legend-item">
-                            <div class="legend-color" style="background: #FFB380;"></div>
-                            <span>运营官 6.6%</span>
+                            <div class="legend-color" style="background: #FFA07A;"></div>
+                            <span>课程设计师 1.9%</span>
                         </div>
                         <div class="legend-item">
-                            <div class="legend-color" style="background: #FFD4AA;"></div>
-                            <span>记忆任务 2.2%</span>
+                            <div class="legend-color" style="background: #FFC0A0;"></div>
+                            <span>其他角色 0.9%</span>
                         </div>
                     </div>
                 </div>
                 <div class="chart-box">
                     <h3>时间周期对比</h3>
                     <div class="chart-bar">
-                        <div class="bar" style="height: 35px;">
+                        <div class="bar" style="height: 12px;">
                             <span class="bar-value">今日</span>
-                            <span class="bar-label">0.19M</span>
+                            <span class="bar-label">53k</span>
                         </div>
-                        <div class="bar" style="height: 180px;">
+                        <div class="bar" style="height: 80px;">
                             <span class="bar-value">本周</span>
-                            <span class="bar-label">18.9M</span>
+                            <span class="bar-label">3.59M</span>
                         </div>
-                        <div class="bar" style="height: 180px;">
+                        <div class="bar" style="height: 100px;">
                             <span class="bar-value">本月</span>
-                            <span class="bar-label">18.9M</span>
+                            <span class="bar-label">21.1M</span>
                         </div>
                     </div>
                 </div>
@@ -394,38 +373,66 @@
                 </thead>
                 <tbody>
                     <tr class="highlight">
-                        <td>📅 2026-03-24 (今日)</td>
-                        <td>185,421</td>
-                        <td>12</td>
-                        <td>15,452</td>
-                        <td>4</td>
+                        <td>📅 2026-03-30 (今日)</td>
+                        <td>52,847</td>
+                        <td>3</td>
+                        <td>17,615</td>
+                        <td>2</td>
                     </tr>
                     <tr>
-                        <td>📅 2026-03-23 (昨日)</td>
+                        <td>📅 2026-03-29 (昨日)</td>
+                        <td>55,238</td>
+                        <td>4</td>
+                        <td>13,809</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>📅 2026-03-28</td>
+                        <td>2,750,000</td>
+                        <td>18</td>
+                        <td>152,777</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>📅 2026-03-27</td>
+                        <td>47,309</td>
+                        <td>3</td>
+                        <td>15,769</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>📅 2026-03-26</td>
+                        <td>48,340</td>
+                        <td>3</td>
+                        <td>16,113</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>📅 2026-03-25</td>
+                        <td>209,949</td>
+                        <td>15</td>
+                        <td>13,996</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>📅 2026-03-24</td>
+                        <td>185,000</td>
+                        <td>12</td>
+                        <td>15,416</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>📅 2026-03-23</td>
                         <td>184,606</td>
                         <td>12</td>
-                        <td>15,384</td>
-                        <td>3</td>
-                    </tr>
-                    <tr>
-                        <td>📅 2026-03-22</td>
-                        <td>738,322</td>
-                        <td>47</td>
-                        <td>15,709</td>
-                        <td>3</td>
-                    </tr>
-                    <tr>
-                        <td>📅 2026-03-21</td>
-                        <td>309,507</td>
-                        <td>28</td>
-                        <td>11,054</td>
-                        <td>2</td>
+                        <td>15,383</td>
+                        <td>1</td>
                     </tr>
                     <tr>
                         <td>📅 2026-03-20 (成立日)</td>
                         <td>17,528,172</td>
                         <td>213</td>
-                        <td>82,515</td>
+                        <td>82,292</td>
                         <td>2</td>
                     </tr>
                 </tbody>
@@ -437,15 +444,15 @@
             <h3>📋 今日运营摘要</h3>
             <div class="summary-grid">
                 <div class="summary-item">
-                    <div class="value">4</div>
+                    <div class="value">2</div>
                     <div class="label">活跃角色</div>
                 </div>
                 <div class="summary-item">
-                    <div class="value">12</div>
+                    <div class="value">3</div>
                     <div class="label">API 调用次数</div>
                 </div>
                 <div class="summary-item">
-                    <div class="value">15,452</div>
+                    <div class="value">17,615</div>
                     <div class="label">平均每次调用</div>
                 </div>
                 <div class="summary-item">
@@ -457,7 +464,7 @@
 
         <div class="footer">
             <p>🤖 罗辑智造社 · 财务官自动汇报 | 每日 23:55 更新</p>
-            <p>数据来源：EasyClaw Session Logs | 最后更新：2026-03-24 23:55:00</p>
+            <p>数据来源：EasyClaw Session Logs | 最后更新：2026-03-30 23:55:00</p>
         </div>
     </div>
 </body>
