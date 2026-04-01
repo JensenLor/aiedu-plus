@@ -1,52 +1,54 @@
 {
-  "reportDate": "2026-03-29",
-  "generatedAt": "2026-03-29T23:55:00+08:00",
+  "reportDate": "2026-04-01",
+  "generatedAt": "2026-04-01T23:55:00+08:00",
   "daily": {
-    "tokens": 55238,
-    "apiCalls": 4,
-    "avgPerCall": 13809
+    "tokens": 43827,
+    "apiCalls": 1,
+    "avgPerCall": 43827
   },
   "weekly": {
-    "tokens": 19074134,
-    "days": 7,
-    "avgPerDay": 2724876
+    "tokens": 99065,
+    "days": 2,
+    "avgPerDay": 49532,
+    "period": "2026-03-31 至 2026-04-06"
   },
   "monthly": {
-    "tokens": 19074134,
-    "days": 29,
-    "avgPerDay": 657729
+    "tokens": 43827,
+    "days": 1,
+    "avgPerDay": 43827,
+    "period": "2026-04-01 至 2026-04-30"
   },
   "roles": [
     {
-      "name": "罗辑 (主代理)",
-      "tokens": 52038,
-      "percentage": 94.2,
-      "apiCalls": 3,
-      "status": "running"
-    },
-    {
-      "name": "课程设计师",
+      "name": "🧠 罗辑 (主代理)",
       "tokens": 0,
       "percentage": 0,
       "apiCalls": 0,
       "status": "idle"
     },
     {
-      "name": "财务官 (Cron)",
-      "tokens": 3200,
-      "percentage": 5.8,
+      "name": "📊 财务官 (Cron)",
+      "tokens": 43827,
+      "percentage": 100,
       "apiCalls": 1,
       "status": "running"
     },
     {
-      "name": "运营官",
+      "name": "🎨 课程设计师",
       "tokens": 0,
       "percentage": 0,
       "apiCalls": 0,
       "status": "idle"
     },
     {
-      "name": "内容官",
+      "name": "📅 运营官",
+      "tokens": 0,
+      "percentage": 0,
+      "apiCalls": 0,
+      "status": "idle"
+    },
+    {
+      "name": "📝 内容官",
       "tokens": 0,
       "percentage": 0,
       "apiCalls": 0,
@@ -98,14 +100,32 @@
     "2026-03-29": {
       "tokens": 55238,
       "apiCalls": 4
+    },
+    "2026-03-30": {
+      "tokens": 53000,
+      "apiCalls": 3
+    },
+    "2026-03-31": {
+      "tokens": 56722,
+      "apiCalls": 2
+    },
+    "2026-04-01": {
+      "tokens": 43827,
+      "apiCalls": 1
     }
   },
   "comparison": {
     "dayOverDay": {
-      "change": -4366,
-      "percentage": "-7.3%"
+      "change": -12895,
+      "percentage": "-22.7%"
     },
-    "weekAvg": 2724876,
-    "monthAvg": 657729
-  }
+    "weekAvg": 49532,
+    "monthAvg": 43827
+  },
+  "insights": [
+    "今日为 4 月第一天，新周期开始",
+    "仅财务官 Cron 任务执行，主代理空闲",
+    "本月新周期，累计消耗从 0 开始计算",
+    "本周为第 2 天，累计 99k TOKENS"
+  ]
 }
