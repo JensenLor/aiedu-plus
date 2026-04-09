@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>几何·计算机小工具</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', system-ui, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(145deg, #f0f4ff 0%, #d9e2fa 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        /* 装饰性背景元素 */
+        body::before {
+            content: "";
+            position: absolute;
+            width: 280px;
+            height: 280px;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.5), rgba(190, 210, 255, 0.3));
+            border-radius: 50%;
+            top: 5%;
+            left: 3%;
+            filter: blur(50px);
+            z-index: 0;
+        }
+        body::after {
+            content: "";
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle at 70% 80%, rgba(255,240,245,0.7), rgba(170, 200, 240, 0.2));
+            border-radius: 50%;
+            bottom: 2%;
+            right: 2%;
+            filter: blur(70px);
+            z-index: 0;
+        }
+
+        .glass-panel {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 1100px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(18px) saturate(180%);
+            -webkit-backdrop-filter: blur(18px) saturate(180%);
+            border-radius: 48px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 30px 60px -20px rgba(30, 40, 80, 0.3), inset 0 1px 4px rgba(255,255,255,0.8);
+            padding: 2.2rem 2rem;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 500;
+            letter-spacing: -0.5px;
+            color: #1a263b;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 0.3rem;
+            padding-left: 8px;
+        }
+
+        h1 span {
+            background: #2a3b5c;
+            color: white;
+            font-size: 1rem;
+            padding: 0.2rem 1rem;
+            border-radius: 60px;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+            background: rgba(40, 55, 90, 0.7);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .sub {
+            color: #34495e;
+            margin-bottom: 2rem;
+            padding-left: 12px;
+            font-weight: 300;
+            font-size: 1rem;
+            border-left: 3px solid #4f6f9f;
+            background: linear-gradient(90deg, rgba(75, 100, 140, 0.1), transparent);
+        }
+
+        /* 选项卡 */
+        .tool-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 2rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 60px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #1e2b41;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex: 0 1 auto;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            border: 1px solid transparent;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.5);
+            border-color: rgba(255,255,255,0.5);
+            transform: translateY(-1px);
+        }
+
+        .tab-btn.active {
+            background: white;
+            box-shadow: 0 10px 20px -10px rgba(45, 62, 95, 0.3);
+            border-color: white;
+            color: #1d3557;
+            font-weight: 600;
+        }
+
+        /* 面板容器 */
+        .panel-container {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 36px;
+            padding: 2rem 1.8rem;
+            border: 1px solid rgba(255,255,255,0.5);
+            backdrop-filter: blur(4px);
+            box-shadow: inset 0 2px 6px rgba(255,255,255,0.8), 0 10px 20px -10px rgba(30, 40, 60, 0.2);
+            min-height: 380px;
+        }
+
+        /* 计算器模块 */
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .calc-display-area {
+            background: rgba(15, 25, 45, 0.1);
+            border-radius: 28px;
+            padding: 1.5rem;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.4);
+        }
+
+        .calc-display {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 24px;
+            padding: 1.2rem;
+            text-align: right;
+            box-shadow: inset 0 4px 8px rgba(0,0,0,0.02), 0 2px 4px rgba(255,255,255,0.5);
+        }
+
+        #calc-input {
+            font-size: 2.8rem;
+            font-weight: 300;
+            line-height: 1.2;
+            color: #0c1a2b;
+            word-wrap: break-word;
+            min-height: 5rem;
+            border: none;
+            outline: none;
+            background: transparent;
+            width: 100%;
+            text-align: right;
+            font-family: 'Segoe UI', 'Roboto Mono', monospace;
+        }
+
+        .calc-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .calc-btn {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255,255,255,0.7);
+            border-radius: 30px;
+            padding: 1rem 0.2rem;
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: #1e2f47;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 6px 10px -6px rgba(0,0,0,0.1), inset 0 1px 4px white;
+            cursor: pointer;
+            transition: 0.1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .calc-btn:active {
+            transform: scale(0.95);
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        .calc-btn.operator {
+            background: rgba(200, 215, 250, 0.7);
+            color: #132b4a;
+            font-weight: 600;
+        }
+        .calc-btn.equals {
+            background: #264e7b;
+            color: white;
+            border-color: #5880b0;
+            box-shadow: 0 8px 14px -8px #1a3150;
+        }
+
+        /* 单位转换模块 */
+        .converter-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .converter-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255,255,255,0.2);
+            padding: 0.8rem 1.5rem;
+            border-radius: 60px;
+            backdrop-filter: blur(2px);
+        }
+
+        .converter-label {
+            min-width: 80px;
+            font-weight: 500;
+            color: #1b2b44;
+        }
+
+        .converter-input {
+            flex: 2;
+            min-width: 160px;
+            background: rgba(255,255,255,0.6);
+            border: 1px solid rgba(255,255,255,0.7);
+            border-radius: 40px;
+            padding: 0.9rem 1.2rem;
+            font-size: 1.2rem;
+            outline: none;
+            backdrop-filter: blur(4px);
+            transition: 0.15s;
+            color: #102331;
+            font-weight: 400;
+        }
+        .converter-input:focus {
+            background: white;
+            box-shadow: 0 0 0 3px rgba(100, 140, 200, 0.2);
+        }
+
+        .converter-select, .unit-select {
+            flex: 1;
+            min-width: 110px;
+            background: rgba(255,255,255,0.6);
+            border: 1px solid rgba(255,255,255,0.7);
+            border-radius: 40px;
+            padding: 0.9rem 1rem;
+            font-size: 1rem;
+            outline: none;
+            backdrop-filter: blur(4px);
+            color: #102331;
+            font-weight: 400;
+            cursor: pointer;
+        }
+
+        .swap-icon {
+            font-size: 1.4rem;
+            background: rgba(255,255,255,0.3);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            backdrop-filter: blur(6px);
+            border: 1px solid white;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+        .swap-icon:hover {
+            background: rgba(255,255,255,0.8);
+        }
+
+        .result-badge {
+            background: rgba(40, 60, 100, 0.2);
+            border-radius: 40px;
+            padding: 0.9rem 2rem;
+            font-size: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.3);
+            margin-top: 1rem;
+            text-align: center;
+            font-weight: 500;
+            backdrop-filter: blur(6px);
+        }
+        #conversion-result {
+            font-family: 'Roboto Mono', monospace;
+            color: #152b44;
+        }
+
+        /* 常用工具 (ASCII / 随机数) */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 2rem;
+        }
+
+        .tool-card {
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 30px;
+            padding: 1.8rem 1.5rem;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .tool-title {
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: #1b2b44;
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .ascii-output, .random-output {
+            background: rgba(255,255,255,0.5);
+            border-radius: 28px;
+            padding: 1.2rem;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.2rem;
+            border: 1px solid white;
+            margin: 15px 0;
+            color: #102331;
+        }
+        .random-range {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin: 20px 0 10px;
+        }
+        .random-range input {
+            background: rgba(255,255,255,0.6);
+            border: 1px solid rgba(255,255,255,0.8);
+            border-radius: 30px;
+            padding: 0.8rem 1rem;
+            width: 100px;
+            font-size: 1rem;
+            outline: none;
+            text-align: center;
+        }
+        .primary-btn {
+            background: #335e8e;
+            border: none;
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 40px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 8px 16px -8px #1b3552;
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: 0.1s;
+        }
+        .primary-btn:hover {
+            background: #3f6ea0;
+            transform: scale(1.02);
+        }
+        .secondary-btn {
+            background: rgba(255,255,255,0.6);
+            border: 1px solid white;
+            border-radius: 40px;
+            padding: 0.8rem 2rem;
+            cursor: pointer;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="glass-panel">
+        <h1>⚡ 多用途计算机 <span>mini tools</span></h1>
+        <div class="sub">简洁 · 优雅 · 轻量 · 实时</div>
+
+        <!-- 选项卡 -->
+        <div class="tool-tabs">
+            <button class="tab-btn active" data-tab="calc">🧮 计算器</button>
+            <button class="tab-btn" data-tab="convert">📏 单位转换</button>
+            <button class="tab-btn" data-tab="tools">🛠️ ASCII & 随机数</button>
+        </div>
+
+        <!-- 动态面板 -->
+        <div class="panel-container" id="panelContainer">
+            <!-- 计算器面板 (默认显示) -->
+            <div id="calc-panel" class="tab-panel" style="display: block;">
+                <div class="calculator-grid">
+                    <div class="calc-display-area">
+                        <div class="calc-display">
+                            <input type="text" id="calc-input" readonly value="0">
+                        </div>
+                        <div class="calc-buttons">
+                            <button class="calc-btn">7</button><button class="calc-btn">8</button><button class="calc-btn">9</button><button class="calc-btn operator">/</button>
+                            <button class="calc-btn">4</button><button class="calc-btn">5</button><button class="calc-btn">6</button><button class="calc-btn operator">*</button>
+                            <button class="calc-btn">1</button><button class="calc-btn">2</button><button class="calc-btn">3</button><button class="calc-btn operator">-</button>
+                            <button class="calc-btn">0</button><button class="calc-btn">.</button><button class="calc-btn" id="clearBtn">C</button><button class="calc-btn operator">+</button>
+                            <button class="calc-btn equals" id="equalsBtn" style="grid-column: span 4;">=</button>
+                        </div>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.1); border-radius: 28px; padding: 1.5rem; backdrop-filter: blur(2px);">
+                        <h3 style="color:#1f3a5f; margin-bottom: 1rem;">💡 记忆按键</h3>
+                        <p style="margin-bottom: 1rem;">点击数字或运算符，支持连续运算。按 <strong>C</strong> 清屏。</p>
+                        <p style="opacity: 0.8;">—— 优雅计算 ——</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 单位转换面板 (初始隐藏) -->
+            <div id="convert-panel" class="tab-panel" style="display: none;">
+                <div class="converter-panel">
+                    <div class="converter-row">
+                        <span class="converter-label">长度</span>
+                        <input type="number" id="length-input" class="converter-input" value="1" step="any">
+                        <select id="length-from" class="converter-select">
+                            <option value="m" selected>米 (m)</option>
+                            <option value="km">千米 (km)</option>
+                            <option value="cm">厘米 (cm)</option>
+                            <option value="mm">毫米 (mm)</option>
+                            <option value="mi">英里 (mi)</option>
+                            <option value="ft">英尺 (ft)</option>
+                        </select>
+                        <span style="font-size:1.5rem;">⇄</span>
+                        <select id="length-to" class="converter-select">
+                            <option value="km">千米 (km)</option>
+                            <option value="m" selected>米 (m)</option>
+                            <option value="cm">厘米 (cm)</option>
+                            <option value="mm">毫米 (mm)</option>
+                            <option value="mi">英里 (mi)</option>
+                            <option value="ft">英尺 (ft)</option>
+                        </select>
+                    </div>
+                    <div class="converter-row">
+                        <span class="converter-label">重量</span>
+                        <input type="number" id="weight-input" class="converter-input" value="1" step="any">
+                        <select id="weight-from" class="converter-select">
+                            <option value="kg" selected>千克 (kg)</option>
+                            <option value="g">克 (g)</option>
+                            <option value="mg">毫克 (mg)</option>
+                            <option value="lb">磅 (lb)</option>
+                            <option value="oz">盎司 (oz)</option>
+                        </select>
+                        <span style="font-size:1.5rem;">⇄</span>
+                        <select id="weight-to" class="converter-select">
+                            <option value="g">克 (g)</option>
+                            <option value="kg" selected>千克 (kg)</option>
+                            <option value="mg">毫克 (mg)</option>
+                            <option value="lb">磅 (lb)</option>
+                            <option value="oz">盎司 (oz)</option>
+                        </select>
+                    </div>
+                    <div class="result-badge" id="conversion-result">
+                        1 米 = 0.001 千米
+                    </div>
+                    <div style="display: flex; justify-content: flex-end;">
+                        <button class="secondary-btn" id="swap-length">↻ 交换长度单位</button>
+                        <button class="secondary-btn" id="swap-weight" style="margin-left: 10px;">↻ 交换重量单位</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ASCII & 随机数面板 (初始隐藏) -->
+            <div id="tools-panel" class="tab-panel" style="display: none;">
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <div class="tool-title"><span>🔤</span> 字符 → ASCII</div>
+                        <input type="text" id="char-input" class="converter-input" placeholder="输入一个字符" maxlength="1" style="width:100%; margin-bottom: 15px;">
+                        <button class="primary-btn" id="get-ascii">获取 ASCII 码</button>
+                        <div class="ascii-output" id="ascii-result">等待输入</div>
+                    </div>
+                    <div class="tool-card">
+                        <div class="tool-title"><span>🎲</span> 随机数生成器</div>
+                        <div class="random-range">
+                            <input type="number" id="rand-min" value="1" min="-9999"> 至
+                            <input type="number" id="rand-max" value="100" min="-9999">
+                        </div>
+                        <button class="primary-btn" id="generate-random">生成随机数</button>
+                        <div class="random-output" id="random-result">--</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ---------- 选项卡逻辑 ----------
+            const tabs = document.querySelectorAll('.tab-btn');
+            const panels = {
+                calc: document.getElementById('calc-panel'),
+                convert: document.getElementById('convert-panel'),
+                tools: document.getElementById('tools-panel')
+            };
+
+            function activateTab(tabId) {
+                // 隐藏所有面板
+                Object.values(panels).forEach(p => p.style.display = 'none');
+                // 显示选中面板
+                if (panels[tabId]) panels[tabId].style.display = 'block';
+                // 按钮active样式
+                tabs.forEach(btn => {
+                    if (btn.dataset.tab === tabId) btn.classList.add('active');
+                    else btn.classList.remove('active');
+                });
+            }
+
+            tabs.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    activateTab(btn.dataset.tab);
+                });
+            });
+
+            // ---------- 计算器逻辑 ----------
+            const calcInput = document.getElementById('calc-input');
+            let currentInput = '0';
+            let pendingOperator = null;
+            let firstOperand = null;
+            let shouldResetInput = false;
+
+            function updateCalcDisplay() {
+                calcInput.value = currentInput;
+            }
+
+            function handleNumber(num) {
+                if (currentInput === '0' || shouldResetInput) {
+                    currentInput = num;
+                    shouldResetInput = false;
+                } else {
+                    currentInput += num;
+                }
+                updateCalcDisplay();
+            }
+
+            function handleDecimal() {
+                if (shouldResetInput) {
+                    currentInput = '0.';
+                    shouldResetInput = false;
+                } else if (!currentInput.includes('.')) {
+                    currentInput += '.';
+                }
+                updateCalcDisplay();
+            }
+
+            function handleOperator(op) {
+                const currentValue = parseFloat(currentInput);
+                if (isNaN(currentValue)) return;
+
+                if (pendingOperator !== null && firstOperand !== null && !shouldResetInput) {
+                    // 执行之前暂存的运算
+                    const result = operate(firstOperand, currentValue, pendingOperator);
+                    firstOperand = result;
+                    currentInput = String(result);
+                } else {
+                    firstOperand = currentValue;
+                }
+                pendingOperator = op;
+                shouldResetInput = true;
+                updateCalcDisplay();
+            }
+
+            function operate(a, b, op) {
+                switch(op) {
+                    case '+': return a + b;
+                    case '-': return a - b;
+                    case '*': return a * b;
+                    case '/': return b !== 0 ? a / b : 'Error';
+                    default: return b;
+                }
+            }
+
+            function handleEquals() {
+                if (pendingOperator === null || firstOperand === null) return;
+                const currentValue = parseFloat(currentInput);
+                if (isNaN(currentValue)) return;
+
+                const result = operate(firstOperand, currentValue, pendingOperator);
+                currentInput = String(result);
+                firstOperand = null;
+                pendingOperator = null;
+                shouldResetInput = true;
+                updateCalcDisplay();
+            }
+
+            function clearAll() {
+                currentInput = '0';
+                firstOperand = null;
+                pendingOperator = null;
+                shouldResetInput = false;
+                updateCalcDisplay();
+            }
+
+            // 绑定计算器按钮事件
+            document.querySelectorAll('.calc-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const text = btn.textContent;
+                    if (!isNaN(text) || text === '0') handleNumber(text);
+                    else if (text === '.') handleDecimal();
+                    else if (text === 'C') clearAll();
+                    else if (text === '=') handleEquals();
+                    else if (['+', '-', '*', '/'].includes(text)) handleOperator(text);
+                });
+            });
+
+            // 初始化计算器显示
+            updateCalcDisplay();
+
+            // ---------- 单位转换 ----------
+            // 长度换算 (转成米)
+            const lengthFactors = { 'km': 1000, 'm': 1, 'cm': 0.01, 'mm': 0.001, 'mi': 1609.344, 'ft': 0.3048 };
+            const weightFactors = { 'kg': 1000, 'g': 1, 'mg': 0.001, 'lb': 453.592, 'oz': 28.3495 }; // 基准g
+
+            function convertLength() {
+                const input = parseFloat(document.getElementById('length-input').value) || 0;
+                const from = document.getElementById('length-from').value;
+                const to = document.getElementById('length-to').value;
+                const valueInM = input * lengthFactors[from];
+                const result = valueInM / lengthFactors[to];
+                document.getElementById('conversion-result').innerText = 
+                    `${input} ${from} = ${result.toFixed(6)} ${to}`;
+            }
+
+            function convertWeight() {
+                const input = parseFloat(document.getElementById('weight-input').value) || 0;
+                const from = document.getElementById('weight-from').value;
+                const to = document.getElementById('weight-to').value;
+                const valueInG = input * weightFactors[from];
+                const result = valueInG / weightFactors[to];
+                document.getElementById('conversion-result').innerText = 
+                    `${input} ${from} = ${result.toFixed(6)} ${to}`;
+            }
+
+            // 监听变化
+            document.getElementById('length-input').addEventListener('input', convertLength);
+            document.getElementById('length-from').addEventListener('change', convertLength);
+            document.getElementById('length-to').addEventListener('change', convertLength);
+            document.getElementById('weight-input').addEventListener('input', convertWeight);
+            document.getElementById('weight-from').addEventListener('change', convertWeight);
+            document.getElementById('weight-to').addEventListener('change', convertWeight);
+            // 交换按钮
+            document.getElementById('swap-length').addEventListener('click', () => {
+                const from = document.getElementById('length-from');
+                const to = document.getElementById('length-to');
+                [from.value, to.value] = [to.value, from.value];
+                convertLength();
+            });
+            document.getElementById('swap-weight').addEventListener('click', () => {
+                const from = document.getElementById('weight-from');
+                const to = document.getElementById('weight-to');
+                [from.value, to.value] = [to.value, from.value];
+                convertWeight();
+            });
+
+            // 初始调用一次
+            convertLength();
+
+            // ---------- ASCII & 随机数 ----------
+            document.getElementById('get-ascii').addEventListener('click', () => {
+                const charInput = document.getElementById('char-input').value;
+                if (charInput.length === 0) {
+                    document.getElementById('ascii-result').innerText = '请输入一个字符';
+                    return;
+                }
+                const ascii = charInput.charCodeAt(0);
+                document.getElementById('ascii-result').innerHTML = `字符 <strong>${charInput}</strong> 的 ASCII 码是 <strong>${ascii}</strong> (十进制) / 0x${ascii.toString(16).toUpperCase()}`;
+            });
+
+            document.getElementById('generate-random').addEventListener('click', () => {
+                let min = parseFloat(document.getElementById('rand-min').value);
+                let max = parseFloat(document.getElementById('rand-max').value);
+                if (isNaN(min)) min = 1;
+                if (isNaN(max)) max = 100;
+                if (min > max) [min, max] = [max, min];
+                const rand = Math.random() * (max - min) + min;
+                const intRand = Math.floor(rand); // 展示整数版本更友好
+                document.getElementById('random-result').innerText = `${intRand} (范围 ${min} ~ ${max})`;
+            });
+
+            // 默认显示计算器
+            activateTab('calc');
+        })();
+    </script>
+</body>
+</html>

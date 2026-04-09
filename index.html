@@ -1,0 +1,384 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>罗辑智造社 - 中小学STEM创客教育</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .hero-section {
+            text-align: center;
+            padding: 60px 20px;
+            margin-bottom: 40px;
+        }
+
+        .hero-logo {
+            max-width: 360px;
+            width: 100%;
+            height: auto;
+            margin: 0 auto 20px;
+            display: block;
+        }
+
+        /* 标语美化 - 虚线橙色边框卡片 */
+        .hero-subtitle {
+            font-size: 20px;
+            font-weight: 700;
+            color: #FF8C42;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+            padding: 16px 40px;
+            background: #FFF8F0;
+            border: 2.5px dashed #FF8C42;
+            border-radius: 18px;
+            display: block;
+            letter-spacing: 0.03em;
+            text-align: center;
+            clear: both;
+            white-space: nowrap;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-hero {
+            padding: 14px 32px;
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            border: 3px solid var(--border-color);
+            box-shadow: 4px 4px 0px var(--shadow-color);
+        }
+
+        .btn-hero .btn-emoji {
+            font-size: 22px;
+            line-height: 1;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 6px 6px 0px var(--shadow-color);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background: #FFF7ED;
+            transform: translateY(-2px);
+            box-shadow: 6px 6px 0px var(--shadow-color);
+        }
+
+        /* 推荐项目版块 */
+        .features-section {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            color: var(--text-dark);
+            margin-bottom: 40px;
+            font-weight: 700;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        /* 推荐作品卡片 */
+        .work-card-mini {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 0;
+            box-shadow: 5px 5px 0px var(--shadow-color);
+            border: 3px solid var(--border-color);
+            transition: all 0.3s;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        .work-card-mini:hover {
+            transform: translateY(-5px);
+            box-shadow: 8px 8px 0px var(--shadow-color);
+        }
+
+        .work-card-cover {
+            width: 100%;
+            height: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .work-card-body {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .work-card-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .work-card-author {
+            font-size: 14px;
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .work-card-desc {
+            font-size: 14px;
+            color: var(--text-medium);
+            line-height: 1.6;
+            flex: 1;
+            margin-bottom: 12px;
+        }
+
+        .work-card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .work-card-tag {
+            padding: 3px 10px;
+            background: var(--light-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 12px;
+            color: var(--text-medium);
+        }
+
+        .view-more-btn {
+            display: block;
+            text-align: center;
+            margin: 30px auto 0;
+            padding: 14px 40px;
+            background: white;
+            color: var(--primary-color);
+            border: 3px solid var(--border-color);
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 4px 4px 0px var(--shadow-color);
+            transition: all 0.3s;
+            width: fit-content;
+        }
+
+        .view-more-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 6px 6px 0px var(--shadow-color);
+        }
+
+        /* 网站说明版块 */
+        .mission-section {
+            background: var(--card-bg);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 4px 4px 0px var(--shadow-color);
+            border: 3px solid var(--border-color);
+            margin-bottom: 60px;
+        }
+
+        .mission-title {
+            font-size: 32px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .mission-content {
+            font-size: 18px;
+            line-height: 1.8;
+            color: var(--text-dark);
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .hero-logo {
+                max-width: 240px;
+            }
+            
+            .hero-subtitle {
+                font-size: 17px;
+                padding: 14px 20px;
+            }
+            
+            .btn-hero {
+                padding: 12px 24px;
+                font-size: 16px;
+            }
+            
+            .section-title {
+                font-size: 28px;
+            }
+            
+            .mission-section {
+                padding: 30px 20px;
+            }
+            
+            .work-card-cover {
+                height: 130px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 导航栏 -->
+        <nav>
+            <div class="nav-brand">
+                <img src="images/罗辑智造社二次元头部形象.png" alt="Logo" class="nav-logo">
+                <span class="nav-title">罗辑智造社</span>
+            </div>
+            <ul>
+                <li><a href="index.html" class="active">🏠 首页</a></li>
+                <li><a href="resources.html">🎓 学习资源</a></li>
+                <li><a href="works.html">MakerVerse</a></li>
+            </ul>
+        </nav>
+        <!-- 英雄区域 -->
+        <section class="hero-section">
+            <img src="images/一起成为未来创造者(黑底).png" alt="罗辑智造社" class="hero-logo">
+            <p class="hero-subtitle">在实践中培养面向未来的科技创新能力，一起成为未来的创造者</p>
+            <div class="hero-buttons">
+                <a href="works.html" class="btn-hero btn-primary"><span class="btn-emoji">✦</span>探索学生作品</a>
+                <a href="resources.html" class="btn-hero btn-secondary"><span class="btn-emoji">📖</span>查看学习资源</a>
+            </div>
+        </section>
+
+        <!-- 推荐项目 -->
+        <section class="features-section">
+            <h2 class="section-title">推荐项目</h2>
+            <div class="features-grid" id="featuredWorksGrid">
+                <!-- 由JS动态渲染 -->
+            </div>
+            <a href="works.html" class="view-more-btn">🚀 查看全部作品</a>
+        </section>
+
+        <!-- 网站说明 -->
+        <section class="mission-section">
+            <h2 class="mission-title">网站说明</h2>
+            <p class="mission-content">
+                本网站是为罗辑智造社的学生们创建的作品展示和学习平台。在这里，你可以浏览下载同学们的优秀创作，学习编程、硬件交互、AI模型应用等技能，访问每个人的作品档案，并获取项目相关的完整学习资料。我们相信每个孩子都是未来的创造者。
+            </p>
+        </section>
+
+        <!-- 页脚 -->
+        <footer>
+            <p>© 2026 罗辑智造社 - 中小学STEM/创客教育平台</p>
+            <p>培养学生 6 大 AI 能力，让创意成为现实</p>
+            <p>地址：中国 | 邮箱：contact@aiedu.plus</p>
+        </footer>
+    </div>
+
+    <script>
+        // 封面渐变色数组
+        const coverColors = [
+            'linear-gradient(135deg, #FF6B35, #FFD93D)',
+            'linear-gradient(135deg, #36D1DC, #5B86E5)',
+            'linear-gradient(135deg, #834D9B, #D04ED6)',
+            'linear-gradient(135deg, #2E3192, #1BFFFF)',
+            'linear-gradient(135deg, #009245, #FCEE21)',
+            'linear-gradient(135deg, #662D8C, #ED1E79)',
+            'linear-gradient(135deg, #EE9CA7, #FFDDE1)',
+            'linear-gradient(135deg, #614385, #516395)'
+        ];
+
+        function getCoverColor(id) {
+            const hash = id.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
+            return coverColors[hash % coverColors.length];
+        }
+
+        async function loadFeaturedWorks() {
+            try {
+                const [worksRes, studentsRes] = await Promise.all([
+                    fetch('students-works/generated/works.json'),
+                    fetch('students-works/generated/students.json')
+                ]);
+                const works = await worksRes.json();
+                const students = await studentsRes.json();
+
+                const studentsMap = {};
+                students.forEach(s => { studentsMap[s.student_id || s.id] = s; });
+
+                // 取前4个有内容的作品作为推荐
+                const featured = works.filter(w => w.title && w.description).slice(0, 4);
+
+                const grid = document.getElementById('featuredWorksGrid');
+                if (!featured.length) {
+                    grid.innerHTML = '<p style="text-align:center;color:#999;">暂无推荐作品</p>';
+                    return;
+                }
+
+                grid.innerHTML = featured.map(work => {
+                    const student = studentsMap[work.student_id] || {};
+                    const color = getCoverColor(work.id);
+                    const tagsHTML = (work.tech_tags || []).slice(0, 3)
+                        .map(t => `<span class="work-card-tag">${t}</span>`).join('');
+                    return `
+                        <a href="work-detail.html?id=${work.id}" class="work-card-mini">
+                            <div class="work-card-cover" style="background: ${color}">
+                                <span style="font-size:48px;">${work.tech_tags && work.tech_tags[0] === 'Arduino' ? '⚡' : work.tech_tags && work.tech_tags.includes('HTML') ? '🌐' : work.tech_tags && work.tech_tags.includes('3D建模') ? '🧊' : '🛠️'}</span>
+                            </div>
+                            <div class="work-card-body">
+                                <div class="work-card-title">${work.title}</div>
+                                <div class="work-card-author">👤 ${student.name || '未知学生'} · ${student.grade || ''}</div>
+                                <p class="work-card-desc">${work.description}</p>
+                                <div class="work-card-tags">${tagsHTML}</div>
+                            </div>
+                        </a>
+                    `;
+                }).join('');
+            } catch (e) {
+                document.getElementById('featuredWorksGrid').innerHTML =
+                    '<p style="text-align:center;color:#999;grid-column:1/-1;">作品加载失败，请稍后重试</p>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadFeaturedWorks);
+    </script>
+</body>
+</html>

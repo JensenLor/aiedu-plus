@@ -1,0 +1,78 @@
+[
+  {
+    "id": "work001",
+    "student_id": "ZZS0001",
+    "title": "抢十秒挑战",
+    "description": "基于Arduino的趣味计时游戏装置，使用Mind+、LaserMake完成设计与制作",
+    "tech_tags": [
+      "Arduino",
+      "Mind+",
+      "LaserMake",
+      "硬件编程"
+    ],
+    "difficulty": "中等",
+    "created_date": "2025/10/15",
+    "preview_summary": "《抢十秒挑战》是基于 Arduino 制作的趣味计时游戏装置，使用 Mind+、LaserMake 完成设计与制作。通过单按钮控制开始、暂停与重启，数码管实时显示时间，玩家需尽量将时间停在 10 秒整",
+    "download_file": "work001_抢十秒挑战.zip",
+    "folder": "work001_抢十秒挑战",
+    "cover_image": null,
+    "views": 128
+  },
+  {
+    "id": "work002",
+    "student_id": "ZZS0001",
+    "title": "计算机2.0",
+    "description": "使用AI辅助创作的多功能网页计算器，集成基础计算、单位转换等功能",
+    "tech_tags": [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "AI应用"
+    ],
+    "difficulty": "简单",
+    "created_date": "2025/11/20",
+    "preview_summary": "使用AI辅助创作的的多功能网页计算器，集成基础计算、单位转换等功能，操作便捷、界面简洁，可快速完成常规计算与复杂问题解析，满足日常学习、办公使用需求。",
+    "download_file": "work002_计算机2.0.zip",
+    "folder": "work002_计算机2.0",
+    "cover_image": null,
+    "views": 256
+  },
+  {
+    "id": "work003",
+    "student_id": "ZZS0001",
+    "title": "智能笔盒",
+    "description": "使用AI辅助设计的智能文具收纳盒，具备自动分类功能",
+    "tech_tags": [
+      "3D建模",
+      "Arduino",
+      "硬件编程",
+      "AI应用"
+    ],
+    "difficulty": "中等",
+    "created_date": "2025/12/10",
+    "preview_summary": "使用AI辅助设计的智能文具收纳盒，具备自动分类功能，支持多种文具分格存储，采用3D打印外壳和Arduino控制。",
+    "download_file": "work003_智能笔盒.zip",
+    "folder": "work003_智能笔盒",
+    "cover_image": null,
+    "views": 89
+  },
+  {
+    "id": "work004",
+    "student_id": "ZZS0002",
+    "title": "深海",
+    "description": "海洋主题的本地智能聊天网页应用，以海豚小海为形象",
+    "tech_tags": [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "本地AI"
+    ],
+    "difficulty": "简单",
+    "created_date": "2026/1/5",
+    "preview_summary": "一款海洋主题的本地智能聊天网页应用，以海豚小海为形象，无需 API、免登录免付费，支持文字 / 语音交互，能陪聊、解答问题、记用户偏好，视觉上有动态海洋特效，体验生动有趣。",
+    "download_file": "work004_深海.zip",
+    "folder": "work004_深海",
+    "cover_image": null,
+    "views": 178
+  }
+]

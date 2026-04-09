@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生个人主页 - 罗辑智造社</title>
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ========== 页面基础布局 ========== */
+        .profile-page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* ========== 返回按钮 ========== */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            text-decoration: none;
+            margin-bottom: 20px;
+        }
+
+        .back-button:hover {
+            background: var(--hover-color);
+            transform: translateY(-2px);
+        }
+
+        /* ========== 顶部横幅区 ========== */
+        .profile-banner {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            border-radius: 20px;
+            padding: 40px;
+            position: relative;
+            margin-bottom: 20px;
+            box-shadow: 4px 4px 0px var(--shadow-color);
+            border: 3px solid var(--border-color);
+        }
+
+        .profile-banner-content {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .profile-avatar-large {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .profile-main-info {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .profile-name {
+            font-family: var(--font-hand);
+            font-size: 36px;
+            color: white;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .profile-join-date {
+            color: rgba(255,255,255,0.9);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 15px;
+        }
+
+        .profile-description {
+            color: white;
+            font-size: 16px;
+            line-height: 1.6;
+            max-width: 500px;
+            opacity: 0.95;
+        }
+
+        /* 右侧统计 */
+        .profile-stats {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .profile-stat-item {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 15px 25px;
+            text-align: center;
+            min-width: 100px;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .profile-stat-value {
+            font-family: var(--font-hand);
+            font-size: 28px;
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .profile-stat-label {
+            font-size: 13px;
+            color: rgba(255,255,255,0.85);
+        }
+
+        /* ========== 技能标签 ========== */
+        .profile-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .profile-tag {
+            background: rgba(255,255,255,0.25);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 13px;
+            border: 1px solid rgba(255,255,255,0.4);
+        }
+
+        /* ========== 主体内容区 ========== */
+        .profile-body {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        /* ========== 左侧导航 ========== */
+        .profile-sidebar {
+            width: 200px;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 768px) {
+            .profile-sidebar {
+                width: 100%;
+            }
+        }
+
+        .nav-tabs {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 4px 4px 0px var(--shadow-color);
+            border: 3px solid var(--border-color);
+        }
+
+        .nav-tab {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 20px;
+            color: var(--text-medium);
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+        }
+
+        .nav-tab:last-child {
+            border-bottom: none;
+        }
+
+        .nav-tab:hover {
+            background: var(--light-bg);
+            color: var(--primary-color);
+        }
+
+        .nav-tab.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .nav-tab-count {
+            margin-left: auto;
+            background: var(--light-bg);
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+        }
+
+        .nav-tab.active .nav-tab-count {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* ========== 主内容区 ========== */
+        .profile-content {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        /* ========== 作品卡片 ========== */
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .work-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 6px 6px 0px rgba(0,0,0,0.15);
+            border: 3px solid var(--border-color);
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .work-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 6px 6px 0px var(--shadow-color);
+        }
+
+        .work-cover-wrapper {
+            position: relative;
+            width: 100%;
+            height: 160px;
+            overflow: hidden;
+        }
+
+        .work-cover {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .work-difficulty {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .work-difficulty.简单 {
+            background: #4CAF50;
+        }
+
+        .work-difficulty.中等 {
+            background: #FF9800;
+        }
+
+        .work-difficulty.困难 {
+            background: #F44336;
+        }
+
+        .work-card-body {
+            padding: 15px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .work-title {
+            font-family: var(--font-hand);
+            font-size: 20px;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+
+
+        .work-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: auto;
+            min-height: 60px;
+            align-content: flex-start;
+        }
+
+        .work-tag {
+            background: var(--accent-color);
+            color: var(--text-dark);
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .work-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 12px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .work-author {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-medium);
+        }
+
+        .work-author-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--light-bg);
+            border: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 12px;
+        }
+
+        .work-views {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 13px;
+            color: var(--text-medium);
+        }
+
+        .work-views i {
+            color: var(--primary-color);
+        }
+
+        /* ========== 证书卡片 ========== */
+        .certificates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .certificate-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 4px 4px 0px var(--shadow-color);
+            border: 3px solid var(--border-color);
+            transition: all 0.3s;
+        }
+
+        .certificate-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 6px 6px 0px var(--shadow-color);
+        }
+
+        .certificate-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background: var(--light-bg);
+        }
+
+        .certificate-card-body {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .certificate-name {
+            font-weight: bold;
+            color: var(--text-dark);
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+
+        .certificate-download {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .certificate-download:hover {
+            background: var(--hover-color);
+        }
+
+        /* ========== 无内容提示 ========== */
+        .no-items {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-light);
+        }
+
+        .no-items i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            opacity: 0.3;
+        }
+
+        .no-items p {
+            font-size: 16px;
+        }
+
+        /* ========== 响应式 ========== */
+        @media (max-width: 600px) {
+            .profile-banner {
+                padding: 25px;
+            }
+
+            .profile-name {
+                font-size: 28px;
+            }
+
+            .profile-banner-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-stats {
+                justify-content: center;
+                width: 100%;
+            }
+
+            .profile-body {
+                flex-direction: column;
+            }
+
+            .works-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 导航栏 -->
+        <nav>
+            <div class="nav-brand">
+                <img src="images/罗辑智造社二次元头部形象.png" alt="Logo" class="nav-logo">
+                <span class="nav-title">罗辑智造社</span>
+            </div>
+            <ul>
+                <li><a href="index.html">🏠 首页</a></li>
+                <li><a href="resources.html">🎓 学习资源</a></li>
+                <li><a href="works.html">MakerVerse</a></li>
+            </ul>
+        </nav>
+
+        <div class="profile-page">
+            <!-- 返回按钮 -->
+            <a href="works.html" class="back-button">
+                <i class="fas fa-arrow-left"></i> 返回作品展示
+            </a>
+
+            <!-- 顶部横幅 -->
+            <div class="profile-banner">
+                <div class="profile-banner-content">
+                    <img id="studentAvatar" src="images/default_avatar.jpg" alt="学生头像" class="profile-avatar-large" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div id="avatarFallback" style="display: none; width: 120px; height: 120px; border-radius: 50%; background: rgba(255,255,255,0.2); border: 4px solid white; align-items: center; justify-content: center;">
+                        <i class="fas fa-user-graduate fa-3x" style="color: white;"></i>
+                    </div>
+                    <div class="profile-main-info">
+                        <h1 id="studentName" class="profile-name">加载中...</h1>
+                        <div class="profile-join-date">
+                            <i class="fas fa-calendar-alt"></i>
+                            加入时间: <span id="joinDate">---</span>
+                        </div>
+                        <p id="studentDescription" class="profile-description">加载中...</p>
+                        <div id="skillTags" class="profile-tags"></div>
+                    </div>
+                    <div class="profile-stats">
+                        <div class="profile-stat-item">
+                            <div class="profile-stat-value" id="worksCountStat">0</div>
+                            <div class="profile-stat-label">作品数</div>
+                        </div>
+                        <div class="profile-stat-item">
+                            <div class="profile-stat-value" id="skillCountStat">0</div>
+                            <div class="profile-stat-label">技能数</div>
+                        </div>
+                        <div class="profile-stat-item">
+                            <div class="profile-stat-value" id="totalViews">0</div>
+                            <div class="profile-stat-label">总浏览</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 主体内容区 -->
+            <div class="profile-body">
+                <!-- 左侧导航 -->
+                <div class="profile-sidebar">
+                    <div class="nav-tabs">
+                        <div class="nav-tab active" onclick="switchTab('works')">
+                            <i class="fas fa-code"></i>
+                            <span>作品</span>
+                            <span class="nav-tab-count" id="worksTabCount">0</span>
+                        </div>
+                        <div class="nav-tab" onclick="switchTab('certificates')">
+                            <i class="fas fa-award"></i>
+                            <span>证书</span>
+                            <span class="nav-tab-count" id="certTabCount">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 主内容 -->
+                <div class="profile-content">
+                    <!-- 作品区 -->
+                    <div id="worksSection" class="content-section active">
+                        <div id="worksContainer" class="works-grid"></div>
+                    </div>
+
+                    <!-- 证书区 -->
+                    <div id="certificatesSection" class="content-section">
+                        <div id="certificatesContainer" class="certificates-grid"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 切换标签页
+        function switchTab(tabName) {
+            // 更新导航状态
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+
+            // 更新内容显示
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(tabName + 'Section').classList.add('active');
+        }
+
+        // 从URL获取学生ID
+        function getStudentIdFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('id');
+        }
+
+        // 加载学生数据
+        async function loadStudentData() {
+            const studentId = getStudentIdFromUrl();
+            if (!studentId) {
+                alert('未找到学生信息');
+                window.location.href = 'works.html';
+                return;
+            }
+
+            try {
+                // 加载学生JSON数据
+                const response = await fetch('students-works/generated/students.json');
+                const students = await response.json();
+                
+                // 查找对应学生
+                const student = students.find(s => s.id === studentId);
+                if (!student) {
+                    alert('未找到该学生信息');
+                    window.location.href = 'works.html';
+                    return;
+                }
+
+                // 加载作品JSON数据
+                const worksResponse = await fetch('students-works/generated/works.json');
+                const allWorks = await worksResponse.json();
+                
+                // 筛选该学生的作品
+                const studentWorks = allWorks.filter(work => work.student_id === studentId);
+
+                // 更新页面信息
+                updatePage(student, studentWorks);
+            } catch (error) {
+                console.error('加载数据失败:', error);
+                alert('数据加载失败，请稍后重试');
+            }
+        }
+
+        // 更新页面内容
+        function updatePage(student, works) {
+            // 基本学生信息
+            document.getElementById('studentName').textContent = student.name;
+            document.getElementById('joinDate').textContent = student.join_date;
+            document.getElementById('studentDescription').textContent = student.description || '暂无简介';
+            
+            // 统计信息
+            const worksCount = works.length;
+            const skillCount = student.tags ? student.tags.length : 0;
+            // 计算总浏览量，如果 works 为空或 views 未定义则默认为 0
+            let totalViews = 0;
+            if (works && works.length > 0) {
+                totalViews = works.reduce((sum, w) => sum + (w.views || 0), 0);
+            }
+            
+            document.getElementById('worksCountStat').textContent = worksCount;
+            document.getElementById('skillCountStat').textContent = skillCount;
+            document.getElementById('totalViews').textContent = totalViews;
+            document.getElementById('worksTabCount').textContent = worksCount;
+
+            // 证书数量
+            const certCount = student.certificates ? student.certificates.length : 0;
+            document.getElementById('certTabCount').textContent = certCount;
+
+            // 设置头像
+            const avatarImg = document.getElementById('studentAvatar');
+            const avatarFallback = document.getElementById('avatarFallback');
+            if (student.has_avatar && student.avatar_file) {
+                const avatarPath = `students-works/students/${student.id}_${encodeURIComponent(student.name)}/${student.avatar_file}`;
+                avatarImg.src = avatarPath;
+                avatarImg.onerror = function() {
+                    this.style.display = 'none';
+                    if (avatarFallback) avatarFallback.style.display = 'flex';
+                };
+            }
+
+            // 更新技能标签
+            const skillTagsContainer = document.getElementById('skillTags');
+            if (student.tags && student.tags.length > 0) {
+                skillTagsContainer.innerHTML = '';
+                student.tags.forEach(tag => {
+                    const tagElement = document.createElement('span');
+                    tagElement.className = 'profile-tag';
+                    tagElement.textContent = tag;
+                    skillTagsContainer.appendChild(tagElement);
+                });
+            } else {
+                skillTagsContainer.innerHTML = '<span class="profile-tag">暂无技能</span>';
+            }
+
+            // 更新证书
+            updateCertificates(student);
+
+            // 更新作品
+            updateWorks(works, student);
+        }
+
+        // 更新证书展示
+        function updateCertificates(student) {
+            const container = document.getElementById('certificatesContainer');
+            
+            if (student.certificates && student.certificates.length > 0) {
+                container.innerHTML = '';
+                
+                student.certificates.forEach(cert => {
+                    const certElement = document.createElement('div');
+                    certElement.className = 'certificate-card';
+                    
+                    const icon = cert.type === 'pdf' ? 'fa-file-pdf' : 'fa-file-image';
+                    const iconBg = cert.type === 'pdf' ? '#F44336' : 'var(--primary-color)';
+                    
+                    certElement.innerHTML = `
+                        <div class="certificate-image" style="display: flex; align-items: center; justify-content: center; background: var(--light-bg);">
+                            <i class="fas ${icon} fa-3x" style="color: ${iconBg}; opacity: 0.5;"></i>
+                        </div>
+                        <div class="certificate-card-body">
+                            <div class="certificate-name">${cert.file}</div>
+                            <a href="${cert.path}" class="certificate-download" download target="_blank">
+                                <i class="fas fa-download"></i> 下载
+                            </a>
+                        </div>
+                    `;
+                    
+                    container.appendChild(certElement);
+                });
+            } else {
+                container.innerHTML = `
+                    <div class="no-items" style="grid-column: 1/-1;">
+                        <i class="fas fa-award fa-3x"></i>
+                        <p>暂无证书</p>
+                    </div>
+                `;
+            }
+        }
+
+        // 更新作品展示
+        function updateWorks(works, student) {
+            const container = document.getElementById('worksContainer');
+            
+            if (works.length > 0) {
+                container.innerHTML = '';
+                
+                works.forEach(work => {
+                    const workElement = document.createElement('div');
+                    workElement.className = 'work-card';
+                    
+                    // 构建作品封面图路径
+                    const coverImage = `images/work-default-${work.tech_tags && work.tech_tags.length > 0 ? 'code' : 'general'}.jpg`;
+                    
+                    // 构建技术标签
+                    let tagsHtml = '';
+                    if (work.tech_tags && work.tech_tags.length > 0) {
+                        work.tech_tags.forEach(tag => {
+                            tagsHtml += `<span class="work-tag">${tag}</span>`;
+                        });
+                    }
+                    
+                    workElement.innerHTML = `
+                        <div class="work-cover-wrapper">
+                            <img src="${coverImage}" alt="${work.title}" class="work-cover">
+                            <span class="work-difficulty ${work.difficulty}">${work.difficulty || '普通'}</span>
+                        </div>
+                        <div class="work-card-body">
+                            <h3 class="work-title">${work.title}</h3>
+                            <div class="work-tags">${tagsHtml}</div>
+                            <div class="work-footer">
+                                <div class="work-author">
+                                    <span class="work-author-icon"><i class="fas fa-user"></i></span>
+                                    <span>${student.name}</span>
+                                </div>
+                                <div class="work-views">
+                                    <i class="fas fa-eye"></i>
+                                    <span>${work.views || 0}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    workElement.onclick = function() {
+                        location.href = 'work-detail.html?id=' + work.id;
+                    };
+                    
+                    container.appendChild(workElement);
+                });
+            } else {
+                container.innerHTML = `
+                    <div class="no-items" style="grid-column: 1/-1;">
+                        <i class="fas fa-code fa-3x"></i>
+                        <p>暂无作品</p>
+                        <p style="font-size: 14px; margin-top: 10px;">学生正在创作中...</p>
+                    </div>
+                `;
+            }
+        }
+
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', loadStudentData);
+    </script>
+</body>
+</html>

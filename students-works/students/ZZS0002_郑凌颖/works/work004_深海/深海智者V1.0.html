@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>深海智者 - 小海</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            overflow: hidden;
+            background: linear-gradient(180deg, #006994 0%, #003d5c 40%, #001a2e 100%);
+            height: 100vh;
+            position: relative;
+        }
+
+        /* 海洋背景动画层 */
+        .ocean {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        /* 阳光射线效果 */
+        .sun-rays {
+            position: absolute;
+            top: -20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 60%;
+            background: linear-gradient(180deg, 
+                rgba(255, 255, 255, 0.1) 0%, 
+                rgba(255, 255, 255, 0.05) 30%, 
+                transparent 100%);
+            clip-path: polygon(40% 0%, 60% 0%, 80% 100%, 20% 100%);
+            animation: rayShift 8s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes rayShift {
+            0%, 100% { opacity: 0.3; transform: translateX(-50%) scaleX(1); }
+            50% { opacity: 0.6; transform: translateX(-50%) scaleX(1.2); }
+        }
+
+        /* 波浪层 */
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200%;
+            height: 100px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,60 C300,120 600,0 900,60 C1050,90 1150,30 1200,60 L1200,120 L0,120 Z' fill='rgba(255,255,255,0.1)'/%3E%3C/svg%3E");
+            background-size: 50% 100%;
+            animation: waveMove 10s linear infinite;
+            opacity: 0.3;
+        }
+
+        .wave:nth-child(2) {
+            bottom: 20px;
+            height: 120px;
+            opacity: 0.2;
+            animation: waveMove 15s linear infinite reverse;
+        }
+
+        .wave:nth-child(3) {
+            bottom: 40px;
+            height: 80px;
+            opacity: 0.15;
+            animation: waveMove 20s linear infinite;
+        }
+
+        @keyframes waveMove {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* 气泡动画 */
+        .bubbles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .bubble {
+            position: absolute;
+            bottom: -100px;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.2));
+            border-radius: 50%;
+            animation: rise 8s infinite ease-in;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes rise {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-120vh) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        /* 聊天容器 - 漂浮在海面上的玻璃效果 */
+        .chat-container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 900px;
+            height: 90vh;
+            max-height: 900px;
+            margin: 5vh auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 25px 50px -12px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset,
+                0 0 100px rgba(0, 150, 200, 0.2) inset;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* 标题栏 */
+        .chat-header {
+            padding: 20px 24px;
+            background: rgba(0, 100, 150, 0.3);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+            animation: pulse-glow 2s ease-in-out infinite;
+            position: relative;
+        }
+
+        .avatar.speaking {
+            animation: speak-pulse 0.5s ease-in-out infinite;
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.9);
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.5); }
+            50% { box-shadow: 0 0 30px rgba(0, 212, 255, 0.8); }
+        }
+
+        @keyframes speak-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .header-info {
+            flex: 1;
+        }
+
+        .header-info h2 {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .header-info p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #00ff88;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 8px #00ff88;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(0.8); }
+        }
+
+        /* 语音控制按钮 */
+        .voice-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .voice-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .voice-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        .voice-btn.active {
+            background: rgba(0, 212, 255, 0.3);
+            border-color: #00d4ff;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .voice-btn.recording {
+            background: rgba(255, 80, 80, 0.3);
+            border-color: #ff5050;
+            animation: recording-pulse 1s infinite;
+        }
+
+        @keyframes recording-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* 消息区域 */
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            scroll-behavior: smooth;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        /* 消息气泡 */
+        .message {
+            max-width: 85%;
+            padding: 16px 20px;
+            border-radius: 20px;
+            font-size: 15px;
+            line-height: 1.7;
+            animation: messagePop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+
+        @keyframes messagePop {
+            0% { transform: scale(0.8) translateY(10px); opacity: 0; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        .message.received {
+            align-self: flex-start;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border-bottom-left-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .message.sent {
+            align-self: flex-end;
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            color: white;
+            border-bottom-right-radius: 4px;
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .message-time {
+            font-size: 11px;
+            opacity: 0.7;
+            margin-top: 8px;
+            display: block;
+            font-weight: 400;
+        }
+
+        /* 输入区域 */
+        .chat-input-area {
+            padding: 20px 24px;
+            background: rgba(0, 50, 80, 0.4);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .chat-input {
+            width: 100%;
+            padding: 14px 18px;
+            border: none;
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-family: inherit;
+            resize: none;
+            max-height: 150px;
+            min-height: 48px;
+            line-height: 1.5;
+        }
+
+        .chat-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .chat-input:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(0, 212, 255, 0.5);
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.2);
+        }
+
+        .send-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+            flex-shrink: 0;
+        }
+
+        .send-btn:hover:not(:disabled) {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 6px 25px rgba(0, 212, 255, 0.5);
+        }
+
+        .send-btn:active:not(:disabled) {
+            transform: scale(0.95);
+        }
+
+        .send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .send-btn svg {
+            width: 22px;
+            height: 22px;
+            fill: white;
+            transition: transform 0.3s;
+        }
+
+        /* 加载动画 */
+        .typing-indicator {
+            display: none;
+            padding: 16px 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            border-bottom-left-radius: 4px;
+            align-self: flex-start;
+            margin-bottom: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .typing-indicator.active {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+            30% { transform: translateY(-12px); opacity: 1; }
+        }
+
+        /* 底部装饰鱼群 */
+        .fish {
+            position: absolute;
+            bottom: 100px;
+            font-size: 30px;
+            opacity: 0.6;
+            animation: swim 20s linear infinite;
+            pointer-events: none;
+            z-index: 5;
+            filter: drop-shadow(0 0 10px rgba(0, 200, 255, 0.3));
+        }
+
+        @keyframes swim {
+            0% { transform: translateX(-100px) translateY(0); }
+            25% { transform: translateX(25vw) translateY(-10px); }
+            50% { transform: translateX(50vw) translateY(5px); }
+            75% { transform: translateX(75vw) translateY(-5px); }
+            100% { transform: translateX(calc(100vw + 100px)) translateY(0); }
+        }
+
+        /* 欢迎提示 */
+        .welcome-hint {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 13px;
+            margin-top: 20px;
+            font-style: italic;
+        }
+
+        /* 响应式 */
+        @media (max-width: 640px) {
+            .chat-container {
+                width: 95%;
+                height: 95vh;
+                margin: 2.5vh auto;
+                border-radius: 20px;
+            }
+            
+            .chat-messages {
+                padding: 16px;
+            }
+            
+            .message {
+                max-width: 92%;
+                font-size: 14px;
+            }
+
+            .voice-controls {
+                display: none;
+            }
+        }
+
+        /* 语音波形动画 */
+        .voice-wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .voice-wave.active {
+            opacity: 1;
+            animation: wave-animation 1s linear infinite;
+        }
+
+        @keyframes wave-animation {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* 知识标签 */
+        .knowledge-tag {
+            display: inline-block;
+            background: rgba(0, 212, 255, 0.2);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-right: 6px;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- 海洋背景 -->
+    <div class="ocean">
+        <div class="sun-rays"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="bubbles" id="bubbles"></div>
+    </div>
+
+    <!-- 装饰鱼群 -->
+    <div class="fish" style="bottom: 15%; animation-duration: 25s; animation-delay: 0s;">🐠</div>
+    <div class="fish" style="bottom: 25%; animation-duration: 30s; animation-delay: 8s; font-size: 24px;">🐟</div>
+    <div class="fish" style="bottom: 10%; animation-duration: 35s; animation-delay: 15s; font-size: 36px;">🐡</div>
+    <div class="fish" style="bottom: 35%; animation-duration: 28s; animation-delay: 5s; font-size: 28px;">🦈</div>
+
+    <!-- 聊天窗口 -->
+    <div class="chat-container">
+        <div class="chat-header">
+            <div class="avatar" id="avatar">🐋</div>
+            <div class="header-info">
+                <h2>小海 <span style="font-size: 12px; opacity: 0.8; font-weight: normal;">| 深海智者</span></h2>
+                <p><span class="status-dot"></span>知识库已加载 • 科学·技术·人文·艺术</p>
+            </div>
+            <div class="voice-controls">
+                <button class="voice-btn" id="voiceToggle" onclick="toggleVoice()">
+                    <span>🔊</span> 语音播报
+                </button>
+                <button class="voice-btn" id="micBtn" onclick="toggleMic()">
+                    <span>🎤</span> 语音输入
+                </button>
+            </div>
+        </div>
+
+        <div class="chat-messages" id="messages">
+            <div class="message received">
+                你好，我是小海。🌊
+
+不同于普通的聊天机器人，我读过"很多书"——从量子物理到古典哲学，从编程算法到印象派画作，从深海生物到宇宙星辰。
+
+你可以问我：
+• "解释一下薛定谔的猫，用买菜大妈都能懂的话"
+• "帮我写个Python爬虫，要处理反爬"
+• "推荐几本科幻小说，硬科幻那种"
+• "为什么梵高会割耳朵？当时到底发生了什么"
+• "用简单的比喻讲清楚区块链"
+
+我会像朋友一样，用通俗但准确的方式跟你聊。对了，如果你不想打字，可以用语音。
+
+今天想探索哪个领域的知识？
+                <span class="message-time" id="initial-time"></span>
+            </div>
+            <div class="welcome-hint">提示：按 Enter 发送，Shift+Enter 换行</div>
+        </div>
+
+        <div class="typing-indicator" id="typing">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <div class="chat-input-area">
+            <div class="input-wrapper">
+                <textarea class="chat-input" id="input" placeholder="问小海任何问题..." rows="1"></textarea>
+                <div class="voice-wave" id="voiceWave"></div>
+            </div>
+            <button class="send-btn" id="send">
+                <svg viewBox="0 0 24 24">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 生成气泡
+        function createBubble() {
+            const bubbles = document.getElementById('bubbles');
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            
+            const size = Math.random() * 20 + 10;
+            const left = Math.random() * 100;
+            const duration = Math.random() * 4 + 6;
+            
+            bubble.style.width = size + 'px';
+            bubble.style.height = size + 'px';
+            bubble.style.left = left + '%';
+            bubble.style.animationDuration = duration + 's';
+            bubble.style.animationDelay = Math.random() * 2 + 's';
+            
+            bubbles.appendChild(bubble);
+            
+            setTimeout(() => bubble.remove(), (duration + 2) * 1000);
+        }
+
+        setInterval(createBubble, 800);
+        for(let i = 0; i < 10; i++) createBubble();
+
+        // 聊天功能
+        const input = document.getElementById('input');
+        const sendBtn = document.getElementById('send');
+        const messages = document.getElementById('messages');
+        const typing = document.getElementById('typing');
+        const avatar = document.getElementById('avatar');
+        const voiceWave = document.getElementById('voiceWave');
+        const initialTime = document.getElementById('initial-time');
+
+        // 语音设置
+        let voiceEnabled = false;
+        let micEnabled = false;
+        let recognition = null;
+        let synthesis = window.speechSynthesis;
+        let isSpeaking = false;
+        let conversationContext = [];
+
+        // 设置初始时间
+        initialTime.textContent = getTime();
+
+        // 初始化语音识别
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'zh-CN';
+            
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                input.value = transcript;
+                stopRecording();
+                setTimeout(() => sendMessage(), 500);
+            };
+            
+            recognition.onerror = (event) => {
+                console.error('语音识别错误:', event.error);
+                stopRecording();
+                addMessage("抱歉，我没听清楚，能再说一遍吗？", false);
+            };
+            
+            recognition.onend = () => {
+                stopRecording();
+            };
+        }
+
+        function getTime() {
+            const now = new Date();
+            return now.getHours().toString().padStart(2, '0') + ':' + 
+                   now.getMinutes().toString().padStart(2, '0');
+        }
+
+        function addMessage(text, isSent = true) {
+            const hint = messages.querySelector('.welcome-hint');
+            if (hint) hint.remove();
+
+            const div = document.createElement('div');
+            div.className = `message ${isSent ? 'sent' : 'received'}`;
+            div.innerHTML = text.replace(/\n/g, '<br>') + `<span class="message-time">${getTime()}</span>`;
+            
+            messages.appendChild(div);
+            scrollToBottom();
+            
+            // 保存上下文
+            if (!isSent) {
+                conversationContext.push(text.substring(0, 100));
+                if (conversationContext.length > 5) conversationContext.shift();
+            }
+        }
+
+        function scrollToBottom() {
+            messages.scrollTop = messages.scrollHeight;
+        }
+
+        function setLoading(loading) {
+            if (loading) {
+                typing.classList.add('active');
+                sendBtn.disabled = true;
+                scrollToBottom();
+            } else {
+                typing.classList.remove('active');
+                sendBtn.disabled = false;
+            }
+        }
+
+        // 语音播报
+        function speak(text) {
+            if (!voiceEnabled || !synthesis) return;
+            
+            synthesis.cancel();
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'zh-CN';
+            utterance.rate = 0.95;
+            utterance.pitch = 1.05;
+            
+            const voices = synthesis.getVoices();
+            const chineseVoice = voices.find(v => v.lang.includes('zh') && v.name.includes('Female')) ||
+                                voices.find(v => v.lang.includes('zh')) ||
+                                voices[0];
+            if (chineseVoice) utterance.voice = chineseVoice;
+            
+            utterance.onstart = () => {
+                isSpeaking = true;
+                avatar.classList.add('speaking');
+                voiceWave.classList.add('active');
+            };
+            
+            utterance.onend = () => {
+                isSpeaking = false;
+                avatar.classList.remove('speaking');
+                voiceWave.classList.remove('active');
+            };
+            
+            synthesis.speak(utterance);
+        }
+
+        // 切换语音播报
+        function toggleVoice() {
+            voiceEnabled = !voiceEnabled;
+            const btn = document.getElementById('voiceToggle');
+            if (voiceEnabled) {
+                btn.classList.add('active');
+                btn.innerHTML = '<span>🔊</span> 语音开启';
+                speak('语音播报已开启。我是小海，拥有广泛的知识库，从量子物理到古典哲学，从编程技术到艺术史，我都能跟你聊。');
+            } else {
+                btn.classList.remove('active');
+                btn.innerHTML = '<span>🔊</span> 语音播报';
+                synthesis.cancel();
+            }
+        }
+
+        // 切换麦克风
+        function toggleMic() {
+            if (!recognition) {
+                alert('你的浏览器不支持语音识别，请使用 Chrome 或 Edge 浏览器');
+                return;
+            }
+            
+            const btn = document.getElementById('micBtn');
+            
+            if (micEnabled) {
+                recognition.stop();
+                stopRecording();
+            } else {
+                startRecording();
+                recognition.start();
+            }
+        }
+
+        function startRecording() {
+            micEnabled = true;
+            const btn = document.getElementById('micBtn');
+            btn.classList.add('recording');
+            btn.innerHTML = '<span>⏹</span> 停止录音';
+            input.placeholder = '正在听你说...';
+        }
+
+        function stopRecording() {
+            micEnabled = false;
+            const btn = document.getElementById('micBtn');
+            btn.classList.remove('recording');
+            btn.innerHTML = '<span>🎤</span> 语音输入';
+            input.placeholder = '问小海任何问题...';
+        }
+
+        // 知识库系统
+        const knowledgeBase = {
+            // 科学技术
+            physics: {
+                keywords: ['量子', '相对论', '薛定谔', '黑洞', '宇宙', '粒子', '波', '光速', '引力', '熵'],
+                responses: {
+                    '薛定谔的猫': `这是个思想实验，用来讽刺量子叠加态的荒谬性。
+
+简单说：一只猫被关在箱子里，有个放射性原子可能衰变（触发毒药杀死猫），也可能不衰变。在量子力学里，原子处于"衰变"和"不衰变"的叠加态，那猫是不是也处于"既死又活"的状态？
+
+薛定谔想说的是：微观量子规律不能直接套用到宏观世界。一只猫不可能既死又活，这说明量子力学在当时是不完备的。
+
+后来人们发现，"观测"确实会导致量子态坍缩，但"观测者"不一定是人，可以是任何与环境的作用。这就是"量子退相干"理论。
+
+用买菜大妈的话：就像你出门前不知道鸡蛋有没有碎，它对你来说是"可能碎了可能没碎"，但你一打开盒子就知道了。量子世界奇怪在于，在你看之前，它真的"同时处于两种状态"，不是"不知道而是哪种"。`,
+                    '黑洞': `黑洞是时空曲率大到光都无法逃脱的天体。
+
+形成方式：大质量恒星（通常>20倍太阳质量）燃料耗尽后，内部压力无法抵抗引力，发生超新星爆发，核心坍缩成黑洞。
+
+关键概念：
+• 事件视界：边界，进去就出不来了
+• 奇点：中心，密度无限大，物理定律失效
+• 霍金辐射：黑洞其实会缓慢蒸发，越小的蒸发越快
+
+有趣的事实：如果太阳变成黑洞（实际上不会，质量不够），地球轨道不会变，只是会变冷变黑。黑洞不一定"吸"东西，轨道物理和普通恒星一样。
+
+最近的重大发现：2019年事件视界望远镜拍到了M87星系中心黑洞的照片，证实了爱因斯坦的预言。`,
+                    '相对论': `爱因斯坦的两套理论：
+
+狭义相对论（1905）：
+• 光速不变原理：真空光速对所有观测者都一样，约30万公里/秒
+• 相对性原理：物理定律在所有惯性参考系中相同
+• 推论：时间膨胀（运动的钟变慢）、长度收缩、E=mc²
+
+广义相对论（1915）：
+• 引力不是力，是质量弯曲时空的表现
+• 大质量物体让周围时空弯曲，其他物体沿测地线（最短路径）运动
+• 预言了引力透镜、引力波、黑洞
+
+日常影响：GPS卫星必须考虑相对论效应，否则定位每天会偏差约10公里。
+
+通俗理解：把宇宙想象成蹦床，太阳是个大铁球放上去压出凹陷，地球就像小滚珠沿着凹陷滚动——这就是"引力"的本质。`
+                }
+            },
+            
+            programming: {
+                keywords: ['代码', '编程', 'python', 'javascript', 'java', '爬虫', '算法', 'bug', '报错', '数据库', 'sql', '前端', '后端', 'api', '服务器'],
+                responses: {
+                    'python爬虫': `写爬虫要注意几个层次：
+
+基础版（requests + BeautifulSoup）：
+\`\`\`python
+import requests
+from bs4 import BeautifulSoup
+
+headers = {'User-Agent': 'Mozilla/5.0...'}
+resp = requests.get(url, headers=headers)
+soup = BeautifulSoup(resp.text, 'html.parser')
+data = soup.select('.item')
+\`\`\`
+
+进阶反爬处理：
+1. IP限制 → 用代理池轮换IP
+2. 验证码 → OCR识别或打码平台
+3. 动态加载 → Selenium/Playwright模拟浏览器
+4. 请求频率 → 随机延时、分布式爬取
+
+伦理边界：
+• 遵守robots.txt
+• 控制请求频率（建议>2秒/次）
+• 不爬取个人隐私数据
+• 商业用途需确认版权
+
+你具体要爬什么网站？我可以给更针对性的代码。`,
+                    '算法': `常用算法思想：
+
+分治：大问题拆小问题解决（归并排序、快速排序）
+动态规划：记住子问题的解避免重复计算（背包问题、最短路径）
+贪心：每步选局部最优（可能不是全局最优）
+回溯：试探+撤销（八皇后、迷宫）
+二分：有序数据折半查找
+
+时间复杂度记忆：
+• O(1)：常数时间，哈希表查找
+• O(log n)：对数，二分查找
+• O(n)：线性，遍历一次
+• O(n log n)：线性对数，高效排序
+• O(n²)：平方，双重循环
+• O(2ⁿ)：指数，穷举所有子集
+
+学习路径：LeetCode按标签刷，从Easy开始，先掌握数组、链表、哈希表、二叉树，再攻动态规划。
+
+有具体想实现的算法功能吗？`,
+                    'bug调试': `调试方法论：
+
+1. 复现问题
+   • 确定触发条件
+   • 最小化测试案例
+
+2. 定位阶段
+   • 打印日志（print/logging）
+   • 二分法注释代码块
+   • 使用调试器（pdb、Chrome DevTools）
+
+3. 常见陷阱
+   • 异步问题（时序、竞态条件）
+   • 类型问题（JS的隐式转换、Python的None）
+   • 作用域（闭包、this指向）
+   • 资源泄漏（内存、连接未释放）
+
+4. 预防
+   • 单元测试（TDD）
+   • 类型检查（TypeScript、MyPy）
+   • 代码审查
+
+你现在遇到什么报错？贴出来我帮你分析。`
+                }
+            },
+            
+            humanities: {
+                keywords: ['哲学', '历史', '梵高', '艺术', '文学', '心理学', '社会', '经济', '政治', '文化', '宗教', '伦理', '道德'],
+                responses: {
+                    '梵高割耳朵': `1888年12月23日，梵高在法国阿尔勒割下了左耳的一部分（不是整只），送给了一位叫Rachel的妓女。
+
+背景：
+• 当时他与高更同住，两人艺术理念冲突激烈，经常争吵
+• 高更打算离开，梵高情绪崩溃
+• 有学者认为可能是高更用剑伤了他，梵高为保护朋友说是自己割的
+
+后续：
+• 被送进精神病院，诊断为"急性躁狂伴幻觉"
+• 现代推测可能是双相情感障碍（躁郁症）+ 癫痫 +  absinthe酒中毒
+• 1890年7月29日自杀身亡，年仅37岁
+
+艺术史地位：
+生前只卖出一幅画（《红色葡萄园》），死后成为后印象派代表。他的色彩理论（互补色对比）和笔触表现影响了整个现代艺术。
+
+他的信：写给弟弟提奥的800多封信是了解他内心世界的窗口，读起来既痛苦又美丽。`,
+                    '区块链': `用比喻讲清楚：
+
+想象一个村子，大家共用一本账本，记录谁有多少钱、转给了谁。
+
+传统银行（中心化）：
+• 账本由村长保管
+• 村民查账、转账都要找村长
+• 村长可能作弊、可能跑路
+
+区块链（去中心化）：
+• 每家都有一本完全相同的账本
+• 有人转账时，大喇叭广播给全村
+• 大家验证后，各自在账本上记录
+• 如果有人想篡改，必须同时改51%以上的账本，几乎不可能
+
+技术实现：
+• 区块：一批交易打包成块
+• 链：每个块包含上一个块的指纹（哈希），形成链条
+• 挖矿：通过计算难题竞争记账权，获得奖励（比特币）
+• 智能合约：代码即法律，自动执行
+
+应用局限：
+• 效率低（比特币7笔/秒 vs Visa 24000笔/秒）
+• 能耗高（PoW机制）
+• 大多数"区块链项目"是骗局
+
+真正有价值的地方：跨境支付、供应链溯源、数字身份。`,
+                    '心理学': `几个实用的心理学概念：
+
+认知失调：行为和信念冲突时的不适感。比如你知道吸烟有害但还在抽，为了减少失调，你会说服自己"我爷爷抽一辈子也活到90"。
+
+损失厌恶：失去100元的痛苦 > 得到100元的快乐（约2倍强度）。这解释了为什么股票跌了舍不得割肉，赢了钱却早早落袋为安。
+
+锚定效应：最先看到的价格会成为"锚"。原价999现价199觉得便宜，但成本可能只有50。
+
+成长型思维 vs 固定型思维（Carol Dweck）：
+• 固定型：能力是固定的，失败说明我不行
+• 成长型：能力可以通过努力提升，失败是学习机会
+
+正念（Mindfulness）：不是放松，而是不带评判地觉察当下。对焦虑、抑郁有循证医学证据。
+
+你想深入了解哪个方向？临床心理学、认知科学，还是日常应用？`
+                }
+            },
+            
+            arts: {
+                keywords: ['电影', '音乐', '小说', '书', '推荐', '科幻', '悬疑', '导演', '作家', '画家', '摇滚', '古典', '爵士'],
+                responses: {
+                    '科幻小说': `硬科幻推荐（科学严谨）：
+
+《三体》刘慈欣：黑暗森林法则、降维打击、二向箔。不仅是科幻，更是文明生存哲学。
+
+《基地》阿西莫夫：心理史学（用统计学预测文明走向）、机器人三定律。系列共15部，银河帝国的兴衰史。
+
+《海伯利安》丹·西蒙斯：七位朝圣者讲述各自故事，结构致敬《坎特伯雷故事集》。时间之坟、赛博人、人工智能的背叛，诗意与硬核并存。
+
+《火星救援》安迪·威尔：准确的工程细节，一个人火星种土豆求生。电影也很好看。
+
+《计算中的上帝》罗伯特·索耶：外星人来到地球，不是为了侵略，而是为了在超新星爆发前寻找上帝。涉及量子力学、古生物学。
+
+软科幻（重人文）：
+《1984》《美丽新世界》《神经漫游者》（赛博朋克鼻祖）
+
+你偏好哪种？宇宙尺度的大历史，还是近未来的技术惊悚？`,
+                    '电影': `不同维度的推荐：
+
+叙事结构精巧：
+《低俗小说》（环形叙事）、《记忆碎片》（倒叙）、《穆赫兰道》（梦境逻辑）、《敦刻尔克》（三线时间）
+
+视觉美学：
+《银翼杀手2049》（赛博朋克色调）、《布达佩斯大饭店》（对称构图、马卡龙色）、《花样年华》（暧昧光线）、《2001太空漫游》（古典与未来）
+
+表演教科书：
+《教父》（马龙·白兰度）、《肖申克的救赎》（蒂姆·罗宾斯）、《霸王别姬》（张国荣）、《黑暗骑士》（希斯·莱杰的小丑）
+
+近期值得看：
+《奥本海默》（诺兰，原子弹之父的道德困境）、《坠落的审判》（婚姻关系剖析）、《过往人生》（移民的身份认同）
+
+你喜欢什么类型？我可以更精准推荐。`,
+                    '音乐': `按场景推荐：
+
+专注工作：
+• 古典：巴赫《哥德堡变奏曲》（结构清晰）、埃里克·萨蒂《 Gymnopédies》（极简）
+• 电子：Brian Eno的氛围音乐、Tycho
+• 爵士：Chet Baker的小号（冷静）、Bill Evans的钢琴
+
+情绪低落：
+• Nick Drake（民谣，温柔但忧伤）
+• 冰岛后摇（Sigur Rós，空旷感）
+• 中岛美嘉《曾经我也想过一了百了》（绝望中的力量）
+
+运动/通勤：
+• Funky Town（合成器流行）、Daft Punk（电子）、新裤子（国内摇滚）
+
+深度聆听（需要耐心）：
+• 贝多芬晚期四重奏（Op.131，灵魂的对话）
+• Miles Davis《Kind of Blue》（爵士乐圣经）
+• 平克·弗洛伊德《The Dark Side of the Moon》（概念专辑巅峰）
+
+你平时听什么？我可以推荐相似的进阶版本。`
+                }
+            },
+            
+            life: {
+                keywords: ['工作', '职场', '学习', '效率', '习惯', '健康', '运动', '饮食', '睡眠', '焦虑', '压力', '时间管理', '拖延症'],
+                responses: {
+                    '拖延症': `拖延不是懒，是情绪调节问题。
+
+大脑机制：面对困难任务时，边缘系统（情绪脑）产生焦虑，前额叶皮层（理性脑）被抑制。刷手机是短期情绪缓解，但增加长期焦虑。
+
+有效策略：
+
+1. 五分钟启动法
+   告诉自己"只做五分钟"，降低心理门槛。通常开始后就会继续。
+
+2. 任务分解
+   "写报告" → "打开文档→列大纲→写第一段→..."
+   模糊的目标引发恐惧，具体的步骤可执行。
+
+3. 环境设计
+   • 手机放另一个房间
+   • 使用Forest等专注APP
+   • 特定地点只做特定事（条件反射）
+
+4. 自我慈悲
+   拖延后不要自责，那会增加焦虑导致更多拖延。接受"我现在不想做"，然后问"接下来 smallest 的一步是什么？"
+
+5. 峰值体验
+   在任务最有趣/最有成就感的点停下来（如写作写到兴奋处），下次更容易开始。
+
+你通常在什么任务上拖延？我们可以针对性设计对策。`,
+                    '睡眠': `基于睡眠科学的建议：
+
+核心概念：睡眠周期90分钟，由浅入深再到REM（快速眼动，做梦阶段）。在周期结束时醒来更清醒。
+
+实操建议：
+
+1. 固定起床时间（比固定入睡时间更重要），包括周末。生物钟需要一致性。
+
+2. 光线管理
+   • 早晨接触自然光10分钟（抑制褪黑素，设定生物钟）
+   • 晚上减少蓝光（手机开夜览模式，或戴琥珀色眼镜）
+
+3. 温度
+   核心体温下降是入睡信号。睡前1-2小时泡脚（血管扩张散热），卧室保持18-22°C。
+
+4. 咖啡因半衰期5-6小时，敏感人群下午2点后不建议摄入。
+
+5. 如果躺下20分钟没睡着，起床去昏暗环境做无聊的事（看纸质书），有睡意再回床。建立"床=睡觉"的条件反射。
+
+6. 周末补觉不要超过1小时，否则会打乱生物钟（社交时差）。
+
+失眠类型：入睡困难（焦虑）、维持困难（呼吸暂停/夜尿）、早醒（抑郁信号）。你是哪种？`,
+                    '学习效率': `基于认知科学的学习法：
+
+1. 主动回忆（Active Recall）
+   看完书后合上书，问自己"刚才讲了什么？"，而不是重读。测试效应是最强的学习策略。
+
+2. 间隔重复（Spaced Repetition）
+   遗忘曲线：20分钟后遗忘42%，1天后遗忘74%。
+   在遗忘临界点复习：20分钟后、1天后、3天后、1周后、1月后。
+   工具：Anki（记忆卡片软件）
+
+3. 费曼技巧
+   用简单语言向"12岁孩子"解释概念。卡壳的地方就是理解薄弱点。
+
+4. 交替练习（Interleaving）
+   不要一次刷100道同类型题，混合不同题型。大脑需要辨别适用场景，加深理解。
+
+5. 深度学习 vs 碎片化
+   90分钟专注块（对应超昼夜节律）> 零散30分钟。进入心流状态需要时间预热。
+
+6. 运动后立即学习
+   有氧运动提升BDNF（脑源性神经营养因子），促进神经元连接。
+
+你在学什么？我可以给更具体的建议。`
+                }
+            }
+        };
+
+        // 生成知识渊博的回复
+        function generateExpertResponse(userText) {
+            const lowerText = userText.toLowerCase();
+            
+            // 检查知识库匹配
+            for (const [category, data] of Object.entries(knowledgeBase)) {
+                // 检查关键词匹配
+                const matchedKeyword = data.keywords.find(k => lowerText.includes(k));
+                if (matchedKeyword) {
+                    // 检查具体主题匹配
+                    for (const [topic, response] of Object.entries(data.responses)) {
+                        if (lowerText.includes(topic) || 
+                            (topic === 'python爬虫' && lowerText.includes('爬虫')) ||
+                            (topic === '算法' && lowerText.includes('算法')) ||
+                            (topic === 'bug调试' && (lowerText.includes('bug') || lowerText.includes('报错'))) ||
+                            (topic === '梵高割耳朵' && lowerText.includes('梵高')) ||
+                            (topic === '区块链' && lowerText.includes('区块链')) ||
+                            (topic === '心理学' && lowerText.includes('心理学')) ||
+                            (topic === '科幻小说' && lowerText.includes('科幻')) ||
+                            (topic === '电影' && lowerText.includes('电影')) ||
+                            (topic === '音乐' && lowerText.includes('音乐')) ||
+                            (topic === '拖延症' && lowerText.includes('拖延')) ||
+                            (topic === '睡眠' && lowerText.includes('睡眠')) ||
+                            (topic === '学习效率' && (lowerText.includes('学习') || lowerText.includes('效率')))) {
+                            
+                            // 添加开场白
+                            const openings = [
+                                `这是个好问题。${topic}涉及到不少层面，我尽量说清楚：\n\n`,
+                                `嗯，${topic}我正好有些研究。简单来说：\n\n`,
+                                `关于${topic}，学界有不少观点。主流看法是：\n\n`,
+                                `哈，${topic}！这个有意思。关键点是：\n\n`
+                            ];
+                            
+                            const opening = openings[Math.floor(Math.random() * openings.length)];
+                            return opening + response + '\n\n还想深入了解哪个部分？';
+                        }
+                    }
+                    
+                    // 如果匹配了类别但没有匹配具体主题，给类别概览
+                    if (matchedKeyword) {
+                        return `你提到了${matchedKeyword}，这属于${category === 'physics' ? '科学技术' : category === 'programming' ? '编程技术' : category === 'humanities' ? '人文社科' : category === 'arts' ? '艺术文化' : '生活方法'}领域。
+
+我可以跟你聊：
+${Object.keys(data.responses).join('、')}
+
+你想具体了解哪个？或者说说你的具体场景，我帮你分析。`;
+                    }
+                }
+            }
+            
+            // 通用知识处理
+            return handleGeneralKnowledge(userText);
+        }
+
+        function handleGeneralKnowledge(userText) {
+            const lowerText = userText.toLowerCase();
+            
+            // 数学计算
+            if (lowerText.match(/计算|等于|多少|\+|\-|\*|\/|\d/)) {
+                try {
+                    const mathExpr = userText.replace(/[^0-9+\-*/().\s]/g, '');
+                    if (mathExpr) {
+                        const result = eval(mathExpr);
+                        return `计算结果：${mathExpr} = ${result}\n\n需要我解释计算过程或者其他数学问题吗？`;
+                    }
+                } catch (e) {}
+            }
+            
+            // 翻译
+            if (lowerText.match(/翻译|translate|英文|english/)) {
+                const translations = {
+                    '你好': 'Hello / Hi / Hey there',
+                    '谢谢': 'Thank you / Thanks / I appreciate it',
+                    '再见': 'Goodbye / See you / Take care',
+                    '我爱你': 'I love you / I\'m into you / You mean the world to me（程度递进）'
+                };
+                
+                for (const [cn, en] of Object.entries(translations)) {
+                    if (lowerText.includes(cn)) {
+                        return `"${cn}" 可以翻译为：\n${en}\n\n语境不同，语气也不同。需要更正式的商务用语还是口语化的？`;
+                    }
+                }
+                
+                return `我可以帮你翻译。请提供具体的中文或英文句子，我会根据语境给出最自然的译法，包括正式/口语、英式/美式等选项。`;
+            }
+            
+            // 天气（模拟）
+            if (lowerText.match(/天气|温度|下雨|穿什么/)) {
+                return `我看不到实时天气数据，但你可以：
+
+1. 看窗外（最准确）
+2. 问手机语音助手
+3. 查彩云天气（降水预报准）或Windy（专业气象）
+
+穿衣建议逻辑：
+• 15-20°C：单层长袖或薄外套
+• 10-15°C：毛衣+外套
+• 5-10°C：羽绒服
+• 看"体感温度"比实际温度更重要
+
+需要我解释气象学知识吗？比如为什么预报不准、厄尔尼诺现象等。`;
+            }
+            
+            // 健康咨询
+            if (lowerText.match(/病|疼|痛|感冒|发烧|药|医院|医生/)) {
+                return `健康提醒：我不是医生，以下只是一般常识。
+
+如果是急症（胸痛、呼吸困难、大出血、意识模糊），立即拨打120。
+
+常见情况：
+• 感冒：自限性疾病，7-10天自愈，多休息多喝水，抗生素无效
+• 发烧：38.5°C以下物理降温，以上可考虑退烧药，关键看精神状态
+• 头痛：记录发作时间、部位、性质，给医生参考
+
+建议：身体不适优先看医生，不要依赖网络信息。需要我推荐就医流程或解释某种疾病的医学原理吗？`;
+            }
+            
+            // 情感建议
+            if (lowerText.match(/喜欢|爱|表白|分手|失恋|复合|追|恋爱|对象/)) {
+                return `情感问题没有标准答案，但我可以分享一些心理学视角：
+
+依恋理论：
+• 安全型：容易亲密，不焦虑被抛弃
+• 焦虑型：害怕被离开，需要不断确认
+• 回避型：亲密感到不适，需要空间
+• 恐惧型：既想要亲密又害怕受伤
+
+了解自己和他人的依恋类型，能减少很多误会。
+
+沟通技巧：
+• 用"我"开头："我感到..." 而非 "你总是..."
+• 具体描述行为，而非评价人格
+• 表达需求，而非指责
+
+你具体是什么情况？暧昧、热恋、冲突，还是刚分手？不同阶段的策略不同。`;
+            }
+            
+            // 默认回复（更智能）
+            return generateSmartDefault(userText);
+        }
+
+        function generateSmartDefault(userText) {
+            const patterns = [
+                {
+                    test: /为什么|怎么回事|什么意思/,
+                    response: `这个问题可以从几个层面看：
+
+1. 表面原因：直接触发因素
+2. 深层机制：系统性原因
+3. 历史背景：怎么演变到今天的
+
+你更想从哪个角度理解？或者说说具体情境，我帮你分析。`
+                },
+                {
+                    test: /怎么|如何|怎样|方法|建议/,
+                    response: `方法取决于你的具体约束条件：
+
+• 时间预算多少？
+• 预算/资源限制？
+• 现有基础如何？
+• 最看重什么（速度/质量/成本）？
+
+不同条件，最优策略完全不同。说说你的情况？`
+                },
+                {
+                    test: /推荐|介绍|说说|讲讲/,
+                    response: `这个领域我了解一些。为了避免信息过载，你告诉我：
+
+1. 你的基础水平（入门/进阶/专业）？
+2. 偏好风格（实用/理论/有趣）？
+3. 具体应用场景？
+
+这样我能精准推荐，而不是列个长长的清单。`
+                },
+                {
+                    test: /好|棒|不错|厉害|牛/,
+                    response: `哈哈，谢谢！不过我也有盲区，说错了你直接指出来。
+
+话说回来，你刚才提到的这个，是想深入聊聊，还是随口一说？我随时准备切换模式： casual闲聊 或 深度探讨。`
+                }
+            ];
+            
+            for (const pattern of patterns) {
+                if (pattern.test.test(userText)) {
+                    return pattern.response;
+                }
+            }
+            
+            // 最通用的回复，但体现知识储备
+            const contexts = conversationContext.join(' ');
+            const isFollowUp = contexts.includes(userText.substring(0, 10));
+            
+            if (isFollowUp) {
+                return `继续刚才的话题...
+
+我可以展开讲技术细节、历史背景、实际应用，或者推荐相关资源。你想往哪个方向深入？
+
+另外，如果你突然想换话题也完全OK，我知识库是多线程的 😄`;
+            }
+            
+            const defaults = [
+                `这个话题我接触不多，但我可以试着从相邻领域找关联，或者我们一起探索。
+
+你具体想了解哪方面？定义、历史、现状、争议，还是未来趋势？`,
+                `有意思。我检索了一下知识库，没有直接匹配，但有几个相关概念可能有用：
+
+• 系统思维：看整体结构而非孤立事件
+• 第一性原理：拆解到最基本事实再推理
+• 反脆弱：从波动中获益而非仅仅承受
+
+你的问题可能属于哪个框架？`,
+                `哈，被问住了（诚实比装懂好）。不过我可以：
+
+1. 基于已有知识推测，但标注不确定性
+2. 告诉你去哪里找权威答案
+3. 我们一起逻辑推演，看看能得出什么结论
+
+你选哪种？或者换个我懂的话题也行，科学、技术、人文、艺术都涉猎一些。`
+            ];
+            
+            return defaults[Math.floor(Math.random() * defaults.length)];
+        }
+
+        async function sendMessage() {
+            const text = input.value.trim();
+            if (!text || sendBtn.disabled) return;
+
+            addMessage(text, true);
+            input.value = '';
+            input.style.height = 'auto';
+            setLoading(true);
+
+            // 模拟思考时间（根据问题复杂度）
+            const complexity = text.length > 50 ? 2000 : 1500;
+            const thinkingTime = Math.random() * 1000 + complexity;
+
+            setTimeout(() => {
+                const response = generateExpertResponse(text);
+                setLoading(false);
+                addMessage(response, false);
+                speak(response);
+            }, thinkingTime);
+        }
+
+        // 事件监听
+        sendBtn.addEventListener('click', sendMessage);
+        
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        input.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 150) + 'px';
+        });
+
+        input.focus();
+
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) input.focus();
+        });
+
+        if (synthesis) {
+            synthesis.getVoices();
+            setTimeout(() => synthesis.getVoices(), 1000);
+        }
+    </script>
+</body>
+</html>
