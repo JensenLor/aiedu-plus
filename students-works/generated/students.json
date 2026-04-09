@@ -1,0 +1,55 @@
+[
+  {
+    "id": "ZZS0001",
+    "name": "曾梓扬",
+    "grade": "小学五年级",
+    "study_months": 30,
+    "tags": [
+      "Mind+",
+      "Arduino",
+      "硬件编程",
+      "主板焊接",
+      "LaserMake"
+    ],
+    "works_count": 3,
+    "categories": [
+      "web",
+      "ai",
+      "hardware",
+      "3d",
+      "robot"
+    ],
+    "description": "热爱编程的五年级学生，擅长创造发明，创意制作，AI应用",
+    "join_date": "2023.09.16",
+    "avatar_file": "default_avatar.jpg",
+    "has_avatar": false,
+    "certificates": []
+  },
+  {
+    "id": "ZZS0002",
+    "name": "郑凌颖",
+    "grade": "小学三年级",
+    "study_months": 14,
+    "tags": [
+      "Scratch",
+      "3D建模",
+      "Arduino",
+      "硬件编程",
+      "主板焊接",
+      "AI应用"
+    ],
+    "works_count": 1,
+    "categories": [
+      "web",
+      "ai",
+      "hardware",
+      "3d",
+      "robot"
+    ],
+    "description": "三年级学生，学习Scratch、3D建模、巡线机器人、Arduino开源硬件编程和主板焊接，对硬件和编程有浓厚兴趣",
+    "join_date": "2025/1/10",
+    "avatar_file": "default_avatar.jpg",
+    "has_avatar": false,
+    "certificates": []
+  }
+]

@@ -1,0 +1,180 @@
+{
+  "students": [
+    {
+      "id": "zzy001",
+      "name": "曾梓扬",
+      "grade": "小学六年级",
+      "study_months": 8,
+      "tags": [
+        "HTML/CSS",
+        "JavaScript",
+        "AI应用"
+      ],
+      "works_count": 1,
+      "categories": [
+        "web",
+        "ai"
+      ],
+      "description": "热爱编程的六年级学生，擅长网页设计和AI应用",
+      "join_date": "2025-08-01",
+      "avatar_file": "avatar.jpg",
+      "has_avatar": false,
+      "folder": "zzy001_曾梓扬"
+    },
+    {
+      "id": "lxm002",
+      "name": "李小明",
+      "grade": "初中一年级",
+      "study_months": 6,
+      "tags": [
+        "Python",
+        "硬件"
+      ],
+      "works_count": 0,
+      "categories": [
+        "hardware",
+        "ai"
+      ],
+      "description": "对机器人和AI有浓厚兴趣",
+      "join_date": "2025-09-15",
+      "avatar_file": "avatar.jpg",
+      "has_avatar": false,
+      "folder": "lxm002_李小明"
+    },
+    {
+      "id": "wxh003",
+      "name": "王小红",
+      "grade": "小学五年级",
+      "study_months": 5,
+      "tags": [
+        "Scratch",
+        "乐高"
+      ],
+      "works_count": 0,
+      "categories": [
+        "game"
+      ],
+      "description": "喜欢用Scratch创作小游戏",
+      "join_date": "2025-10-10",
+      "avatar_file": "avatar.jpg",
+      "has_avatar": false,
+      "folder": "wxh003_王小红"
+    },
+    {
+      "id": "zly004",
+      "name": "郑凌颖",
+      "grade": "小学三年级",
+      "study_months": 14,
+      "tags": [
+        "Scratch",
+        "3D建模",
+        "Arduino",
+        "硬件编程",
+        "主板焊接"
+      ],
+      "works_count": 0,
+      "categories": [
+        "hardware",
+        "3d",
+        "robot"
+      ],
+      "description": "三年级学生，学习Scratch、3D建模、巡线机器人、Arduino开源硬件编程和主板焊接，对硬件和编程有浓厚兴趣",
+      "join_date": "2025-01-10",
+      "avatar_file": "default_avatar.jpg",
+      "has_avatar": false,
+      "folder": "zly004_郑凌颖"
+    }
+  ],
+  "works": [
+    {
+      "id": "work001",
+      "student_id": "zzy001",
+      "title": "智能天气助手",
+      "description": "基于AI的天气预测和穿衣建议系统，使用TensorFlow训练模型",
+      "tech_tags": [
+        "Python",
+        "TensorFlow",
+        "Flask"
+      ],
+      "difficulty": "中等",
+      "created_date": "2026-01-15",
+      "preview_summary": "基于AI的天气预测系统，能根据天气数据提供穿衣建议，使用TensorFlow训练预测模型，准确率高达85%。",
+      "download_file": "work001_智能天气助手.zip"
+    },
+    {
+      "id": "work002",
+      "student_id": "zzy001",
+      "title": "个人网站",
+      "description": "响应式个人作品展示网站，包含作品画廊和博客功能",
+      "tech_tags": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "difficulty": "简单",
+      "created_date": "2025-11-20",
+      "preview_summary": "响应式个人网站，展示编程作品和学习心得，支持手机和平板浏览，采用现代设计风格。",
+      "download_file": "work002_个人网站.zip"
+    },
+    {
+      "id": "work003",
+      "student_id": "lxm002",
+      "title": "智能小车",
+      "description": "使用Arduino控制的避障小车，具备自动导航功能",
+      "tech_tags": [
+        "Arduino",
+        "C++",
+        "Python"
+      ],
+      "difficulty": "中等",
+      "created_date": "2026-02-10",
+      "preview_summary": "基于Arduino的智能避障小车，使用超声波传感器检测障碍物，实现自主导航和避障功能。",
+      "download_file": "work003_智能小车.zip"
+    },
+    {
+      "id": "work004",
+      "student_id": "wxh003",
+      "title": "太空冒险游戏",
+      "description": "使用Scratch创作的太空射击游戏，包含3个关卡",
+      "tech_tags": [
+        "Scratch"
+      ],
+      "difficulty": "简单",
+      "created_date": "2025-12-05",
+      "preview_summary": "使用Scratch创作的太空射击游戏，包含3个关卡，玩家控制飞船躲避陨石和攻击敌人。",
+      "download_file": "work004_太空冒险游戏.zip"
+    }
+  ],
+  "social": {
+    "work001": {
+      "likes": 45,
+      "shares": 12,
+      "stars": 23,
+      "last_updated": "2026-04-06"
+    },
+    "work002": {
+      "likes": 32,
+      "shares": 8,
+      "stars": 18,
+      "last_updated": "2026-04-06"
+    },
+    "work003": {
+      "likes": 28,
+      "shares": 5,
+      "stars": 15,
+      "last_updated": "2026-04-06"
+    },
+    "work004": {
+      "likes": 56,
+      "shares": 15,
+      "stars": 32,
+      "last_updated": "2026-04-06"
+    }
+  },
+  "summary": {
+    "total_students": 4,
+    "total_works": 4,
+    "last_updated": "2026-04-07 07:55:50",
+    "update_frequency": "每周一次"
+  }
+}

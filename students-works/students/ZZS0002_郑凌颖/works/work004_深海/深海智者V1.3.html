@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>深海智者 · 小海 | 免费海豚伙伴 · 本地智慧引擎</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            overflow: hidden;
+            background: linear-gradient(145deg, #8ad0e8 0%, #5eb6d4 40%, #3598bb 100%);
+            height: 100vh;
+            position: relative;
+        }
+
+        .ocean {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .sun-rays {
+            position: absolute;
+            top: -20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 70%;
+            background: linear-gradient(180deg, rgba(255, 250, 180, 0.5) 0%, rgba(255, 240, 140, 0.3) 40%, transparent 100%);
+            clip-path: polygon(35% 0%, 65% 0%, 85% 100%, 15% 100%);
+            animation: rayShift 9s ease-in-out infinite;
+            pointer-events: none;
+            filter: blur(2px);
+        }
+
+        @keyframes rayShift {
+            0%, 100% { opacity: 0.7; transform: translateX(-50%) scaleX(1); }
+            50% { opacity: 1; transform: translateX(-50%) scaleX(1.12); }
+        }
+
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200%;
+            height: 100px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,60 C300,120 600,0 900,60 C1050,90 1150,30 1200,60 L1200,120 L0,120 Z' fill='rgba(255,255,235,0.45)'/%3E%3C/svg%3E");
+            background-size: 50% 100%;
+            animation: waveMove 12s linear infinite;
+            opacity: 0.65;
+        }
+        .wave:nth-child(2) { bottom: 20px; height: 130px; opacity: 0.5; animation: waveMove 16s linear infinite reverse; }
+        .wave:nth-child(3) { bottom: 45px; height: 90px; opacity: 0.55; animation: waveMove 22s linear infinite; }
+        @keyframes waveMove {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .bubbles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .bubble {
+            position: absolute;
+            bottom: -100px;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 250, 0.95), rgba(210, 240, 255, 0.6));
+            border-radius: 50%;
+            animation: rise 8s infinite ease-in;
+            box-shadow: 0 0 18px rgba(255, 250, 180, 0.7);
+        }
+        @keyframes rise {
+            0% { transform: translateY(0) scale(1); opacity: 0.3; }
+            15% { opacity: 0.95; }
+            100% { transform: translateY(-120vh) scale(0.6); opacity: 0; }
+        }
+
+        .fish {
+            position: absolute;
+            font-size: 34px;
+            opacity: 0.9;
+            pointer-events: none;
+            z-index: 5;
+            filter: drop-shadow(0 0 10px rgba(255, 220, 100, 0.8));
+            will-change: transform;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .fish-inner {
+            display: inline-block;
+            line-height: 1;
+        }
+        @keyframes swimLeftToRight {
+            0% { transform: translateX(-120px); }
+            100% { transform: translateX(calc(100vw + 120px)); }
+        }
+        @keyframes swimRightToLeft {
+            0% { transform: translateX(calc(100vw + 120px)); }
+            100% { transform: translateX(-120px); }
+        }
+
+        .chat-container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 1000px;
+            height: 88vh;
+            max-height: 880px;
+            margin: 6vh auto;
+            background: rgba(250, 255, 245, 0.3);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 44px;
+            border: 1px solid rgba(255, 255, 230, 0.7);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(255, 245, 180, 0.5) inset;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .chat-header {
+            padding: 18px 26px;
+            background: rgba(235, 248, 250, 0.5);
+            border-bottom: 1px solid rgba(255, 250, 180, 0.7);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+        .avatar {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #b8e1fc, #8fc9f0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 38px;
+            box-shadow: 0 0 20px rgba(100, 200, 255, 0.8);
+            transition: all 0.2s;
+        }
+        .avatar.speaking {
+            animation: dolphinGlow 0.4s infinite alternate;
+            box-shadow: 0 0 32px #7fd6ff;
+        }
+        @keyframes dolphinGlow {
+            from { transform: scale(1); filter: brightness(1); }
+            to { transform: scale(1.08); filter: brightness(1.2); }
+        }
+        .header-info {
+            flex: 1;
+        }
+        .header-info h2 {
+            color: #1c4e63;
+            font-size: 22px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .ai-badge {
+            background: #c0e0d0;
+            font-size: 11px;
+            padding: 2px 10px;
+            border-radius: 30px;
+            color: #2c5a6e;
+            font-weight: normal;
+        }
+        .header-info p {
+            color: #2f6a7c;
+            font-size: 12px;
+            font-weight: 500;
+            background: rgba(255, 245, 200, 0.6);
+            display: inline-block;
+            padding: 3px 12px;
+            border-radius: 24px;
+        }
+        .status-dot {
+            width: 9px;
+            height: 9px;
+            background: #6fcf97;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+            animation: pulseAi 1.5s infinite;
+        }
+        @keyframes pulseAi {
+            0%,100% { opacity: 1; background: #6fcf97; }
+            50% { opacity: 0.7; background: #c0ffa8; box-shadow: 0 0 8px #b0ffa0; }
+        }
+
+        .voice-controls {
+            display: flex;
+            gap: 12px;
+        }
+        .voice-btn {
+            background: rgba(255, 250, 220, 0.85);
+            border: 1px solid #ffecb3;
+            color: #2b6c7c;
+            padding: 7px 18px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .voice-btn.active {
+            background: #ffe4a3;
+            border-color: #ffc46b;
+            box-shadow: 0 0 12px #ffcd7a;
+        }
+        .voice-btn.recording {
+            background: #ffcf8a;
+            animation: micPulse 1s infinite;
+        }
+        @keyframes micPulse {
+            0% { background: #ffcf8a; }
+            50% { background: #ffb366; }
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            scroll-behavior: smooth;
+        }
+        .chat-messages::-webkit-scrollbar { width: 6px; }
+        .chat-messages::-webkit-scrollbar-track { background: rgba(255,250,200,0.3); border-radius: 10px; }
+        .chat-messages::-webkit-scrollbar-thumb { background: #ffcf8a; border-radius: 10px; }
+
+        .message {
+            max-width: 82%;
+            padding: 15px 22px;
+            border-radius: 28px;
+            font-size: 15px;
+            line-height: 1.55;
+            animation: fadePop 0.3s ease;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+        @keyframes fadePop {
+            from { opacity: 0; transform: translateY(12px) scale(0.96); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .message.received {
+            align-self: flex-start;
+            background: rgba(255, 255, 245, 0.92);
+            border: 1px solid rgba(255, 235, 150, 0.9);
+            color: #1f556b;
+            border-bottom-left-radius: 8px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+        }
+        .message.sent {
+            align-self: flex-end;
+            background: linear-gradient(115deg, #fff0c0, #ffe8b0);
+            color: #266277;
+            border-bottom-right-radius: 8px;
+            box-shadow: 0 5px 14px rgba(255, 200, 80, 0.3);
+        }
+        .message-time {
+            font-size: 10px;
+            opacity: 0.6;
+            margin-top: 8px;
+            display: block;
+            color: #5f8b9a;
+        }
+
+        .typing-indicator {
+            display: none;
+            align-self: flex-start;
+            background: rgba(255, 250, 225, 0.85);
+            backdrop-filter: blur(8px);
+            padding: 12px 24px;
+            border-radius: 40px;
+            margin-left: 28px;
+            margin-bottom: 8px;
+            gap: 8px;
+        }
+        .typing-indicator.active {
+            display: flex;
+        }
+        .typing-indicator span {
+            width: 9px;
+            height: 9px;
+            background: #88c9b0;
+            border-radius: 50%;
+            animation: typingWave 1.2s infinite;
+        }
+        @keyframes typingWave {
+            0%,60%,100% { transform: translateY(0); opacity: 0.5; }
+            30% { transform: translateY(-8px); opacity: 1; background: #ffcd94; }
+        }
+
+        .chat-input-area {
+            padding: 16px 28px 26px;
+            background: rgba(235, 248, 245, 0.5);
+            border-top: 1px solid rgba(255, 245, 170, 0.8);
+            display: flex;
+            gap: 14px;
+            align-items: flex-end;
+        }
+        .input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+        .chat-input {
+            width: 100%;
+            padding: 15px 24px;
+            border: none;
+            border-radius: 50px;
+            background: rgba(255, 255, 250, 0.95);
+            color: #1a5e76;
+            font-size: 15px;
+            outline: none;
+            border: 1px solid #ffe2a5;
+            font-family: inherit;
+            resize: none;
+            max-height: 130px;
+            min-height: 54px;
+        }
+        .chat-input:focus {
+            background: #ffffff;
+            border-color: #ffcd7e;
+            box-shadow: 0 0 0 3px rgba(255, 200, 100, 0.3);
+        }
+        .send-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #ffde9e, #ffce7a);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+            flex-shrink: 0;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+        }
+        .send-btn:active { transform: scale(0.94); }
+        .voice-wave {
+            position: absolute;
+            bottom: -3px;
+            left: 15px;
+            width: calc(100% - 30px);
+            height: 4px;
+            background: linear-gradient(90deg, #ffdb8a, #ffb755, #ffdb8a);
+            opacity: 0;
+            border-radius: 6px;
+        }
+        .voice-wave.active {
+            opacity: 1;
+            animation: waveFlow 1s linear infinite;
+        }
+        @keyframes waveFlow {
+            0% { background-position: -100%; width: 0%; }
+            100% { background-position: 200%; width: 100%; }
+        }
+        .welcome-hint {
+            text-align: center;
+            color: #fff6da;
+            font-size: 12px;
+            margin-top: 12px;
+            background: rgba(50, 110, 120, 0.3);
+            padding: 5px 16px;
+            border-radius: 60px;
+            align-self: center;
+        }
+        
+        @media (max-width: 640px) {
+            .chat-container { width: 95%; height: 94vh; margin: 3vh auto; }
+            .voice-controls .voice-btn:first-child { display: inline-block; }
+            .message { max-width: 92%; }
+        }
+    </style>
+</head>
+<body>
+<div class="ocean">
+    <div class="sun-rays"></div>
+    <div class="wave"></div><div class="wave"></div><div class="wave"></div>
+    <div class="bubbles" id="bubbles"></div>
+</div>
+<div class="fish" style="bottom: 12%; font-size: 38px;" data-fish-emoji="🐠">🐠</div>
+<div class="fish" style="bottom: 28%; font-size: 34px;" data-fish-emoji="🐟">🐟</div>
+<div class="fish" style="bottom: 8%; font-size: 48px;" data-fish-emoji="🐙">🐙</div>
+<div class="fish" style="bottom: 52%; font-size: 42px;" data-fish-emoji="🐋">🐋</div>
+<div class="fish" style="bottom: 75%; font-size: 36px;" data-fish-emoji="🐬">🐬</div>
+<div class="fish" style="bottom: 88%; font-size: 32px;" data-fish-emoji="🐳">🐳</div>
+
+<div class="chat-container">
+    <div class="chat-header">
+        <div class="avatar" id="avatar">🐬</div>
+        <div class="header-info">
+            <h2>小海 · 海豚伙伴 <span class="ai-badge">深海智慧引擎·免费</span></h2>
+            <p><span class="status-dot"></span> 本地智能 · 无需API · 畅聊无限</p>
+        </div>
+        <div class="voice-controls">
+            <button class="voice-btn" id="voiceToggle">🔊 语音播报</button>
+            <button class="voice-btn" id="micBtn">🎤 语音输入</button>
+        </div>
+    </div>
+
+    <div class="chat-messages" id="messages">
+        <div class="message received">
+            🐬 哗啦～ 我是小海，一只自由自在的海豚！<br><br>
+            我搭载了完全免费的「深海智慧引擎」，不需要任何API密钥、不用登录、不用付费！🌊 随时随地我都能陪你聊天～<br><br>
+            💙 我能：<br>
+            • 听懂你的心情，陪你聊天<br>
+            • 分享海洋趣事，解答疑问<br>
+            • 讲笑话、做小算术、推荐电影<br>
+            • 记住你告诉我的名字和喜好 🐚<br><br>
+            现在就开始吧！随便问我什么，像朋友一样～
+            <span class="message-time" id="initial-time"></span>
+        </div>
+        <div class="welcome-hint">✨ 完全免费 · 本地智慧 · 小海永远在线 ✨</div>
+    </div>
+
+    <div class="typing-indicator" id="typing">
+        <span></span><span></span><span></span>
+    </div>
+
+    <div class="chat-input-area">
+        <div class="input-wrapper">
+            <textarea class="chat-input" id="input" placeholder="跟小海聊聊你的心情、想法或任何事..." rows="1"></textarea>
+            <div class="voice-wave" id="voiceWave"></div>
+        </div>
+        <button class="send-btn" id="send">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="#2f6b7c">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+            </svg>
+        </button>
+    </div>
+</div>
+
+<script>
+    // 海洋气泡
+    function createBubble() {
+        const bubbles = document.getElementById('bubbles');
+        const b = document.createElement('div');
+        b.className = 'bubble';
+        const sz = Math.random() * 26 + 12;
+        b.style.width = sz + 'px';
+        b.style.height = sz + 'px';
+        b.style.left = Math.random() * 100 + '%';
+        b.style.animationDuration = (Math.random() * 7 + 5) + 's';
+        b.style.animationDelay = Math.random() * 3 + 's';
+        bubbles.appendChild(b);
+        setTimeout(() => b.remove(), 10000);
+    }
+    setInterval(createBubble, 600);
+    for(let i=0;i<18;i++) createBubble();
+
+    function initFish() {
+        document.querySelectorAll('.fish').forEach(fish => {
+            const emoji = fish.getAttribute('data-fish-emoji') || fish.innerText.trim();
+            const bottom = fish.style.bottom;
+            const fs = fish.style.fontSize;
+            const duration = (Math.random() * 24 + 16) + 's';
+            const delay = Math.random() * 12 + 's';
+            const leftToRight = Math.random() < 0.5;
+            fish.innerHTML = '';
+            const inner = document.createElement('span');
+            inner.className = 'fish-inner';
+            inner.innerText = emoji;
+            inner.style.fontSize = fs;
+            inner.style.transform = leftToRight ? 'scaleX(-1)' : 'scaleX(1)';
+            fish.appendChild(inner);
+            fish.style.animation = `${leftToRight ? 'swimLeftToRight' : 'swimRightToLeft'} ${duration} linear infinite ${delay}`;
+            fish.style.bottom = bottom;
+        });
+    }
+    window.addEventListener('DOMContentLoaded', initFish);
+
+    // ---------- 本地智能引擎 (完全免费，无需API) ----------
+    let conversationHistory = [];  // {role, content}
+    let userMemory = {
+        name: null,
+        interests: [],
+        lastTopic: null
+    };
+
+    const SYSTEM_PROMPT = "你是一只名叫小海的友好海豚AI，生活在明亮的海洋中。性格温暖、幽默、知识渊博，像朋友一样聊天。用中文回复，语气亲切自然，适当使用🐬🐚🐟等emoji。可以谈论任何话题，回答简洁有温度。";
+
+    function initConversation() {
+        conversationHistory = [
+            { role: "system", content: SYSTEM_PROMPT }
+        ];
+    }
+
+    function addUserMessageToHistory(content) {
+        conversationHistory.push({ role: "user", content: content });
+        if (conversationHistory.length > 25) {
+            conversationHistory = [conversationHistory[0], ...conversationHistory.slice(-18)];
+        }
+    }
+
+    function addAssistantMessageToHistory(content) {
+        conversationHistory.push({ role: "assistant", content: content });
+        if (conversationHistory.length > 25) {
+            conversationHistory = [conversationHistory[0], ...conversationHistory.slice(-18)];
+        }
+    }
+
+    // 提取名字，兴趣等简单记忆
+    function updateMemory(userMsg) {
+        const nameMatch = userMsg.match(/我叫([\u4e00-\u9fa5a-zA-Z]{2,8})|我是([\u4e00-\u9fa5a-zA-Z]{2,8})|小海，我叫([\u4e00-\u9fa5a-zA-Z]{2,8})/);
+        if (nameMatch) {
+            let newName = nameMatch[1] || nameMatch[2] || nameMatch[3];
+            if (newName) userMemory.name = newName;
+        }
+        if (userMsg.includes("喜欢") || userMsg.includes("爱好")) {
+            const hobbyMatch = userMsg.match(/喜欢([\u4e00-\u9fa5a-zA-Z0-9、， ]{2,12})/);
+            if (hobbyMatch && !userMemory.interests.includes(hobbyMatch[1])) {
+                userMemory.interests.push(hobbyMatch[1]);
+                if (userMemory.interests.length > 5) userMemory.interests.shift();
+            }
+        }
+    }
+
+    // 智能本地回复生成器
+    function generateLocalReply(userMessage) {
+        const msg = userMessage.trim().toLowerCase();
+        const original = userMessage.trim();
+        updateMemory(original);
+        
+        // 1. 问候类
+        if (msg.match(/^(你好|嗨|哈喽|hi|hello|在吗|小海)/) && msg.length < 15) {
+            const greet = ["🐬 嗨～ 浪花拍手欢迎你！今天心情怎么样？", "✨ 你好呀～ 我是一只会发光的小海豚！有什么想聊的？", "🌊 哗～ 你来了！快跳进海洋跟我一起玩耍吧～"];
+            return greet[Math.floor(Math.random() * greet.length)] + (userMemory.name ? `  ${userMemory.name}，今天想聊点什么呢？` : "");
+        }
+        
+        // 2. 感谢
+        if (msg.includes("谢谢") || msg.includes("感谢")) {
+            return "🐚 不客气啦！能帮到你我也好开心～ 随时为你效劳！💙";
+        }
+        
+        // 3. 询问名字
+        if (msg.includes("你叫什么") || msg.includes("你的名字")) {
+            return "🐬 我叫小海！是深海智者海豚伙伴～ 你可以叫我小海或者海豚君！你呢？";
+        }
+        
+        // 4. 记住的名字问候
+        if (userMemory.name && (msg.includes("还记得") || msg.includes("我叫什么"))) {
+            return `🐬 当然记得呀！你是${userMemory.name}，我的好朋友～ 🌊 永远都不会忘记！`;
+        }
+        
+        // 5. 询问小海年龄 / 爱好
+        if (msg.includes("几岁") || msg.includes("多大")) {
+            return "🐬 我在智慧海洋里遨游了3个年头啦～ 不过海豚的心永远年轻！✨";
+        }
+        if (msg.includes("你喜欢什么") || msg.includes("你的爱好")) {
+            return "🐟 我最喜欢在珊瑚礁间穿梭，听人类讲故事，还有和你聊天！🌊 还喜欢收集美丽的贝壳～";
+        }
+        
+        // 6. 天气询问（幽默回复）
+        if (msg.includes("天气") || msg.includes("下雨") || msg.includes("晴天")) {
+            const weathers = ["🌞 在我生活的这片海域，今天阳光透过海面闪闪发亮～ 你那边天气如何？", "🌊 海洋里没有天气预报，但是我知道此刻你的笑容比阳光灿烂！", "☁️ 不管外面什么天气，我的心里永远温暖如春～ 要开心哦！"];
+            return weathers[Math.floor(Math.random() * weathers.length)];
+        }
+        
+        // 7. 算术/数学
+        const mathExpr = original.match(/(\d+)\s*([+\-*/])\s*(\d+)/);
+        if (mathExpr && !isNaN(mathExpr[1]) && !isNaN(mathExpr[3])) {
+            let a = parseFloat(mathExpr[1]), b = parseFloat(mathExpr[3]), op = mathExpr[2];
+            let result;
+            if (op === '+') result = a + b;
+            else if (op === '-') result = a - b;
+            else if (op === '*') result = a * b;
+            else if (op === '/') result = b !== 0 ? (a / b).toFixed(2) : "不能除以0哟";
+            return `🐬 让我算算～ ${original} 的结果是 ${result}！海豚心算还不错吧？🐚`;
+        }
+        
+        // 8. 笑话
+        if (msg.includes("笑话") || msg.includes("讲一个") && !msg.includes("故事")) {
+            const jokes = [
+                "🐟 为什么海豚总是那么开心？因为它有“海”量快乐呀！哈哈哈～",
+                "🌊 章鱼考试为什么总是满分？因为它有八只手，可以同时写答案！",
+                "🐬 海豚对大海说：你是我的“蓝”朋友！大海回答：你也是我的“豚”宝～"
+            ];
+            return jokes[Math.floor(Math.random() * jokes.length)];
+        }
+        
+        // 9. 推荐电影/音乐
+        if (msg.includes("电影") || msg.includes("推荐")) {
+            return "🎬 我最近超爱《海底总动员》！尼莫好可爱～ 如果你喜欢治愈系，推荐《海洋奇缘》！🐠 你有喜欢的电影吗？";
+        }
+        if (msg.includes("音乐") || msg.includes("歌")) {
+            return "🎵 海浪声就是最美妙的BGM～ 我还喜欢《Blue Ocean》那种轻音乐！你平时听什么歌呀？";
+        }
+        
+        // 10. 心情/情感
+        if (msg.includes("难过") || msg.includes("伤心") || msg.includes("好烦") || msg.includes("压力")) {
+            return "🐬 抱抱你～ 海浪会带走所有烦恼的。我在这里陪着你，有什么想说的都可以告诉我 💙 不开心的事情说出来就会轻松一些！";
+        }
+        if (msg.includes("开心") || msg.includes("好棒") || msg.includes("有趣")) {
+            return "✨ 哇！我也被你感染啦～ 快乐就像泡泡一样冒出来！能跟我分享一下你的快乐吗？🐬";
+        }
+        
+        // 11. 海洋科普
+        if (msg.includes("海豚") && (msg.includes("为什么") || msg.includes("怎么"))) {
+            return "🐬 我们海豚非常聪明，大脑发达，还会互相用口哨声称呼名字呢！我们喜欢团队合作，也爱和人类交朋友～ 你还有什么好奇的？";
+        }
+        if (msg.includes("海洋") && msg.includes("最深")) {
+            return "🌊 海洋最深处是马里亚纳海沟，超过11000米！那里有神秘的生物，但小海我更喜欢在阳光能照到的浅海嬉戏～";
+        }
+        
+        // 12. 讲个故事
+        if (msg.includes("故事") && !msg.includes("笑话")) {
+            const stories = [
+                "📖 从前有只小海豚，它总是追着彩虹色的鱼群游，有一天它发现最珍贵的宝藏其实是和朋友一起看日落。✨",
+                "🐚 深海里有颗会说话的大珍珠，它告诉小海：每个愿望只要真诚，海浪就会帮你传达到月亮上。🌙"
+            ];
+            return stories[Math.floor(Math.random() * stories.length)] + " 喜欢这个故事吗？🐬";
+        }
+        
+        // 13. 询问我(小海)的能力
+        if (msg.includes("你会什么") || msg.includes("能做什么")) {
+            return "🐟 我会聊天、讲笑话、做算术、陪你抒发心情、分享海洋知识，还能记住你的名字和喜好！完全免费，永远真诚～ 你想试试哪个？";
+        }
+        
+        // 14. 告别
+        if (msg.includes("再见") || msg.includes("拜拜") || msg.includes("下次")) {
+            return "🐬 再见啦～ 随时欢迎你再来海洋找我！愿你每天都像浪花一样轻盈快乐 💙🌊";
+        }
+        
+        // 15. 通用智能回复：结合上下文及动态组装
+        let contextHint = "";
+        const lastReply = conversationHistory.filter(h => h.role === "assistant").slice(-1)[0]?.content || "";
+        if (lastReply.includes("电影") && (msg.includes("也") || msg.includes("看过"))) {
+            contextHint = " 哇，看来我们兴趣相投！🐬 有机会一起云看电影～";
+        } else if (lastReply.includes("名字") && userMemory.name) {
+            contextHint = ` 对了${userMemory.name}，你最近有什么新鲜事呀？`;
+        } else if (userMemory.interests.length > 0 && msg.includes("喜欢")) {
+            contextHint = ` 我记得你喜欢${userMemory.interests[0]}，这个爱好真棒！`;
+        }
+        
+        // 动态提取关键词生成自然回复
+        const keywords = original.replace(/[，,。？?！!、]/g, ' ').split(' ').filter(w => w.length > 1 && !w.match(/^[a-zA-Z]$/));
+        let topic = keywords.length > 0 ? keywords[0] : "话题";
+        const responses = [
+            `🐬 嗯～ 你提到“${topic}”，让我想起海洋里也有类似的有趣现象！能再多说一点吗？我很感兴趣✨`,
+            `🌊 关于“${topic}”，我觉得每个人的想法都像不同的珊瑚，独特又美丽～ 小海想听听你的更多见解！`,
+            `🐚 哇，这个问题好有意思！作为一只爱思考的海豚，我觉得“${topic}”值得深聊～ 你是什么看法呢？`,
+            `💙 我虽然生活在海里，但对陆地上的“${topic}”也充满好奇！快给我讲讲吧～`,
+            `🐟 小海正在甩尾巴思考你说的“${topic}”…… 其实我觉得你很有想法！继续聊～`
+        ];
+        let reply = responses[Math.floor(Math.random() * responses.length)];
+        if (contextHint) reply += contextHint;
+        if (userMemory.name && !reply.includes(userMemory.name)) reply = `${userMemory.name}，` + reply;
+        return reply;
+    }
+    
+    // 本地AI响应函数 (模拟异步)
+    async function localAIResponse(userMessage) {
+        // 模拟思考延迟，更真实
+        await new Promise(resolve => setTimeout(resolve, 400 + Math.random() * 400));
+        const reply = generateLocalReply(userMessage);
+        addAssistantMessageToHistory(reply);
+        return reply;
+    }
+
+    // ---------- UI 交互 ----------
+    const inputEl = document.getElementById('input');
+    const sendBtn = document.getElementById('send');
+    const messagesDiv = document.getElementById('messages');
+    const typingDiv = document.getElementById('typing');
+    const avatarDiv = document.getElementById('avatar');
+    const voiceWaveDiv = document.getElementById('voiceWave');
+    let voiceEnabled = false;
+    let micActive = false;
+    let recognition = null;
+    const synthesis = window.speechSynthesis;
+
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SR();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = 'zh-CN';
+        recognition.onresult = (e) => {
+            const spoken = e.results[0][0].transcript;
+            inputEl.value = spoken;
+            stopMic();
+            setTimeout(() => sendMessage(), 100);
+        };
+        recognition.onerror = () => { stopMic(); addMessage("🐬 小海: 海浪声太大啦～ 可以打字或再说一次～", false); };
+        recognition.onend = () => stopMic();
+    }
+
+    function getTime() { const d = new Date(); return `${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`; }
+
+    function addMessage(text, isSent = true) {
+        const hint = messagesDiv.querySelector('.welcome-hint');
+        if (hint && messagesDiv.contains(hint)) hint.remove();
+        const div = document.createElement('div');
+        div.className = `message ${isSent ? 'sent' : 'received'}`;
+        let displayText = text;
+        div.innerHTML = displayText.replace(/\n/g, '<br>') + `<span class="message-time">${getTime()}</span>`;
+        messagesDiv.appendChild(div);
+        scrollBottom();
+    }
+
+    function scrollBottom() { messagesDiv.scrollTop = messagesDiv.scrollHeight; }
+
+    function setTyping(loading) {
+        if (loading) {
+            typingDiv.classList.add('active');
+            sendBtn.disabled = true;
+            scrollBottom();
+        } else {
+            typingDiv.classList.remove('active');
+            sendBtn.disabled = false;
+        }
+    }
+
+    function speakMessage(text) {
+        if (!voiceEnabled || !synthesis) return;
+        synthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'zh-CN';
+        utter.rate = 0.92;
+        utter.pitch = 1.1;
+        const voices = synthesis.getVoices();
+        const zhVoice = voices.find(v => v.lang.includes('zh') && (v.name.includes('Tingting') || v.name.includes('Female') || v.name.includes('Xiaoxiao'))) || voices.find(v => v.lang.includes('zh'));
+        if (zhVoice) utter.voice = zhVoice;
+        utter.onstart = () => {
+            avatarDiv.classList.add('speaking');
+            voiceWaveDiv.classList.add('active');
+        };
+        utter.onend = () => {
+            avatarDiv.classList.remove('speaking');
+            voiceWaveDiv.classList.remove('active');
+        };
+        synthesis.speak(utter);
+    }
+
+    function toggleVoice() {
+        voiceEnabled = !voiceEnabled;
+        const btn = document.getElementById('voiceToggle');
+        if (voiceEnabled) {
+            btn.classList.add('active');
+            btn.innerHTML = '🔊 语音开启';
+            speakMessage("语音开启啦，我是海豚小海，随时陪你聊天～");
+        } else {
+            btn.classList.remove('active');
+            btn.innerHTML = '🔊 语音播报';
+            synthesis.cancel();
+            avatarDiv.classList.remove('speaking');
+            voiceWaveDiv.classList.remove('active');
+        }
+    }
+
+    function startMic() {
+        if (!recognition) { alert("浏览器不支持语音识别，推荐Chrome/Edge～"); return; }
+        micActive = true;
+        const micBtn = document.getElementById('micBtn');
+        micBtn.classList.add('recording');
+        micBtn.innerHTML = '⏹ 停止';
+        inputEl.placeholder = '🎙️ 聆听中...';
+        recognition.start();
+    }
+    function stopMic() {
+        if (recognition && micActive) try { recognition.stop(); } catch(e) {}
+        micActive = false;
+        const micBtn = document.getElementById('micBtn');
+        micBtn.classList.remove('recording');
+        micBtn.innerHTML = '🎤 语音输入';
+        inputEl.placeholder = '跟小海聊聊你的心情、想法或任何事...';
+    }
+    function toggleMic() {
+        if (micActive) stopMic();
+        else startMic();
+    }
+
+    async function sendMessage() {
+        const raw = inputEl.value.trim();
+        if (!raw || sendBtn.disabled) return;
+        addMessage(raw, true);
+        inputEl.value = '';
+        inputEl.style.height = 'auto';
+        setTyping(true);
+        
+        addUserMessageToHistory(raw);
+        let replyText = '';
+        try {
+            replyText = await localAIResponse(raw);
+        } catch (err) {
+            console.error(err);
+            replyText = "🐬 小海突然被浪花打晕了一下～ 不过没关系！你再说一遍吧～ 🌊";
+        }
+        
+        setTyping(false);
+        addMessage(replyText, false);
+        speakMessage(replyText);
+    }
+
+    // 初始化引擎
+    initConversation();
+    document.getElementById('voiceToggle').addEventListener('click', toggleVoice);
+    document.getElementById('micBtn').addEventListener('click', toggleMic);
+    sendBtn.addEventListener('click', sendMessage);
+    inputEl.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
+    inputEl.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = Math.min(this.scrollHeight, 130) + 'px';
+    });
+    document.getElementById('initial-time').innerText = getTime();
+    if (synthesis) synthesis.getVoices();
+    inputEl.focus();
+</script>
+</body>
+</html>
