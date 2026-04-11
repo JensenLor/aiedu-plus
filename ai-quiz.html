@@ -540,6 +540,34 @@
             color: var(--text-medium);
         }
         
+        /* 用户标识区域 */
+        .user-identity {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 4px 4px 0px var(--shadow-color);
+            border: 3px solid var(--border-color);
+            text-align: center;
+        }
+        .user-identity h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        .user-identity input {
+            padding: 10px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            margin-right: 10px;
+            width: 200px;
+        }
+        .user-identity .btn {
+            margin-top: 10px;
+        }
+        
         /* 隐藏区域 */
         .hidden {
             display: none !important;
@@ -622,6 +650,14 @@
 
     <!-- 答题区域 -->
     <div class="quiz-container hidden" id="quiz-area">
+        <!-- 用户标识区域 -->
+        <div class="user-identity">
+            <h3>👤 用户标识</h3>
+            <input type="text" id="user-name" placeholder="请输入您的名字" />
+            <button class="btn btn-primary" onclick="loadUserRecord()">加载记录</button>
+            <button class="btn btn-default" onclick="clearUserRecord()">清除记录</button>
+        </div>
+        
         <!-- 筛选区域 -->
         <div class="filter-card">
             <h3 class="filter-title">🎯 筛选题目</h3>
@@ -752,6 +788,7 @@
         let currentIndex = 0;
         let userAnswers = {};
         let selectedDimension = "all", selectedType = "all";
+        let currentUser = "";
 
         // 缓存键名
         const CACHE_KEY = "ai_question_bank_data_v3";
@@ -762,6 +799,18 @@
         document.addEventListener("DOMContentLoaded", function() {
             initTagListeners();
             loadQuestionBank();
+            
+            // 检查是否有上次的用户
+            const lastUser = localStorage.getItem("last_user");
+            if (lastUser) {
+                document.getElementById("user-name").value = lastUser;
+                currentUser = lastUser;
+            }
+            
+            // 在用户输入名字时保存为上次用户
+            document.getElementById("user-name").addEventListener("change", function() {
+                localStorage.setItem("last_user", this.value);
+            });
         });
 
         // 初始化标签点击事件
@@ -1144,6 +1193,81 @@
             renderQuestion();
             updateProgressStats();
             renderAnswerCard();
+            
+            // 保存用户记录
+            saveUserRecord();
+        }
+        
+        // 保存用户答题记录
+        function saveUserRecord() {
+            if (!currentUser) return;
+            
+            const userData = {
+                answers: userAnswers,
+                score: calculateScore(),
+                timestamp: Date.now()
+            };
+            
+            localStorage.setItem(`user_${currentUser}`, JSON.stringify(userData));
+        }
+        
+        // 加载用户答题记录
+        function loadUserRecord() {
+            currentUser = document.getElementById("user-name").value.trim();
+            if (!currentUser) {
+                alert("请输入您的名字");
+                return;
+            }
+            
+            const userData = localStorage.getItem(`user_${currentUser}`);
+            if (userData) {
+                const parsedData = JSON.parse(userData);
+                userAnswers = parsedData.answers || {};
+                updateProgressStats();
+                renderAnswerCard();
+                renderQuestion();
+                alert(`成功加载 ${currentUser} 的答题记录`);
+            } else {
+                alert(`未找到 ${currentUser} 的答题记录，将创建新记录`);
+                userAnswers = {};
+                currentUser = document.getElementById("user-name").value.trim();
+            }
+        }
+        
+        // 清除用户答题记录
+        function clearUserRecord() {
+            if (!currentUser) {
+                alert("请先输入您的名字");
+                return;
+            }
+            
+            if (confirm(`确定要清除 ${currentUser} 的答题记录吗？`)) {
+                localStorage.removeItem(`user_${currentUser}`);
+                userAnswers = {};
+                updateProgressStats();
+                renderAnswerCard();
+                renderQuestion();
+                alert(`已清除 ${currentUser} 的答题记录`);
+            }
+        }
+        
+        // 计算得分
+        function calculateScore() {
+            let correctCount = 0;
+            let totalCount = 0;
+            
+            Object.values(userAnswers).forEach(answer => {
+                totalCount++;
+                if (answer.isCorrect) {
+                    correctCount++;
+                }
+            });
+            
+            return {
+                correct: correctCount,
+                total: totalCount,
+                percentage: totalCount > 0 ? (correctCount / totalCount * 100).toFixed(2) : 0
+            };
         }
 
         // 下一题
