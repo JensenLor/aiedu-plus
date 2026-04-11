@@ -6,7 +6,7 @@
     <title>青少年人工智能基础知识竞赛答题系统 - 罗辑智造社</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        /* 答题系统专用样式 */
+        /* 答题系统专用样式 - 修复颜色对比度问题 */
         :root {
             --quiz-primary: #e67e22;
             --quiz-primary-hover: #d35400;
@@ -17,127 +17,155 @@
             --quiz-card: #ffffff;
             --quiz-text: #2c3e50;
             --quiz-text-light: #7f8c8d;
-            --quiz-loading: #3498db;
-            --quiz-error: #e74c3c;
-            --quiz-success: #27ae60;
+            --quiz-loading: #2980b9;
+            --quiz-error: #c0392b;
+            --quiz-success: #1e8449;
+        }
+        
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            background-color: var(--quiz-bg);
+            color: var(--quiz-text);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
         }
         
         .quiz-container {
-            max-width: 1200px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 0 10px;
         }
         
         /* 头部 */
         .quiz-header {
             background-color: var(--quiz-primary);
             color: white;
-            padding: 12px 20px;
+            padding: 15px 25px;
             border-radius: 12px;
             margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3);
         }
         .quiz-header h1 {
-            font-size: 18px;
-            font-weight: 500;
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0;
         }
         .quiz-header .summary {
             font-size: 14px;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 12px;
+            border-radius: 20px;
         }
         
-        /* 加载状态 */
+        /* 加载状态 - 修复颜色对比度 */
         .loading-wrapper {
-            margin: 20px 0;
+            margin: 40px 0;
         }
         .loading-card {
             background: var(--quiz-card);
             border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
             text-align: center;
+            border: 1px solid #e8e8e8;
         }
         .loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid var(--quiz-loading);
+            width: 50px;
+            height: 50px;
+            border: 5px solid #ecf0f1;
+            border-top: 5px solid var(--quiz-loading);
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+            margin: 0 auto 25px;
         }
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
         .loading-title {
-            font-size: 18px;
-            font-weight: 500;
+            font-size: 22px;
+            font-weight: 600;
             margin-bottom: 15px;
-            color: var(--quiz-loading);
+            color: var(--quiz-text);
         }
         .loading-desc {
-            font-size: 14px;
+            font-size: 15px;
             color: var(--quiz-text-light);
-            margin-bottom: 15px;
-            line-height: 1.5;
+            margin-bottom: 20px;
+            line-height: 1.8;
         }
         .loading-error {
             color: var(--quiz-error);
-            font-weight: 500;
+            font-weight: 600;
+            background: #fdf2f2;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 1px solid #f5c6cb;
         }
         .loading-success {
             color: var(--quiz-success);
-            font-weight: 500;
+            font-weight: 600;
+            background: #f0fdf4;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 1px solid #bbf7d0;
         }
         .retry-btn {
-            padding: 8px 20px;
+            padding: 12px 30px;
             background: var(--quiz-primary);
             color: white;
             border: none;
-            border-radius: 6px;
-            font-size: 14px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
             cursor: pointer;
             margin-top: 15px;
-            transition: all 0.2s;
+            transition: all 0.3s;
         }
         .retry-btn:hover {
             background: var(--quiz-primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(230, 126, 34, 0.4);
         }
         
-        /* 答题区域 */
-        .quiz-area {
-            display: none;
-        }
-        .filter-card, .answer-card, .question-area {
+        /* 筛选区域 */
+        .filter-card {
             background: var(--quiz-card);
             border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            padding: 25px;
             margin-bottom: 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            border: 1px solid #e8e8e8;
         }
         .filter-title {
             font-size: 16px;
-            font-weight: 500;
+            font-weight: 600;
             margin-bottom: 15px;
             color: var(--quiz-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         .tag-group {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         .tag-item {
-            padding: 6px 15px;
-            border-radius: 20px;
-            border: 1px solid #ddd;
+            padding: 8px 18px;
+            border-radius: 25px;
+            border: 2px solid #e0e0e0;
             background: #f8f9fa;
             font-size: 14px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
         }
         .tag-item:hover {
             border-color: var(--quiz-primary);
@@ -150,16 +178,16 @@
         }
         .btn-group {
             display: flex;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 12px;
         }
         .btn {
-            padding: 8px 20px;
+            padding: 10px 24px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
         }
         .btn-primary {
             background: var(--quiz-primary);
@@ -173,32 +201,40 @@
             color: var(--quiz-text);
         }
         .btn-default:hover {
-            background: #bdc3c7;
+            background: #d5dbdb;
         }
         
         /* 答题卡 */
+        .answer-card {
+            background: var(--quiz-card);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            border: 1px solid #e8e8e8;
+        }
         .answer-card-title {
             font-size: 16px;
-            font-weight: 500;
+            font-weight: 600;
             margin-bottom: 15px;
             color: var(--quiz-primary);
         }
         .answer-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
-            gap: 8px;
+            grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
+            gap: 10px;
         }
         .answer-item {
-            width: 40px;
-            height: 40px;
-            border-radius: 6px;
+            width: 45px;
+            height: 45px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
-            font-weight: 500;
+            font-size: 15px;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s;
         }
         .answer-item.unanswered {
             background: var(--quiz-unanswered);
@@ -207,7 +243,8 @@
         .answer-item.current {
             background: var(--quiz-primary);
             color: white;
-            box-shadow: 0 0 0 2px rgba(230, 126, 34, 0.3);
+            box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.3);
+            transform: scale(1.1);
         }
         .answer-item.correct {
             background: var(--quiz-correct);
@@ -219,27 +256,42 @@
         }
         
         /* 题目区域 */
+        .question-area {
+            background: var(--quiz-card);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            border: 1px solid #e8e8e8;
+        }
         .question-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ecf0f1;
         }
         .question-title {
             font-size: 18px;
-            font-weight: 500;
+            font-weight: 600;
             color: var(--quiz-text);
         }
         .question-info {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--quiz-text-light);
+            background: #f8f9fa;
+            padding: 5px 12px;
+            border-radius: 15px;
         }
         .question-text {
             font-size: 16px;
-            line-height: 1.6;
+            line-height: 1.8;
             margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid var(--quiz-primary);
         }
         .options-list {
             display: flex;
@@ -248,12 +300,14 @@
             margin-bottom: 25px;
         }
         .option-item {
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            padding: 18px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
             cursor: pointer;
-            transition: all 0.2s;
-            position: relative;
+            transition: all 0.3s;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
         }
         .option-item:hover {
             border-color: var(--quiz-primary);
@@ -272,42 +326,60 @@
             background: rgba(231, 76, 60, 0.1);
         }
         .option-label {
-            font-weight: 500;
-            margin-right: 10px;
+            font-weight: 700;
             color: var(--quiz-primary);
+            min-width: 30px;
+            font-size: 16px;
         }
         .option-text {
             font-size: 15px;
-            line-height: 1.5;
+            line-height: 1.6;
+            flex: 1;
         }
         
         /* 解析区域 */
         .analysis-area {
             margin-top: 25px;
             padding-top: 20px;
-            border-top: 1px solid #eee;
+            border-top: 2px solid #ecf0f1;
             display: none;
+        }
+        .analysis-area.show {
+            display: block;
         }
         .analysis-title {
             font-size: 16px;
-            font-weight: 500;
-            margin-bottom: 15px;
+            font-weight: 600;
+            margin-bottom: 12px;
             color: var(--quiz-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         .analysis-content {
             font-size: 14px;
-            line-height: 1.6;
+            line-height: 1.8;
             color: var(--quiz-text);
             background: #f8f9fa;
-            padding: 15px;
-            border-radius: 6px;
+            padding: 18px;
+            border-radius: 8px;
+            border-left: 4px solid var(--quiz-primary);
         }
         
         /* 导航按钮 */
         .nav-buttons {
             display: flex;
             justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
             margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid #ecf0f1;
+        }
+        
+        /* 隐藏答题区域 */
+        .quiz-area {
+            display: none;
         }
         
         /* 响应式 */
@@ -315,200 +387,90 @@
             .quiz-header {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 8px;
-            }
-            .quiz-header .summary {
-                align-self: flex-end;
+                gap: 10px;
             }
             .answer-grid {
-                grid-template-columns: repeat(auto-fill, minmax(35px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
             }
             .answer-item {
-                width: 35px;
-                height: 35px;
-                font-size: 13px;
-            }
-            .question-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
+                width: 40px;
+                height: 40px;
+                font-size: 14px;
             }
             .nav-buttons {
                 flex-direction: column;
-                gap: 10px;
             }
             .nav-buttons .btn {
                 width: 100%;
             }
         }
-        
-        /* 介绍区域 */
-        .intro-section {
-            background: linear-gradient(135deg, #fff8f0 0%, #fff0e6 100%);
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 25px;
-            border: 2px dashed #ff8c42;
-        }
-        .intro-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: #e67e22;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .intro-title i {
-            font-size: 24px;
-        }
-        .intro-content {
-            font-size: 15px;
-            line-height: 1.6;
-            color: #5a5a5a;
-            margin-bottom: 15px;
-        }
-        .intro-features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-        .feature-item {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        .feature-icon {
-            font-size: 20px;
-            margin-bottom: 8px;
-            color: #e67e22;
-        }
-        .feature-title {
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: #333;
-        }
-        .feature-desc {
-            font-size: 13px;
-            color: #666;
-            line-height: 1.4;
-        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- 导航栏 -->
-        <nav>
-            <div class="nav-brand">
-                <img src="images/罗辑智造社二次元头部形象.png" alt="Logo" class="nav-logo">
-                <span class="nav-title">罗辑智造社</span>
-            </div>
-            <ul>
-                <li><a href="index.html">🏠 首页</a></li>
-                <li><a href="resources.html">🎓 学习资源</a></li>
-                <li><a href="works.html">MakerVerse</a></li>
-                <li><a href="ai-quiz.html" class="active">🧠 AI竞赛答题</a></li>
-            </ul>
-        </nav>
+    <div class="quiz-container">
+        <!-- 头部 -->
+        <div class="quiz-header">
+            <h1>🧠 青少年人工智能基础知识竞赛答题系统</h1>
+            <div class="summary" id="header-summary">准备就绪</div>
+        </div>
 
-        <!-- 介绍区域 -->
-        <div class="intro-section">
-            <h2 class="intro-title"><i>🧠</i> 青少年人工智能基础知识竞赛答题系统</h2>
-            <p class="intro-content">
-                本系统基于《中小学人工智能通识教育指南（2025年版）》和《义务教育信息科技课程标准（2022年版2025年修订）》设计，旨在帮助学生掌握人工智能基础知识，培养四大核心素养：人工智能意识、人工智能思维、人工智能应用与创新能力、人工智能社会责任。
-            </p>
-            <div class="intro-features">
-                <div class="feature-item">
-                    <div class="feature-icon">📚</div>
-                    <div class="feature-title">权威题库</div>
-                    <div class="feature-desc">基于官方指南和课程标准设计</div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">🎯</div>
-                    <div class="feature-title">智能筛选</div>
-                    <div class="feature-desc">按维度和题型筛选题目</div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">📊</div>
-                    <div class="feature-title">实时统计</div>
-                    <div class="feature-desc">答题进度和正确率实时显示</div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">💡</div>
-                    <div class="feature-title">详细解析</div>
-                    <div class="feature-desc">每道题目都有详细答案解析</div>
-                </div>
+        <!-- 加载状态 -->
+        <div class="loading-wrapper" id="loading-wrapper">
+            <div class="loading-card">
+                <div class="loading-spinner" id="loading-spinner"></div>
+                <h2 class="loading-title" id="loading-title">正在加载题库...</h2>
+                <p class="loading-desc" id="loading-desc">系统正在从服务器获取题库数据，请稍候...</p>
+                <div id="loading-status"></div>
             </div>
         </div>
 
-        <!-- 答题系统容器 -->
-        <div class="quiz-container">
-            <!-- 头部 -->
-            <div class="quiz-header">
-                <h1>青少年人工智能基础知识竞赛答题系统</h1>
-                <div class="summary">加载中...</div>
-            </div>
-
-            <!-- 加载状态 -->
-            <div class="loading-wrapper" id="loading-wrapper">
-                <div class="loading-card">
-                    <div class="loading-spinner" id="loading-spinner"></div>
-                    <h2 class="loading-title" id="loading-title">正在加载题库...</h2>
-                    <p class="loading-desc" id="loading-desc">请稍候，系统正在从服务器获取题库数据...</p>
-                    <div id="loading-status"></div>
+        <!-- 答题区域 -->
+        <div class="quiz-area" id="quiz-area">
+            <!-- 筛选区域 -->
+            <div class="filter-card">
+                <h3 class="filter-title">📋 筛选题目</h3>
+                <div class="tag-group">
+                    <span class="tag-item active" data-dimension="all">全部维度</span>
+                    <span class="tag-item" data-dimension="人工智能意识">人工智能意识</span>
+                    <span class="tag-item" data-dimension="人工智能思维">人工智能思维</span>
+                    <span class="tag-item" data-dimension="人工智能应用与创新能力">应用与创新</span>
+                    <span class="tag-item" data-dimension="人工智能社会责任">社会责任</span>
+                </div>
+                <div class="tag-group">
+                    <span class="tag-item active" data-type="all">全部题型</span>
+                    <span class="tag-item" data-type="single">单选题</span>
+                    <span class="tag-item" data-type="multiple">多选题</span>
+                    <span class="tag-item" data-type="judge">判断题</span>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="applyFilter()">✓ 应用筛选</button>
+                    <button class="btn btn-default" onclick="resetFilter()">↺ 重置</button>
                 </div>
             </div>
 
-            <!-- 答题区域 -->
-            <div class="quiz-area" id="quiz-area">
-                <!-- 筛选区域 -->
-                <div class="filter-card">
-                    <h3 class="filter-title">筛选题目</h3>
-                    <div class="tag-group">
-                        <span class="tag-item active" data-dimension="all">全部维度</span>
-                        <span class="tag-item" data-dimension="人工智能意识">人工智能意识</span>
-                        <span class="tag-item" data-dimension="人工智能思维">人工智能思维</span>
-                        <span class="tag-item" data-dimension="人工智能应用与创新能力">人工智能应用与创新能力</span>
-                        <span class="tag-item" data-dimension="人工智能社会责任">人工智能社会责任</span>
-                    </div>
-                    <div class="tag-group">
-                        <span class="tag-item active" data-type="all">全部题型</span>
-                        <span class="tag-item" data-type="single">单选题</span>
-                        <span class="tag-item" data-type="multiple">多选题</span>
-                        <span class="tag-item" data-type="judge">判断题</span>
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-primary" onclick="applyFilter()">应用筛选</button>
-                        <button class="btn btn-default" onclick="resetFilter()">重置筛选</button>
-                    </div>
-                </div>
+            <!-- 答题卡 -->
+            <div class="answer-card">
+                <h3 class="answer-card-title">📝 答题卡</h3>
+                <div class="answer-grid" id="answer-grid"></div>
+            </div>
 
-                <!-- 答题卡 -->
-                <div class="answer-card">
-                    <h3 class="answer-card-title">答题卡</h3>
-                    <div class="answer-grid" id="answer-grid"></div>
+            <!-- 题目区域 -->
+            <div class="question-area">
+                <div class="question-header">
+                    <h2 class="question-title" id="question-title">题目</h2>
+                    <div class="question-info" id="question-info"></div>
                 </div>
-
-                <!-- 题目区域 -->
-                <div class="question-area">
-                    <div class="question-header">
-                        <h2 class="question-title" id="question-title">题目</h2>
-                        <div class="question-info" id="question-info"></div>
-                    </div>
-                    <div class="question-text" id="question-text"></div>
-                    <div class="options-list" id="options-list"></div>
-                    <div class="analysis-area" id="analysis-area">
-                        <h3 class="analysis-title">答案解析</h3>
-                        <div class="analysis-content" id="analysis-content"></div>
-                    </div>
-                    <div class="nav-buttons">
-                        <button class="btn btn-default" onclick="prevQuestion()">上一题</button>
-                        <button class="btn btn-primary" onclick="nextQuestion()">下一题</button>
-                        <button class="btn btn-default" onclick="showAnswer()">查看答案</button>
-                        <button class="btn btn-default" onclick="resetQuiz()">重新开始</button>
-                    </div>
+                <div class="question-text" id="question-text"></div>
+                <div class="options-list" id="options-list"></div>
+                <div class="analysis-area" id="analysis-area">
+                    <h3 class="analysis-title">💡 答案解析</h3>
+                    <div class="analysis-content" id="analysis-content"></div>
+                </div>
+                <div class="nav-buttons">
+                    <button class="btn btn-default" onclick="prevQuestion()">← 上一题</button>
+                    <button class="btn btn-primary" onclick="nextQuestion()">下一题 →</button>
+                    <button class="btn btn-default" onclick="showAnswer()">👁 查看答案</button>
+                    <button class="btn btn-default" onclick="resetQuiz()">🔄 重新开始</button>
                 </div>
             </div>
         </div>
@@ -523,12 +485,15 @@
         let selectedDimension = "all", selectedType = "all";
 
         // 配置
-        const CACHE_KEY = "ai_question_bank_cache", CACHE_TIMESTAMP_KEY = "ai_question_bank_timestamp";
+        const CACHE_KEY = "ai_question_bank_cache_v2";
+        const CACHE_TIMESTAMP_KEY = "ai_question_bank_timestamp_v2";
         const CACHE_DURATION = 24 * 60 * 60 * 1000;
+
+        // CSV文件路径 - 使用绝对URL
+        const CSV_FILE_PATH = window.location.origin + "/data/ai-quiz-data.csv";
 
         // 页面加载初始化
         document.addEventListener("DOMContentLoaded", function() {
-            // 自动加载题库
             loadQuestionBank();
         });
 
@@ -538,80 +503,63 @@
             if (isCacheValid()) {
                 const cachedQuestions = loadFromCache();
                 if (cachedQuestions && cachedQuestions.length > 0) {
-                    updateLoadingStatus("从缓存加载", `成功加载 ${cachedQuestions.length} 道题目`);
-                    setTimeout(() => initializeQuiz(cachedQuestions), 1000);
+                    updateLoadingStatus("从缓存加载", `成功加载 ${cachedQuestions.length} 道题目`, false);
+                    setTimeout(() => initializeQuiz(cachedQuestions), 1200);
                     return;
                 }
             }
             
             // 从服务器加载题库
-            updateLoadingStatus("正在加载题库...", "从服务器获取题库数据");
+            updateLoadingStatus("正在加载题库...", `从服务器获取题库数据<br>路径: ${CSV_FILE_PATH}`, false);
             
-            // 获取网站基础路径
-            const basePath = window.location.origin + window.location.pathname.replace(/[^/]*$/, '');
+            console.log("尝试加载CSV:", CSV_FILE_PATH);
             
-            // 尝试多个可能的路径（包括绝对路径和相对路径）
-            const possiblePaths = [
-                window.location.origin + "/data/ai-quiz-data.csv",  // 绝对路径
-                basePath + "data/ai-quiz-data.csv",  // 相对绝对路径
-                "/data/ai-quiz-data.csv",  // 根目录相对路径
-                "data/ai-quiz-data.csv",  // 当前目录相对路径
-                "../data/ai-quiz-data.csv",  // 上级目录
-                "ai-quiz-data.csv"  // 根目录文件
-            ];
-            
-            let attempts = 0;
-            const maxAttempts = possiblePaths.length;
-            
-            function tryNextPath() {
-                if (attempts >= maxAttempts) {
-                    updateLoadingStatus("加载失败", "无法找到题库文件，请稍后重试", true);
-                    return;
-                }
-                
-                const path = possiblePaths[attempts];
-                attempts++;
-                
-                updateLoadingStatus("正在加载题库...", `尝试路径: ${path.substring(0, 50)}...`);
-                
-                fetch(path)
-                    .then(response => {
-                        if (!response.ok) throw new Error(`HTTP错误: ${response.status}`);
-                        return response.text();
-                    })
-                    .then(text => {
-                        const questions = parseCSV(text);
-                        saveToCache(questions);
-                        updateLoadingStatus("加载成功", `成功加载 ${questions.length} 道题目`);
-                        setTimeout(() => initializeQuiz(questions), 1000);
-                    })
-                    .catch(error => {
-                        console.log(`路径 ${path} 失败:`, error.message);
-                        setTimeout(tryNextPath, 300);
-                    });
-            }
-            
-            tryNextPath();
+            fetch(CSV_FILE_PATH)
+                .then(response => {
+                    console.log("响应状态:", response.status, response.statusText);
+                    if (!response.ok) {
+                        throw new Error(`HTTP错误: ${response.status} (${response.statusText})`);
+                    }
+                    return response.text();
+                })
+                .then(text => {
+                    console.log("CSV内容长度:", text.length, "字符");
+                    const questions = parseCSV(text);
+                    saveToCache(questions);
+                    updateLoadingStatus("加载成功", `成功加载 ${questions.length} 道题目！`, false);
+                    setTimeout(() => initializeQuiz(questions), 1500);
+                })
+                .catch(error => {
+                    console.error("加载失败:", error);
+                    updateLoadingStatus("加载失败", `无法加载题库文件<br><br>错误信息: ${error.message}<br><br>可能原因：<br>1. CSV文件不存在或路径错误<br>2. 网络连接问题<br>3. 服务器暂时不可用`, true);
+                });
         }
 
         // 加载状态更新
         function updateLoadingStatus(status, message, isError = false) {
             document.getElementById("loading-title").textContent = status;
+            document.getElementById("loading-desc").innerHTML = message;
+            
             const statusEl = document.getElementById("loading-status");
-            statusEl.innerHTML = `<div class="${isError ? 'loading-error' : 'loading-success'}">${message}</div>`;
+            
             if (isError) {
+                statusEl.innerHTML = `<div class="loading-error">⚠️ ${message}</div>`;
                 document.getElementById("loading-spinner").style.display = "none";
-                document.getElementById("loading-desc").innerHTML = `加载失败：${message}<br>请刷新页面重试。`;
-                const retryBtn = document.createElement("button");
-                retryBtn.className = "retry-btn";
-                retryBtn.textContent = "重试加载";
-                retryBtn.onclick = function() {
-                    document.getElementById("loading-spinner").style.display = "block";
-                    document.getElementById("loading-desc").textContent = "请稍候，系统正在从服务器获取题库数据...";
-                    statusEl.innerHTML = "";
-                    loadQuestionBank();
-                };
-                statusEl.appendChild(retryBtn);
+                
+                // 添加重试按钮
+                if (!document.querySelector('.retry-btn')) {
+                    const retryBtn = document.createElement("button");
+                    retryBtn.className = "retry-btn";
+                    retryBtn.textContent = "🔄 重新尝试加载";
+                    retryBtn.onclick = function() {
+                        document.getElementById("loading-spinner").style.display = "block";
+                        statusEl.innerHTML = "";
+                        loadQuestionBank();
+                    };
+                    statusEl.appendChild(retryBtn);
+                }
+            } else {
+                statusEl.innerHTML = `<div class="loading-success">✓ ${message}</div>`;
             }
         }
 
@@ -621,6 +569,7 @@
             if (!timestamp) return false;
             return (Date.now() - parseInt(timestamp)) < CACHE_DURATION;
         }
+        
         function loadFromCache() {
             try {
                 const cachedData = localStorage.getItem(CACHE_KEY);
@@ -632,48 +581,48 @@
                 return null;
             }
         }
+        
         function saveToCache(data) {
             try {
                 localStorage.setItem(CACHE_KEY, JSON.stringify(data));
                 localStorage.setItem(CACHE_TIMESTAMP_KEY, Date.now().toString());
-            } catch (e) { console.warn("缓存保存失败:", e); }
+            } catch (e) {
+                console.warn("缓存保存失败:", e);
+            }
         }
 
         // CSV解析
         function parseCSV(text) {
             const lines = text.split(/\r?\n/);
-            if (lines.length < 2) throw new Error("CSV文件格式错误");
-            
-            // 简单解析，假设没有引号内的逗号
-            const headers = lines[0].split(",").map(h => h.trim());
-            const expectedHeaders = ["id", "dimension", "type", "typeName", "title", "options", "correct", "analysis"];
-            
-            if (headers.length !== expectedHeaders.length) {
-                throw new Error(`CSV表头格式错误！必须为：${expectedHeaders.join(",")}`);
-            }
+            if (lines.length < 2) throw new Error("CSV文件格式错误：文件为空或只有标题行");
             
             const questions = [];
             for (let i = 1; i < lines.length; i++) {
                 const line = lines[i].trim();
                 if (!line) continue;
                 
+                // 简单CSV解析（假设没有引号内的逗号）
                 const parts = line.split(",").map(p => p.trim());
-                if (parts.length !== expectedHeaders.length) {
-                    console.warn(`跳过第${i+1}行，列数不匹配`);
+                
+                if (parts.length < 7) {
+                    console.warn(`跳过第${i+1}行，数据不完整`);
                     continue;
                 }
                 
                 const question = {
-                    id: parseInt(parts[0]) || i,
-                    dimension: parts[1],
-                    type: parts[2],
-                    typeName: parts[3],
-                    title: parts[4],
-                    options: parts[5].split(",").map(o => o.trim()),
-                    correct: parts[6].split(",").map(c => c.trim()),
-                    analysis: parts[7]
+                    id: parseInt(parts[0]) || (i),
+                    dimension: parts[1] || "未分类",
+                    type: parts[2] || "single",
+                    typeName: parts[3] || "单选题",
+                    title: parts[4] || "",
+                    options: parts[5] ? parts[5].split("|") : [],
+                    correct: parts[6] ? parts[6].split("|") : [],
+                    analysis: parts[7] || "暂无解析"
                 };
-                questions.push(question);
+                
+                if (question.title && question.options.length > 0) {
+                    questions.push(question);
+                }
             }
             
             if (questions.length === 0) throw new Error("CSV文件中没有有效的题目数据");
@@ -710,8 +659,8 @@
             const total = filteredQuestions.length;
             const answered = Object.keys(userAnswers).length;
             const correct = Object.values(userAnswers).filter(a => a.isCorrect).length;
-            document.querySelector(".quiz-header .summary").innerHTML = 
-                `已答: ${answered}/${total} | 正确: ${correct}`;
+            document.getElementById("header-summary").innerHTML = 
+                `📊 已答: <strong>${answered}/${total}</strong> | ✅ 正确: <strong>${correct}</strong>`;
         }
 
         // 初始化筛选标签
@@ -744,7 +693,7 @@
             });
             
             if (filteredQuestions.length === 0) {
-                alert("没有符合条件的题目，请调整筛选条件");
+                alert("没有符合条件的题目，请调整筛选条件！");
                 filteredQuestions = [...allQuestions];
                 return;
             }
@@ -809,7 +758,7 @@
             });
             
             // 更新题目信息
-            document.getElementById("question-title").textContent = `第 ${index + 1} 题`;
+            document.getElementById("question-title").textContent = `📖 第 ${index + 1} 题`;
             document.getElementById("question-info").textContent = `${question.dimension} · ${question.typeName}`;
             document.getElementById("question-text").textContent = question.title;
             
@@ -817,11 +766,12 @@
             const optionsList = document.getElementById("options-list");
             optionsList.innerHTML = "";
             
+            const labels = ["A", "B", "C", "D", "E", "F"];
+            
             question.options.forEach((option, i) => {
                 const optionItem = document.createElement("div");
                 optionItem.className = "option-item";
                 
-                const labels = ["A", "B", "C", "D", "E", "F"];
                 const label = labels[i] || String.fromCharCode(65 + i);
                 
                 optionItem.innerHTML = `
@@ -855,9 +805,9 @@
             
             if (userAnswers[question.id] && userAnswers[question.id].isCorrect !== undefined) {
                 analysisContent.textContent = question.analysis || "暂无解析";
-                analysisArea.style.display = "block";
+                analysisArea.classList.add("show");
             } else {
-                analysisArea.style.display = "none";
+                analysisArea.classList.remove("show");
             }
         }
 
@@ -896,7 +846,7 @@
             // 更新答题卡
             const answerItems = document.querySelectorAll(".answer-item");
             if (answerItems[currentQuestionIndex]) {
-                answerItems[currentQuestionIndex].classList.remove("unanswered");
+                answerItems[currentQuestionIndex].classList.remove("unanswered", "wrong");
                 answerItems[currentQuestionIndex].classList.add("wrong"); // 暂时标记为错误，直到验证
             }
         }
@@ -946,6 +896,8 @@
         function prevQuestion() {
             if (currentQuestionIndex > 0) {
                 showQuestion(currentQuestionIndex - 1);
+            } else {
+                alert("已经是第一题了！");
             }
         }
 
@@ -953,6 +905,8 @@
         function nextQuestion() {
             if (currentQuestionIndex < filteredQuestions.length - 1) {
                 showQuestion(currentQuestionIndex + 1);
+            } else {
+                alert("已经是最后一题了！");
             }
         }
 
