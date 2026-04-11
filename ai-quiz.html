@@ -547,12 +547,17 @@
             // 从服务器加载题库
             updateLoadingStatus("正在加载题库...", "从服务器获取题库数据");
             
-            // 尝试多个可能的路径
+            // 获取网站基础路径
+            const basePath = window.location.origin + window.location.pathname.replace(/[^/]*$/, '');
+            
+            // 尝试多个可能的路径（包括绝对路径和相对路径）
             const possiblePaths = [
-                "data/ai-quiz-data.csv",
-                "ai-quiz-data.csv",
-                "quiz/ai-quiz-data.csv",
-                "青少年人工智能竞赛题库.csv"
+                window.location.origin + "/data/ai-quiz-data.csv",  // 绝对路径
+                basePath + "data/ai-quiz-data.csv",  // 相对绝对路径
+                "/data/ai-quiz-data.csv",  // 根目录相对路径
+                "data/ai-quiz-data.csv",  // 当前目录相对路径
+                "../data/ai-quiz-data.csv",  // 上级目录
+                "ai-quiz-data.csv"  // 根目录文件
             ];
             
             let attempts = 0;
@@ -567,7 +572,7 @@
                 const path = possiblePaths[attempts];
                 attempts++;
                 
-                updateLoadingStatus("正在加载题库...", `尝试路径: ${path}`);
+                updateLoadingStatus("正在加载题库...", `尝试路径: ${path.substring(0, 50)}...`);
                 
                 fetch(path)
                     .then(response => {
@@ -582,7 +587,7 @@
                     })
                     .catch(error => {
                         console.log(`路径 ${path} 失败:`, error.message);
-                        setTimeout(tryNextPath, 500);
+                        setTimeout(tryNextPath, 300);
                     });
             }
             
