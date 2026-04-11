@@ -98,7 +98,7 @@
             color: var(--text-dark);
         }
         .filter-btn.default:hover {
-            background: #f0f0f0;
+            background: #f5f5f5;
             transform: translateY(-2px);
         }
         
@@ -123,6 +123,40 @@
             color: var(--primary-color);
             font-weight: 700;
         }
+        
+        /* 答题进度统计 */
+        .progress-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+            padding-bottom: 12px;
+            border-bottom: 2px dashed #ddd;
+        }
+        .stat-item {
+            text-align: center;
+            padding: 8px 4px;
+            background: #f8f8f8;
+            border-radius: 8px;
+            border: 2px solid var(--border-color);
+        }
+        .stat-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-medium);
+            font-weight: 600;
+        }
+        .stat-item.total { background: #FFF0E6; }
+        .stat-item.answered { background: #E3F2FD; }
+        .stat-item.correct { background: #E8F5E9; }
+        .stat-item.wrong { background: #FFEBEE; }
+        .stat-item.correct .stat-value { color: #27ae60; }
+        .stat-item.wrong .stat-value { color: #e74c3c; }
+        
         .card-grid {
             display: grid;
             grid-template-columns: repeat(10, 1fr);
@@ -288,6 +322,85 @@
             margin-right: 8px;
         }
         
+        /* 答案对比区域 */
+        .answer-comparison {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 2px solid var(--border-color);
+        }
+        .comparison-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+        .comparison-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .comparison-label {
+            font-weight: 700;
+            min-width: 70px;
+            color: var(--text-medium);
+        }
+        .comparison-value {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        .comparison-value.correct {
+            color: #27ae60;
+        }
+        .comparison-value.wrong {
+            color: #e74c3c;
+        }
+        .result-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-left: 10px;
+        }
+        .result-badge.correct {
+            background: #27ae60;
+            color: white;
+        }
+        .result-badge.wrong {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        /* 解析区域 */
+        .analysis-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px dashed #ddd;
+            display: none;
+        }
+        .analysis-section.show {
+            display: block;
+        }
+        .analysis-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--primary-color);
+        }
+        .analysis-content {
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--text-dark);
+            background: #FFF9F5;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid var(--secondary-color);
+        }
+        
         /* 按钮样式 */
         .btn-group {
             display: flex;
@@ -327,29 +440,6 @@
             opacity: 0.5;
             cursor: not-allowed;
             transform: none;
-        }
-        
-        /* 解析区域 */
-        .analysis-section {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 2px dashed #ddd;
-            display: none;
-        }
-        .analysis-title {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: var(--primary-color);
-        }
-        .analysis-content {
-            font-size: 14px;
-            line-height: 1.8;
-            color: var(--text-dark);
-            background: #FFF9F5;
-            padding: 15px;
-            border-radius: 10px;
-            border: 2px solid var(--secondary-color);
         }
         
         /* 加载状态 */
@@ -490,6 +580,18 @@
             .card-grid {
                 grid-template-columns: repeat(8, 1fr);
             }
+            .progress-stats {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .stat-item {
+                padding: 6px 2px;
+            }
+            .stat-value {
+                font-size: 16px;
+            }
+            .stat-label {
+                font-size: 10px;
+            }
         }
     </style>
 </head>
@@ -551,6 +653,27 @@
         <!-- 答题卡 -->
         <div class="answer-card-wrapper">
             <h3>📋 答题卡</h3>
+            
+            <!-- 答题进度统计 -->
+            <div class="progress-stats">
+                <div class="stat-item total">
+                    <div class="stat-value" id="stat-total">0</div>
+                    <div class="stat-label">总题数</div>
+                </div>
+                <div class="stat-item answered">
+                    <div class="stat-value" id="stat-answered">0</div>
+                    <div class="stat-label">已答</div>
+                </div>
+                <div class="stat-item correct">
+                    <div class="stat-value" id="stat-correct">0</div>
+                    <div class="stat-label">答对</div>
+                </div>
+                <div class="stat-item wrong">
+                    <div class="stat-value" id="stat-wrong">0</div>
+                    <div class="stat-label">答错</div>
+                </div>
+            </div>
+            
             <div class="card-grid" id="card-grid"></div>
             <div class="card-status-desc">
                 <div class="status-item">
@@ -575,11 +698,28 @@
                     <span class="question-number" id="question-number">第 1 题</span>
                     <div class="question-info">
                         <span class="tag" id="dimension-tag">人工智能意识</span>
-                        <span class="tag" id="type-tag" style="background: #E6F3FF; color: #2196F3; border-color: #2196F3;">单项选择题</span>
+                        <span class="tag" id="type-tag" style="background: #E3F2FD; color: #2196F3; border-color: #2196F3;">单项选择题</span>
                     </div>
                 </div>
                 <div class="question-title" id="question-title">题目内容加载中...</div>
                 <div class="options-container" id="options-container"></div>
+                
+                <!-- 答案对比区域 -->
+                <div class="answer-comparison hidden" id="answer-comparison">
+                    <div class="comparison-title">📊 答案对比</div>
+                    <div class="comparison-row">
+                        <span class="comparison-label">您的答案：</span>
+                        <span class="comparison-value" id="user-answer"></span>
+                    </div>
+                    <div class="comparison-row">
+                        <span class="comparison-label">正确答案：</span>
+                        <span class="comparison-value" id="correct-answer"></span>
+                    </div>
+                    <div class="comparison-row" id="result-row">
+                        <span class="comparison-label">答题结果：</span>
+                        <span class="comparison-value" id="result-text"></span>
+                    </div>
+                </div>
                 
                 <!-- 解析区域 -->
                 <div class="analysis-section" id="analysis-section">
@@ -589,9 +729,8 @@
                 
                 <!-- 操作按钮 -->
                 <div class="btn-group">
-                    <button class="btn btn-default" id="prev-btn" onclick="prevQuestion()" disabled>← 上一题</button>
-                    <button class="btn btn-primary" id="check-btn" onclick="checkAnswer()">查看答案</button>
                     <button class="btn btn-default" id="next-btn" onclick="nextQuestion()">下一题 →</button>
+                    <button class="btn btn-primary" id="submit-btn" onclick="submitAnswer()">提交答案</button>
                     <button class="btn btn-default" onclick="resetQuiz()">重新开始</button>
                 </div>
             </div>
@@ -615,8 +754,8 @@
         let selectedDimension = "all", selectedType = "all";
 
         // 缓存键名
-        const CACHE_KEY = "ai_question_bank_data_v2";
-        const CACHE_TIME_KEY = "ai_question_bank_time_v2";
+        const CACHE_KEY = "ai_question_bank_data_v3";
+        const CACHE_TIME_KEY = "ai_question_bank_time_v3";
         const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24小时
 
         // 页面加载完成后初始化
@@ -811,6 +950,7 @@
             
             // 初始化答题卡
             renderAnswerCard();
+            updateProgressStats();
             
             // 显示第一题
             renderQuestion();
@@ -818,6 +958,30 @@
             // 显示答题区域
             document.getElementById("loading-wrapper").classList.add("hidden");
             document.getElementById("quiz-area").classList.remove("hidden");
+        }
+
+        // 更新答题进度统计
+        function updateProgressStats() {
+            const total = filteredQuestions.length;
+            let answered = 0;
+            let correct = 0;
+            let wrong = 0;
+            
+            Object.values(userAnswers).forEach(answer => {
+                if (answer.isCorrect !== undefined) {
+                    answered++;
+                    if (answer.isCorrect) {
+                        correct++;
+                    } else {
+                        wrong++;
+                    }
+                }
+            });
+            
+            document.getElementById("stat-total").textContent = total;
+            document.getElementById("stat-answered").textContent = answered;
+            document.getElementById("stat-correct").textContent = correct;
+            document.getElementById("stat-wrong").textContent = wrong;
         }
 
         // 渲染答题卡
@@ -900,23 +1064,42 @@
                 optionsContainer.appendChild(optDiv);
             });
             
-            // 更新解析区域
+            // 更新答案对比区域
+            const comparisonEl = document.getElementById("answer-comparison");
             const analysisSection = document.getElementById("analysis-section");
+            
             if (isChecked) {
-                analysisSection.style.display = "block";
+                comparisonEl.classList.remove("hidden");
+                analysisSection.classList.add("show");
+                
+                // 显示用户答案
+                const userAnswerText = userAnswer.selected.join("、") || "未作答";
+                document.getElementById("user-answer").textContent = userAnswerText;
+                document.getElementById("user-answer").className = "comparison-value " + (userAnswer.isCorrect ? "correct" : "wrong");
+                
+                // 显示正确答案
+                document.getElementById("correct-answer").textContent = q.correct.join("、");
+                document.getElementById("correct-answer").className = "comparison-value correct";
+                
+                // 显示答题结果
+                const resultText = userAnswer.isCorrect ? "✅ 回答正确！" : "❌ 回答错误";
+                document.getElementById("result-text").textContent = resultText;
+                document.getElementById("result-row").querySelector(".comparison-value").className = 
+                    "comparison-value " + (userAnswer.isCorrect ? "correct" : "wrong");
+                
+                // 显示解析
                 document.getElementById("analysis-content").textContent = q.analysis;
+                
+                // 隐藏提交按钮
+                document.getElementById("submit-btn").style.display = "none";
             } else {
-                analysisSection.style.display = "none";
+                comparisonEl.classList.add("hidden");
+                analysisSection.classList.remove("show");
+                document.getElementById("submit-btn").style.display = "inline-block";
             }
             
             // 更新按钮状态
-            document.getElementById("prev-btn").disabled = currentIndex === 0;
             document.getElementById("next-btn").disabled = currentIndex === filteredQuestions.length - 1;
-            document.getElementById("check-btn").textContent = isChecked ? "已查看答案" : "查看答案";
-            document.getElementById("check-btn").disabled = isChecked;
-            
-            // 重新渲染答题卡（更新当前题目标记）
-            renderAnswerCard();
         }
 
         // 选择选项
@@ -945,8 +1128,8 @@
             renderQuestion();
         }
 
-        // 查看答案
-        function checkAnswer() {
+        // 提交答案
+        function submitAnswer() {
             const q = filteredQuestions[currentIndex];
             
             if (!userAnswers[q.id] || userAnswers[q.id].selected.length === 0) {
@@ -959,14 +1142,8 @@
             userAnswers[q.id].isCorrect = isCorrect;
             
             renderQuestion();
-        }
-
-        // 上一题
-        function prevQuestion() {
-            if (currentIndex > 0) {
-                currentIndex--;
-                renderQuestion();
-            }
+            updateProgressStats();
+            renderAnswerCard();
         }
 
         // 下一题
@@ -974,6 +1151,7 @@
             if (currentIndex < filteredQuestions.length - 1) {
                 currentIndex++;
                 renderQuestion();
+                renderAnswerCard();
             }
         }
 
@@ -981,6 +1159,7 @@
         function jumpToQuestion(index) {
             currentIndex = index;
             renderQuestion();
+            renderAnswerCard();
         }
 
         // 重置答题
@@ -991,6 +1170,7 @@
             currentIndex = 0;
             renderAnswerCard();
             renderQuestion();
+            updateProgressStats();
         }
 
         // 应用筛选
@@ -1011,6 +1191,7 @@
             currentIndex = 0;
             renderAnswerCard();
             renderQuestion();
+            updateProgressStats();
         }
 
         // 重置筛选
@@ -1028,6 +1209,7 @@
             currentIndex = 0;
             renderAnswerCard();
             renderQuestion();
+            updateProgressStats();
         }
 
         // 工具函数：比较两个数组是否相等
