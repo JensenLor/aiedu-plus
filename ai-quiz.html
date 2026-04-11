@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>青少年人工智能基础知识竞赛答题系统</title>
     <link rel="stylesheet" href="style.css">
+    <!-- 腾讯云开发SDK -->
+    <script src="https://imgcache.qq.com/qcloud/tcbjs/1.11.0/tcb.js"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
@@ -789,6 +791,14 @@
         let userAnswers = {};
         let selectedDimension = "all", selectedType = "all";
         let currentUser = "";
+        
+        // 初始化CloudBase
+        const app = tcb.init({
+          env: 'ai-quiz-env-8go9pn401681939f'
+        });
+        
+        // 获取数据库引用
+        const db = app.database();
 
         // 缓存键名
         const CACHE_KEY = "ai_question_bank_data_v3";
@@ -1196,6 +1206,8 @@
             
             // 保存用户记录
             saveUserRecord();
+            // 上传到CloudBase
+            uploadUserData();
         }
         
         // 保存用户答题记录
@@ -1211,6 +1223,27 @@
             localStorage.setItem(`user_${currentUser}`, JSON.stringify(userData));
         }
         
+        // 上传答题数据到CloudBase
+        function uploadUserData() {
+            if (!currentUser) return;
+            
+            const userData = {
+                answers: userAnswers,
+                score: calculateScore(),
+                timestamp: Date.now(),
+                lastUpdated: new Date().toISOString()
+            };
+            
+            // 保存到CloudBase
+            db.collection('users').doc(currentUser).set(userData)
+                .then(() => {
+                    console.log('数据上传成功');
+                })
+                .catch((error) => {
+                    console.error('数据上传失败:', error);
+                });
+        }
+        
         // 加载用户答题记录
         function loadUserRecord() {
             currentUser = document.getElementById("user-name").value.trim();
@@ -1219,6 +1252,7 @@
                 return;
             }
             
+            // 从本地存储加载
             const userData = localStorage.getItem(`user_${currentUser}`);
             if (userData) {
                 const parsedData = JSON.parse(userData);
@@ -1228,9 +1262,30 @@
                 renderQuestion();
                 alert(`成功加载 ${currentUser} 的答题记录`);
             } else {
-                alert(`未找到 ${currentUser} 的答题记录，将创建新记录`);
-                userAnswers = {};
-                currentUser = document.getElementById("user-name").value.trim();
+                // 尝试从CloudBase加载
+                db.collection('users').doc(currentUser).get()
+                    .then((res) => {
+                        if (res.data()) {
+                            const cloudData = res.data();
+                            userAnswers = cloudData.answers || {};
+                            updateProgressStats();
+                            renderAnswerCard();
+                            renderQuestion();
+                            alert(`成功从云端加载 ${currentUser} 的答题记录`);
+                            // 保存到本地存储
+                            saveUserRecord();
+                        } else {
+                            alert(`未找到 ${currentUser} 的答题记录，将创建新记录`);
+                            userAnswers = {};
+                            currentUser = document.getElementById("user-name").value.trim();
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('从CloudBase加载失败:', error);
+                        alert(`未找到 ${currentUser} 的答题记录，将创建新记录`);
+                        userAnswers = {};
+                        currentUser = document.getElementById("user-name").value.trim();
+                    });
             }
         }
         
