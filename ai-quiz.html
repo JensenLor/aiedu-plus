@@ -105,15 +105,15 @@
         /* 答题卡面板 */
         .answer-card-wrapper {
             position: fixed;
-            top: 20px;
+            top: 110px;
             right: 20px;
-            width: 280px;
+            width: 360px;
             background: white;
             border-radius: 12px;
             box-shadow: 4px 4px 0px var(--shadow-color);
             border: 3px solid var(--border-color);
             padding: 15px;
-            max-height: calc(100vh - 40px);
+            max-height: calc(80vh - 70px);
             overflow-y: auto;
             z-index: 99;
         }
@@ -704,6 +704,13 @@
                 <div class="question-title" id="question-title">题目内容加载中...</div>
                 <div class="options-container" id="options-container"></div>
                 
+                <!-- 操作按钮 -->
+                <div class="btn-group">
+                    <button class="btn btn-default" id="next-btn" onclick="nextQuestion()">下一题 →</button>
+                    <button class="btn btn-primary" id="submit-btn" onclick="submitAnswer()">提交答案</button>
+                    <button class="btn btn-default" onclick="resetQuiz()">重新开始</button>
+                </div>
+                
                 <!-- 答案对比区域 -->
                 <div class="answer-comparison hidden" id="answer-comparison">
                     <div class="comparison-title">📊 答案对比</div>
@@ -725,13 +732,6 @@
                 <div class="analysis-section" id="analysis-section">
                     <h4 class="analysis-title">📖 答案解析</h4>
                     <div class="analysis-content" id="analysis-content"></div>
-                </div>
-                
-                <!-- 操作按钮 -->
-                <div class="btn-group">
-                    <button class="btn btn-default" id="next-btn" onclick="nextQuestion()">下一题 →</button>
-                    <button class="btn btn-primary" id="submit-btn" onclick="submitAnswer()">提交答案</button>
-                    <button class="btn btn-default" onclick="resetQuiz()">重新开始</button>
                 </div>
             </div>
             
