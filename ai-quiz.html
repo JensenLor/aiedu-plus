@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>青少年人工智能基础知识竞赛答题系统</title>
     <link rel="stylesheet" href="style.css">
-    <!-- 腾讯云开发SDK -->
-    <script src="https://imgcache.qq.com/qcloud/tcbjs/1.11.0/tcb.js"></script>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
@@ -107,15 +105,15 @@
         /* 答题卡面板 */
         .answer-card-wrapper {
             position: fixed;
-            top: 110px;
+            top: 20px;
             right: 20px;
-            width: 360px;
+            width: 280px;
             background: white;
             border-radius: 12px;
             box-shadow: 4px 4px 0px var(--shadow-color);
             border: 3px solid var(--border-color);
             padding: 15px;
-            max-height: calc(80vh - 70px);
+            max-height: calc(100vh - 40px);
             overflow-y: auto;
             z-index: 99;
         }
@@ -542,34 +540,6 @@
             color: var(--text-medium);
         }
         
-        /* 用户标识区域 */
-        .user-identity {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 4px 4px 0px var(--shadow-color);
-            border: 3px solid var(--border-color);
-            text-align: center;
-        }
-        .user-identity h3 {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 15px;
-            color: var(--primary-color);
-        }
-        .user-identity input {
-            padding: 10px 15px;
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 14px;
-            margin-right: 10px;
-            width: 200px;
-        }
-        .user-identity .btn {
-            margin-top: 10px;
-        }
-        
         /* 隐藏区域 */
         .hidden {
             display: none !important;
@@ -652,14 +622,6 @@
 
     <!-- 答题区域 -->
     <div class="quiz-container hidden" id="quiz-area">
-        <!-- 用户标识区域 -->
-        <div class="user-identity">
-            <h3>👤 用户标识</h3>
-            <input type="text" id="user-name" placeholder="请输入您的名字" />
-            <button class="btn btn-primary" onclick="loadUserRecord()">加载记录</button>
-            <button class="btn btn-default" onclick="clearUserRecord()">清除记录</button>
-        </div>
-        
         <!-- 筛选区域 -->
         <div class="filter-card">
             <h3 class="filter-title">🎯 筛选题目</h3>
@@ -742,13 +704,6 @@
                 <div class="question-title" id="question-title">题目内容加载中...</div>
                 <div class="options-container" id="options-container"></div>
                 
-                <!-- 操作按钮 -->
-                <div class="btn-group">
-                    <button class="btn btn-default" id="next-btn" onclick="nextQuestion()">下一题 →</button>
-                    <button class="btn btn-primary" id="submit-btn" onclick="submitAnswer()">提交答案</button>
-                    <button class="btn btn-default" onclick="resetQuiz()">重新开始</button>
-                </div>
-                
                 <!-- 答案对比区域 -->
                 <div class="answer-comparison hidden" id="answer-comparison">
                     <div class="comparison-title">📊 答案对比</div>
@@ -771,6 +726,13 @@
                     <h4 class="analysis-title">📖 答案解析</h4>
                     <div class="analysis-content" id="analysis-content"></div>
                 </div>
+                
+                <!-- 操作按钮 -->
+                <div class="btn-group">
+                    <button class="btn btn-default" id="next-btn" onclick="nextQuestion()">下一题 →</button>
+                    <button class="btn btn-primary" id="submit-btn" onclick="submitAnswer()">提交答案</button>
+                    <button class="btn btn-default" onclick="resetQuiz()">重新开始</button>
+                </div>
             </div>
             
             <!-- 底部说明 -->
@@ -790,8 +752,6 @@
         let currentIndex = 0;
         let userAnswers = {};
         let selectedDimension = "all", selectedType = "all";
-        let currentUser = "";
-        let app, db;
 
         // 缓存键名
         const CACHE_KEY = "ai_question_bank_data_v3";
@@ -800,30 +760,8 @@
 
         // 页面加载完成后初始化
         document.addEventListener("DOMContentLoaded", function() {
-            // 初始化CloudBase
-            if (typeof tcb !== 'undefined') {
-                app = tcb.init({
-                  env: 'ai-quiz-env-8go9pn401681939f'
-                });
-                db = app.database();
-            } else {
-                console.warn('CloudBase SDK未加载');
-            }
-            
             initTagListeners();
             loadQuestionBank();
-            
-            // 检查是否有上次的用户
-            const lastUser = localStorage.getItem("last_user");
-            if (lastUser) {
-                document.getElementById("user-name").value = lastUser;
-                currentUser = lastUser;
-            }
-            
-            // 在用户输入名字时保存为上次用户
-            document.getElementById("user-name").addEventListener("change", function() {
-                localStorage.setItem("last_user", this.value);
-            });
         });
 
         // 初始化标签点击事件
@@ -1206,132 +1144,6 @@
             renderQuestion();
             updateProgressStats();
             renderAnswerCard();
-            
-            // 保存用户记录
-            saveUserRecord();
-            // 上传到CloudBase
-            uploadUserData();
-        }
-        
-        // 保存用户答题记录
-        function saveUserRecord() {
-            if (!currentUser) return;
-            
-            const userData = {
-                answers: userAnswers,
-                score: calculateScore(),
-                timestamp: Date.now()
-            };
-            
-            localStorage.setItem(`user_${currentUser}`, JSON.stringify(userData));
-        }
-        
-        // 上传答题数据到CloudBase
-        function uploadUserData() {
-            if (!currentUser || !db) return;
-            
-            const userData = {
-                answers: userAnswers,
-                score: calculateScore(),
-                timestamp: Date.now(),
-                lastUpdated: new Date().toISOString()
-            };
-            
-            // 保存到CloudBase
-            db.collection('users').doc(currentUser).set(userData)
-                .then(() => {
-                    console.log('数据上传成功');
-                })
-                .catch((error) => {
-                    console.error('数据上传失败:', error);
-                });
-        }
-        
-        // 加载用户答题记录
-        function loadUserRecord() {
-            currentUser = document.getElementById("user-name").value.trim();
-            if (!currentUser) {
-                alert("请输入您的名字");
-                return;
-            }
-            
-            // 从本地存储加载
-            const userData = localStorage.getItem(`user_${currentUser}`);
-            if (userData) {
-                const parsedData = JSON.parse(userData);
-                userAnswers = parsedData.answers || {};
-                updateProgressStats();
-                renderAnswerCard();
-                renderQuestion();
-                alert(`成功加载 ${currentUser} 的答题记录`);
-            } else {
-                // 尝试从CloudBase加载
-                if (db) {
-                    db.collection('users').doc(currentUser).get()
-                        .then((res) => {
-                            if (res.data()) {
-                                const cloudData = res.data();
-                                userAnswers = cloudData.answers || {};
-                                updateProgressStats();
-                                renderAnswerCard();
-                                renderQuestion();
-                                alert(`成功从云端加载 ${currentUser} 的答题记录`);
-                                // 保存到本地存储
-                                saveUserRecord();
-                            } else {
-                                alert(`未找到 ${currentUser} 的答题记录，将创建新记录`);
-                                userAnswers = {};
-                                currentUser = document.getElementById("user-name").value.trim();
-                            }
-                        })
-                        .catch((error) => {
-                            console.error('从CloudBase加载失败:', error);
-                            alert(`未找到 ${currentUser} 的答题记录，将创建新记录`);
-                            userAnswers = {};
-                            currentUser = document.getElementById("user-name").value.trim();
-                        });
-                } else {
-                    alert(`未找到 ${currentUser} 的答题记录，将创建新记录`);
-                    userAnswers = {};
-                    currentUser = document.getElementById("user-name").value.trim();
-                }
-            }
-        }
-        
-        // 清除用户答题记录
-        function clearUserRecord() {
-            if (!currentUser) {
-                alert("请先输入您的名字");
-                return;
-            }
-            
-            if (confirm(`确定要清除 ${currentUser} 的答题记录吗？`)) {
-                localStorage.removeItem(`user_${currentUser}`);
-                userAnswers = {};
-                updateProgressStats();
-                renderAnswerCard();
-                renderQuestion();
-                alert(`已清除 ${currentUser} 的答题记录`);
-            }
-        }
-        
-        // 计算得分
-        function calculateScore() {
-            let correctCount = 0;
-            let totalCount = 0;
-            
-            Object.values(userAnswers).forEach(answer => {
-                totalCount++;
-                if (answer.isCorrect) {
-                    correctCount++;
-                }
-            });
-            
-            return {
-                correct: correctCount,
-                total: totalCount,
-                percentage: totalCount > 0 ? (correctCount / totalCount * 100).toFixed(2) : 0
-            };
         }
 
         // 下一题
