@@ -591,7 +591,7 @@
             }
         }
 
-        // CSV解析
+        // CSV解析 - 处理带引号的CSV格式
         function parseCSV(text) {
             const lines = text.split(/\r?\n/);
             if (lines.length < 2) throw new Error("CSV文件格式错误：文件为空或只有标题行");
@@ -601,11 +601,11 @@
                 const line = lines[i].trim();
                 if (!line) continue;
                 
-                // 简单CSV解析（假设没有引号内的逗号）
-                const parts = line.split(",").map(p => p.trim());
+                // 解析CSV行（处理引号内的逗号）
+                const parts = parseCSVLine(line);
                 
                 if (parts.length < 7) {
-                    console.warn(`跳过第${i+1}行，数据不完整`);
+                    console.warn(`跳过第${i+1}行，数据不完整: ${parts.length}个字段`);
                     continue;
                 }
                 
@@ -615,10 +615,14 @@
                     type: parts[2] || "single",
                     typeName: parts[3] || "单选题",
                     title: parts[4] || "",
-                    options: parts[5] ? parts[5].split("|") : [],
-                    correct: parts[6] ? parts[6].split("|") : [],
+                    options: parts[5] ? parts[5].split(",") : [],
+                    correct: parts[6] ? parts[6].split(",") : [],
                     analysis: parts[7] || "暂无解析"
                 };
+                
+                // 清理选项和答案中的引号
+                question.options = question.options.map(o => o.replace(/^"|"$/g, '').trim());
+                question.correct = question.correct.map(c => c.replace(/^"|"$/g, '').trim());
                 
                 if (question.title && question.options.length > 0) {
                     questions.push(question);
@@ -627,6 +631,29 @@
             
             if (questions.length === 0) throw new Error("CSV文件中没有有效的题目数据");
             return questions;
+        }
+        
+        // 解析CSV行（处理引号内的逗号）
+        function parseCSVLine(line) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            result.push(current.trim());
+            
+            return result;
         }
 
         // 初始化答题系统
