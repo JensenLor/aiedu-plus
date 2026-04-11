@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>青少年人工智能基础知识竞赛答题系统 - 罗辑智造社</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 答题系统专用样式 */
+        :root {
+            --quiz-primary: #e67e22;
+            --quiz-primary-hover: #d35400;
+            --quiz-correct: #27ae60;
+            --quiz-wrong: #e74c3c;
+            --quiz-unanswered: #e0e0e0;
+            --quiz-bg: #f5f7fa;
+            --quiz-card: #ffffff;
+            --quiz-text: #2c3e50;
+            --quiz-text-light: #7f8c8d;
+            --quiz-loading: #3498db;
+            --quiz-error: #e74c3c;
+            --quiz-success: #27ae60;
+        }
+        
+        .quiz-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* 头部 */
+        .quiz-header {
+            background-color: var(--quiz-primary);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .quiz-header h1 {
+            font-size: 18px;
+            font-weight: 500;
+        }
+        .quiz-header .summary {
+            font-size: 14px;
+        }
+        
+        /* 加载状态 */
+        .loading-wrapper {
+            margin: 20px 0;
+        }
+        .loading-card {
+            background: var(--quiz-card);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--quiz-loading);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loading-title {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 15px;
+            color: var(--quiz-loading);
+        }
+        .loading-desc {
+            font-size: 14px;
+            color: var(--quiz-text-light);
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        .loading-error {
+            color: var(--quiz-error);
+            font-weight: 500;
+        }
+        .loading-success {
+            color: var(--quiz-success);
+            font-weight: 500;
+        }
+        .retry-btn {
+            padding: 8px 20px;
+            background: var(--quiz-primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.2s;
+        }
+        .retry-btn:hover {
+            background: var(--quiz-primary-hover);
+        }
+        
+        /* 答题区域 */
+        .quiz-area {
+            display: none;
+        }
+        .filter-card, .answer-card, .question-area {
+            background: var(--quiz-card);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+        .filter-title {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 15px;
+            color: var(--quiz-primary);
+        }
+        .tag-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .tag-item {
+            padding: 6px 15px;
+            border-radius: 20px;
+            border: 1px solid #ddd;
+            background: #f8f9fa;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .tag-item:hover {
+            border-color: var(--quiz-primary);
+            background: #fff3e8;
+        }
+        .tag-item.active {
+            background: var(--quiz-primary);
+            color: white;
+            border-color: var(--quiz-primary);
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: var(--quiz-primary);
+            color: white;
+        }
+        .btn-primary:hover {
+            background: var(--quiz-primary-hover);
+        }
+        .btn-default {
+            background: #ecf0f1;
+            color: var(--quiz-text);
+        }
+        .btn-default:hover {
+            background: #bdc3c7;
+        }
+        
+        /* 答题卡 */
+        .answer-card-title {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 15px;
+            color: var(--quiz-primary);
+        }
+        .answer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+            gap: 8px;
+        }
+        .answer-item {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .answer-item.unanswered {
+            background: var(--quiz-unanswered);
+            color: var(--quiz-text);
+        }
+        .answer-item.current {
+            background: var(--quiz-primary);
+            color: white;
+            box-shadow: 0 0 0 2px rgba(230, 126, 34, 0.3);
+        }
+        .answer-item.correct {
+            background: var(--quiz-correct);
+            color: white;
+        }
+        .answer-item.wrong {
+            background: var(--quiz-wrong);
+            color: white;
+        }
+        
+        /* 题目区域 */
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .question-title {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--quiz-text);
+        }
+        .question-info {
+            font-size: 14px;
+            color: var(--quiz-text-light);
+        }
+        .question-text {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+        .option-item {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+        .option-item:hover {
+            border-color: var(--quiz-primary);
+            background: #fff3e8;
+        }
+        .option-item.selected {
+            border-color: var(--quiz-primary);
+            background: #fff3e8;
+        }
+        .option-item.correct {
+            border-color: var(--quiz-correct);
+            background: rgba(39, 174, 96, 0.1);
+        }
+        .option-item.wrong {
+            border-color: var(--quiz-wrong);
+            background: rgba(231, 76, 60, 0.1);
+        }
+        .option-label {
+            font-weight: 500;
+            margin-right: 10px;
+            color: var(--quiz-primary);
+        }
+        .option-text {
+            font-size: 15px;
+            line-height: 1.5;
+        }
+        
+        /* 解析区域 */
+        .analysis-area {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            display: none;
+        }
+        .analysis-title {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 15px;
+            color: var(--quiz-primary);
+        }
+        .analysis-content {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--quiz-text);
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+        }
+        
+        /* 导航按钮 */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+        }
+        
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .quiz-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            .quiz-header .summary {
+                align-self: flex-end;
+            }
+            .answer-grid {
+                grid-template-columns: repeat(auto-fill, minmax(35px, 1fr));
+            }
+            .answer-item {
+                width: 35px;
+                height: 35px;
+                font-size: 13px;
+            }
+            .question-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+            .nav-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .nav-buttons .btn {
+                width: 100%;
+            }
+        }
+        
+        /* 介绍区域 */
+        .intro-section {
+            background: linear-gradient(135deg, #fff8f0 0%, #fff0e6 100%);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 2px dashed #ff8c42;
+        }
+        .intro-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #e67e22;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .intro-title i {
+            font-size: 24px;
+        }
+        .intro-content {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #5a5a5a;
+            margin-bottom: 15px;
+        }
+        .intro-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .feature-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .feature-icon {
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: #e67e22;
+        }
+        .feature-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .feature-desc {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 导航栏 -->
+        <nav>
+            <div class="nav-brand">
+                <img src="images/罗辑智造社二次元头部形象.png" alt="Logo" class="nav-logo">
+                <span class="nav-title">罗辑智造社</span>
+            </div>
+            <ul>
+                <li><a href="index.html">🏠 首页</a></li>
+                <li><a href="resources.html">🎓 学习资源</a></li>
+                <li><a href="works.html">MakerVerse</a></li>
+                <li><a href="ai-quiz.html" class="active">🧠 AI竞赛答题</a></li>
+            </ul>
+        </nav>
+
+        <!-- 介绍区域 -->
+        <div class="intro-section">
+            <h2 class="intro-title"><i>🧠</i> 青少年人工智能基础知识竞赛答题系统</h2>
+            <p class="intro-content">
+                本系统基于《中小学人工智能通识教育指南（2025年版）》和《义务教育信息科技课程标准（2022年版2025年修订）》设计，旨在帮助学生掌握人工智能基础知识，培养四大核心素养：人工智能意识、人工智能思维、人工智能应用与创新能力、人工智能社会责任。
+            </p>
+            <div class="intro-features">
+                <div class="feature-item">
+                    <div class="feature-icon">📚</div>
+                    <div class="feature-title">权威题库</div>
+                    <div class="feature-desc">基于官方指南和课程标准设计</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🎯</div>
+                    <div class="feature-title">智能筛选</div>
+                    <div class="feature-desc">按维度和题型筛选题目</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-title">实时统计</div>
+                    <div class="feature-desc">答题进度和正确率实时显示</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">💡</div>
+                    <div class="feature-title">详细解析</div>
+                    <div class="feature-desc">每道题目都有详细答案解析</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 答题系统容器 -->
+        <div class="quiz-container">
+            <!-- 头部 -->
+            <div class="quiz-header">
+                <h1>青少年人工智能基础知识竞赛答题系统</h1>
+                <div class="summary">加载中...</div>
+            </div>
+
+            <!-- 加载状态 -->
+            <div class="loading-wrapper" id="loading-wrapper">
+                <div class="loading-card">
+                    <div class="loading-spinner" id="loading-spinner"></div>
+                    <h2 class="loading-title" id="loading-title">正在加载题库...</h2>
+                    <p class="loading-desc" id="loading-desc">请稍候，系统正在从服务器获取题库数据...</p>
+                    <div id="loading-status"></div>
+                </div>
+            </div>
+
+            <!-- 答题区域 -->
+            <div class="quiz-area" id="quiz-area">
+                <!-- 筛选区域 -->
+                <div class="filter-card">
+                    <h3 class="filter-title">筛选题目</h3>
+                    <div class="tag-group">
+                        <span class="tag-item active" data-dimension="all">全部维度</span>
+                        <span class="tag-item" data-dimension="人工智能意识">人工智能意识</span>
+                        <span class="tag-item" data-dimension="人工智能思维">人工智能思维</span>
+                        <span class="tag-item" data-dimension="人工智能应用与创新能力">人工智能应用与创新能力</span>
+                        <span class="tag-item" data-dimension="人工智能社会责任">人工智能社会责任</span>
+                    </div>
+                    <div class="tag-group">
+                        <span class="tag-item active" data-type="all">全部题型</span>
+                        <span class="tag-item" data-type="single">单选题</span>
+                        <span class="tag-item" data-type="multiple">多选题</span>
+                        <span class="tag-item" data-type="judge">判断题</span>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="applyFilter()">应用筛选</button>
+                        <button class="btn btn-default" onclick="resetFilter()">重置筛选</button>
+                    </div>
+                </div>
+
+                <!-- 答题卡 -->
+                <div class="answer-card">
+                    <h3 class="answer-card-title">答题卡</h3>
+                    <div class="answer-grid" id="answer-grid"></div>
+                </div>
+
+                <!-- 题目区域 -->
+                <div class="question-area">
+                    <div class="question-header">
+                        <h2 class="question-title" id="question-title">题目</h2>
+                        <div class="question-info" id="question-info"></div>
+                    </div>
+                    <div class="question-text" id="question-text"></div>
+                    <div class="options-list" id="options-list"></div>
+                    <div class="analysis-area" id="analysis-area">
+                        <h3 class="analysis-title">答案解析</h3>
+                        <div class="analysis-content" id="analysis-content"></div>
+                    </div>
+                    <div class="nav-buttons">
+                        <button class="btn btn-default" onclick="prevQuestion()">上一题</button>
+                        <button class="btn btn-primary" onclick="nextQuestion()">下一题</button>
+                        <button class="btn btn-default" onclick="showAnswer()">查看答案</button>
+                        <button class="btn btn-default" onclick="resetQuiz()">重新开始</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let allQuestions = [];
+        let filteredQuestions = [];
+        let currentQuestionIndex = 0;
+        let userAnswers = {};
+        let selectedDimension = "all", selectedType = "all";
+
+        // 配置
+        const CACHE_KEY = "ai_question_bank_cache", CACHE_TIMESTAMP_KEY = "ai_question_bank_timestamp";
+        const CACHE_DURATION = 24 * 60 * 60 * 1000;
+
+        // 页面加载初始化
+        document.addEventListener("DOMContentLoaded", function() {
+            // 自动加载题库
+            loadQuestionBank();
+        });
+
+        // 加载题库
+        function loadQuestionBank() {
+            // 首先尝试从缓存加载
+            if (isCacheValid()) {
+                const cachedQuestions = loadFromCache();
+                if (cachedQuestions && cachedQuestions.length > 0) {
+                    updateLoadingStatus("从缓存加载", `成功加载 ${cachedQuestions.length} 道题目`);
+                    setTimeout(() => initializeQuiz(cachedQuestions), 1000);
+                    return;
+                }
+            }
+            
+            // 从服务器加载题库
+            updateLoadingStatus("正在加载题库...", "从服务器获取题库数据");
+            
+            // 尝试多个可能的路径
+            const possiblePaths = [
+                "data/ai-quiz-data.csv",
+                "ai-quiz-data.csv",
+                "quiz/ai-quiz-data.csv",
+                "青少年人工智能竞赛题库.csv"
+            ];
+            
+            let attempts = 0;
+            const maxAttempts = possiblePaths.length;
+            
+            function tryNextPath() {
+                if (attempts >= maxAttempts) {
+                    updateLoadingStatus("加载失败", "无法找到题库文件，请稍后重试", true);
+                    return;
+                }
+                
+                const path = possiblePaths[attempts];
+                attempts++;
+                
+                updateLoadingStatus("正在加载题库...", `尝试路径: ${path}`);
+                
+                fetch(path)
+                    .then(response => {
+                        if (!response.ok) throw new Error(`HTTP错误: ${response.status}`);
+                        return response.text();
+                    })
+                    .then(text => {
+                        const questions = parseCSV(text);
+                        saveToCache(questions);
+                        updateLoadingStatus("加载成功", `成功加载 ${questions.length} 道题目`);
+                        setTimeout(() => initializeQuiz(questions), 1000);
+                    })
+                    .catch(error => {
+                        console.log(`路径 ${path} 失败:`, error.message);
+                        setTimeout(tryNextPath, 500);
+                    });
+            }
+            
+            tryNextPath();
+        }
+
+        // 加载状态更新
+        function updateLoadingStatus(status, message, isError = false) {
+            document.getElementById("loading-title").textContent = status;
+            const statusEl = document.getElementById("loading-status");
+            statusEl.innerHTML = `<div class="${isError ? 'loading-error' : 'loading-success'}">${message}</div>`;
+            if (isError) {
+                document.getElementById("loading-spinner").style.display = "none";
+                document.getElementById("loading-desc").innerHTML = `加载失败：${message}<br>请刷新页面重试。`;
+                const retryBtn = document.createElement("button");
+                retryBtn.className = "retry-btn";
+                retryBtn.textContent = "重试加载";
+                retryBtn.onclick = function() {
+                    document.getElementById("loading-spinner").style.display = "block";
+                    document.getElementById("loading-desc").textContent = "请稍候，系统正在从服务器获取题库数据...";
+                    statusEl.innerHTML = "";
+                    loadQuestionBank();
+                };
+                statusEl.appendChild(retryBtn);
+            }
+        }
+
+        // 缓存管理
+        function isCacheValid() {
+            const timestamp = localStorage.getItem(CACHE_TIMESTAMP_KEY);
+            if (!timestamp) return false;
+            return (Date.now() - parseInt(timestamp)) < CACHE_DURATION;
+        }
+        function loadFromCache() {
+            try {
+                const cachedData = localStorage.getItem(CACHE_KEY);
+                return cachedData ? JSON.parse(cachedData) : null;
+            } catch (e) {
+                console.warn("缓存数据解析失败:", e);
+                localStorage.removeItem(CACHE_KEY);
+                localStorage.removeItem(CACHE_TIMESTAMP_KEY);
+                return null;
+            }
+        }
+        function saveToCache(data) {
+            try {
+                localStorage.setItem(CACHE_KEY, JSON.stringify(data));
+                localStorage.setItem(CACHE_TIMESTAMP_KEY, Date.now().toString());
+            } catch (e) { console.warn("缓存保存失败:", e); }
+        }
+
+        // CSV解析
+        function parseCSV(text) {
+            const lines = text.split(/\r?\n/);
+            if (lines.length < 2) throw new Error("CSV文件格式错误");
+            
+            // 简单解析，假设没有引号内的逗号
+            const headers = lines[0].split(",").map(h => h.trim());
+            const expectedHeaders = ["id", "dimension", "type", "typeName", "title", "options", "correct", "analysis"];
+            
+            if (headers.length !== expectedHeaders.length) {
+                throw new Error(`CSV表头格式错误！必须为：${expectedHeaders.join(",")}`);
+            }
+            
+            const questions = [];
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+                
+                const parts = line.split(",").map(p => p.trim());
+                if (parts.length !== expectedHeaders.length) {
+                    console.warn(`跳过第${i+1}行，列数不匹配`);
+                    continue;
+                }
+                
+                const question = {
+                    id: parseInt(parts[0]) || i,
+                    dimension: parts[1],
+                    type: parts[2],
+                    typeName: parts[3],
+                    title: parts[4],
+                    options: parts[5].split(",").map(o => o.trim()),
+                    correct: parts[6].split(",").map(c => c.trim()),
+                    analysis: parts[7]
+                };
+                questions.push(question);
+            }
+            
+            if (questions.length === 0) throw new Error("CSV文件中没有有效的题目数据");
+            return questions;
+        }
+
+        // 初始化答题系统
+        function initializeQuiz(questions) {
+            allQuestions = questions;
+            filteredQuestions = [...questions];
+            userAnswers = {};
+            
+            // 更新头部统计
+            updateHeaderStats();
+            
+            // 初始化筛选标签
+            initFilterTags();
+            
+            // 初始化答题卡
+            initAnswerCard();
+            
+            // 显示第一题
+            showQuestion(0);
+            
+            // 切换到答题界面
+            setTimeout(() => {
+                document.getElementById("loading-wrapper").style.display = "none";
+                document.getElementById("quiz-area").style.display = "block";
+            }, 500);
+        }
+
+        // 更新头部统计
+        function updateHeaderStats() {
+            const total = filteredQuestions.length;
+            const answered = Object.keys(userAnswers).length;
+            const correct = Object.values(userAnswers).filter(a => a.isCorrect).length;
+            document.querySelector(".quiz-header .summary").innerHTML = 
+                `已答: ${answered}/${total} | 正确: ${correct}`;
+        }
+
+        // 初始化筛选标签
+        function initFilterTags() {
+            // 维度标签
+            document.querySelectorAll('[data-dimension]').forEach(tag => {
+                tag.addEventListener('click', function() {
+                    document.querySelectorAll('[data-dimension]').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    selectedDimension = this.dataset.dimension;
+                });
+            });
+            
+            // 题型标签
+            document.querySelectorAll('[data-type]').forEach(tag => {
+                tag.addEventListener('click', function() {
+                    document.querySelectorAll('[data-type]').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    selectedType = this.dataset.type;
+                });
+            });
+        }
+
+        // 应用筛选
+        function applyFilter() {
+            filteredQuestions = allQuestions.filter(q => {
+                const dimensionMatch = selectedDimension === "all" || q.dimension === selectedDimension;
+                const typeMatch = selectedType === "all" || q.type === selectedType;
+                return dimensionMatch && typeMatch;
+            });
+            
+            if (filteredQuestions.length === 0) {
+                alert("没有符合条件的题目，请调整筛选条件");
+                filteredQuestions = [...allQuestions];
+                return;
+            }
+            
+            currentQuestionIndex = 0;
+            initAnswerCard();
+            showQuestion(0);
+            updateHeaderStats();
+        }
+
+        // 重置筛选
+        function resetFilter() {
+            selectedDimension = "all";
+            selectedType = "all";
+            document.querySelectorAll('[data-dimension]').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('[data-type]').forEach(t => t.classList.remove('active'));
+            document.querySelector('[data-dimension="all"]').classList.add('active');
+            document.querySelector('[data-type="all"]').classList.add('active');
+            
+            filteredQuestions = [...allQuestions];
+            currentQuestionIndex = 0;
+            initAnswerCard();
+            showQuestion(0);
+            updateHeaderStats();
+        }
+
+        // 初始化答题卡
+        function initAnswerCard() {
+            const grid = document.getElementById("answer-grid");
+            grid.innerHTML = "";
+            
+            filteredQuestions.forEach((q, index) => {
+                const item = document.createElement("div");
+                item.className = "answer-item unanswered";
+                item.textContent = index + 1;
+                item.onclick = () => showQuestion(index);
+                
+                if (userAnswers[q.id]) {
+                    item.classList.remove("unanswered");
+                    item.classList.add(userAnswers[q.id].isCorrect ? "correct" : "wrong");
+                }
+                
+                if (index === currentQuestionIndex) {
+                    item.classList.add("current");
+                }
+                
+                grid.appendChild(item);
+            });
+        }
+
+        // 显示题目
+        function showQuestion(index) {
+            if (index < 0 || index >= filteredQuestions.length) return;
+            
+            currentQuestionIndex = index;
+            const question = filteredQuestions[index];
+            
+            // 更新答题卡
+            document.querySelectorAll(".answer-item").forEach((item, i) => {
+                item.classList.remove("current");
+                if (i === index) item.classList.add("current");
+            });
+            
+            // 更新题目信息
+            document.getElementById("question-title").textContent = `第 ${index + 1} 题`;
+            document.getElementById("question-info").textContent = `${question.dimension} · ${question.typeName}`;
+            document.getElementById("question-text").textContent = question.title;
+            
+            // 更新选项
+            const optionsList = document.getElementById("options-list");
+            optionsList.innerHTML = "";
+            
+            question.options.forEach((option, i) => {
+                const optionItem = document.createElement("div");
+                optionItem.className = "option-item";
+                
+                const labels = ["A", "B", "C", "D", "E", "F"];
+                const label = labels[i] || String.fromCharCode(65 + i);
+                
+                optionItem.innerHTML = `
+                    <span class="option-label">${label}.</span>
+                    <span class="option-text">${option}</span>
+                `;
+                
+                // 检查是否已选择
+                if (userAnswers[question.id]) {
+                    const userAnswer = userAnswers[question.id];
+                    const isSelected = userAnswer.selected.includes(label);
+                    const isCorrect = question.correct.includes(label);
+                    
+                    if (isSelected) {
+                        optionItem.classList.add("selected");
+                        if (userAnswer.isCorrect !== undefined) {
+                            optionItem.classList.add(isCorrect ? "correct" : "wrong");
+                        }
+                    } else if (userAnswer.isCorrect !== undefined && isCorrect) {
+                        optionItem.classList.add("correct");
+                    }
+                }
+                
+                optionItem.onclick = () => selectOption(label, question);
+                optionsList.appendChild(optionItem);
+            });
+            
+            // 更新解析区域
+            const analysisArea = document.getElementById("analysis-area");
+            const analysisContent = document.getElementById("analysis-content");
+            
+            if (userAnswers[question.id] && userAnswers[question.id].isCorrect !== undefined) {
+                analysisContent.textContent = question.analysis || "暂无解析";
+                analysisArea.style.display = "block";
+            } else {
+                analysisArea.style.display = "none";
+            }
+        }
+
+        // 选择选项
+        function selectOption(optionLabel, question) {
+            // 如果已经查看过答案，不允许修改
+            if (userAnswers[question.id] && userAnswers[question.id].isCorrect !== undefined) {
+                return;
+            }
+            
+            const isMultiple = question.type === "multiple";
+            let selected = userAnswers[question.id] ? [...userAnswers[question.id].selected] : [];
+            
+            if (isMultiple) {
+                // 多选题：切换选择状态
+                const index = selected.indexOf(optionLabel);
+                if (index === -1) {
+                    selected.push(optionLabel);
+                } else {
+                    selected.splice(index, 1);
+                }
+            } else {
+                // 单选题和判断题：单选
+                selected = [optionLabel];
+            }
+            
+            userAnswers[question.id] = {
+                selected: selected,
+                isCorrect: undefined // 尚未验证
+            };
+            
+            // 更新显示
+            showQuestion(currentQuestionIndex);
+            updateHeaderStats();
+            
+            // 更新答题卡
+            const answerItems = document.querySelectorAll(".answer-item");
+            if (answerItems[currentQuestionIndex]) {
+                answerItems[currentQuestionIndex].classList.remove("unanswered");
+                answerItems[currentQuestionIndex].classList.add("wrong"); // 暂时标记为错误，直到验证
+            }
+        }
+
+        // 查看答案
+        function showAnswer() {
+            const question = filteredQuestions[currentQuestionIndex];
+            if (!question) return;
+            
+            // 如果没有选择答案，自动选择正确答案（用于学习）
+            if (!userAnswers[question.id]) {
+                userAnswers[question.id] = {
+                    selected: [...question.correct],
+                    isCorrect: true
+                };
+            } else {
+                // 验证答案
+                const userAnswer = userAnswers[question.id];
+                const isCorrect = arraysEqual(userAnswer.selected.sort(), question.correct.sort());
+                userAnswers[question.id].isCorrect = isCorrect;
+            }
+            
+            // 更新显示
+            showQuestion(currentQuestionIndex);
+            updateHeaderStats();
+            
+            // 更新答题卡
+            const answerItems = document.querySelectorAll(".answer-item");
+            if (answerItems[currentQuestionIndex]) {
+                answerItems[currentQuestionIndex].classList.remove("unanswered", "wrong");
+                answerItems[currentQuestionIndex].classList.add(
+                    userAnswers[question.id].isCorrect ? "correct" : "wrong"
+                );
+            }
+        }
+
+        // 数组比较
+        function arraysEqual(a, b) {
+            if (a.length !== b.length) return false;
+            for (let i = 0; i < a.length; i++) {
+                if (a[i] !== b[i]) return false;
+            }
+            return true;
+        }
+
+        // 上一题
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                showQuestion(currentQuestionIndex - 1);
+            }
+        }
+
+        // 下一题
+        function nextQuestion() {
+            if (currentQuestionIndex < filteredQuestions.length - 1) {
+                showQuestion(currentQuestionIndex + 1);
+            }
+        }
+
+        // 重新开始
+        function resetQuiz() {
+            if (confirm("确定要重新开始吗？所有答题记录将被清空。")) {
+                userAnswers = {};
+                currentQuestionIndex = 0;
+                initAnswerCard();
+                showQuestion(0);
+                updateHeaderStats();
+            }
+        }
+    </script>
+</body>
+</html>
