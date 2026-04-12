@@ -381,16 +381,15 @@
         }
 
         @media (max-width: 768px) {
-            .nav-container {
-                padding: 0 15px;
-                height: 50px;
+            nav {
+                padding: 10px 20px;
             }
             
-            .nav-links {
-                gap: 15px;
+            nav ul {
+                gap: 10px;
             }
             
-            .nav-links a {
+            nav a {
                 font-size: 14px;
             }
             
@@ -421,15 +420,15 @@
         }
 
         @media (max-width: 480px) {
-            .logo {
+            .nav-title {
                 font-size: 20px;
             }
             
-            .nav-links {
+            nav ul {
                 gap: 10px;
             }
             
-            .nav-links a {
+            nav a {
                 font-size: 13px;
             }
             
@@ -451,21 +450,22 @@
     </style>
 </head>
 <body>
-    <!-- 导航栏 -->
-    <nav>
-        <div class="nav-brand">
-            <img src="images/罗辑智造社二次元头部形象.png" alt="Logo" class="nav-logo">
-            <span class="nav-title">罗辑智造社</span>
-        </div>
-        <ul>
-            <li><a href="index.html">🏠 首页</a></li>
-            <li><a href="resources.html">🎓 学习资源</a></li>
-            <li><a href="works.html" class="active">MakerVerse</a></li>
-            <li><a href="ai-quiz.html">🧠 AI竞赛答题</a></li>
-        </ul>
-    </nav>
-
     <div class="container">
+        <!-- 导航栏 -->
+        <nav>
+            <div class="nav-brand">
+                <img src="images/罗辑智造社二次元头部形象.png" alt="Logo" class="nav-logo">
+                <span class="nav-title">罗辑智造社</span>
+            </div>
+            <ul>
+                <li><a href="index.html">🏠 首页</a></li>
+                <li><a href="resources.html">🎓 学习资源</a></li>
+                <li><a href="works.html" class="active">MakerVerse</a></li>
+                <li><a href="ai-quiz.html">🧠 AI竞赛答题</a></li>
+            </ul>
+        </nav>
+
+        
         <!-- 作品详情容器 -->
         <div class="detail-container">
         <!-- 返回按钮 -->

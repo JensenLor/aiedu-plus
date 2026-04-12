@@ -667,32 +667,33 @@
     </style>
 </head>
 <body>
-    <!-- 导航栏 -->
-    <nav>
-        <div class="nav-brand">
-            <img src="images/罗辑智造社二次元头部形象.png" alt="Logo" class="nav-logo">
-            <span class="nav-title">罗辑智造社</span>
-        </div>
-        <ul>
-            <li><a href="index.html">🏠 首页</a></li>
-            <li><a href="resources.html">🎓 学习资源</a></li>
-            <li><a href="works.html">MakerVerse</a></li>
-            <li><a href="ai-quiz.html" class="active">🧠 AI竞赛答题</a></li>
-        </ul>
-    </nav>
+    <div class="container">
+        <!-- 导航栏 -->
+        <nav>
+            <div class="nav-brand">
+                <img src="images/罗辑智造社二次元头部形象.png" alt="Logo" class="nav-logo">
+                <span class="nav-title">罗辑智造社</span>
+            </div>
+            <ul>
+                <li><a href="index.html">🏠 首页</a></li>
+                <li><a href="resources.html">🎓 学习资源</a></li>
+                <li><a href="works.html">MakerVerse</a></li>
+                <li><a href="ai-quiz.html" class="active">🧠 AI竞赛答题</a></li>
+            </ul>
+        </nav>
 
-    <!-- 加载状态 -->
-    <div class="loading-wrapper" id="loading-wrapper">
-        <div class="loading-card">
-            <div class="loading-spinner"></div>
-            <h2 class="loading-title" id="loading-title">正在加载题库...</h2>
-            <p class="loading-desc" id="loading-desc">系统正在从服务器获取题库数据，请稍候...</p>
-            <div class="loading-status" id="loading-status"></div>
+        <!-- 加载状态 -->
+        <div class="loading-wrapper" id="loading-wrapper">
+            <div class="loading-card">
+                <div class="loading-spinner"></div>
+                <h2 class="loading-title" id="loading-title">正在加载题库...</h2>
+                <p class="loading-desc" id="loading-desc">系统正在从服务器获取题库数据，请稍候...</p>
+                <div class="loading-status" id="loading-status"></div>
+            </div>
         </div>
-    </div>
 
-    <!-- 答题区域 -->
-    <div class="quiz-container hidden" id="quiz-area">
+        <!-- 答题区域 -->
+        <div class="quiz-container hidden" id="quiz-area">
         <!-- 用户标识区域 -->
         <div class="user-identity">
             <h3>👤 用户标识</h3>
@@ -1480,5 +1481,6 @@
             return sortedA.every((val, idx) => val === sortedB[idx]);
         }
     </script>
+    </div>
 </body>
 </html>
