@@ -972,10 +972,16 @@
                 // 清理引号
                 const cleanParts = parts.map(p => p.replace(/^"+|"+$/g, '').trim());
                 
-                // 解析选项（逗号分隔）
+                // 解析选项
                 let options = [];
                 if (cleanParts[5]) {
-                    options = cleanParts[5].split(",").map(o => o.trim()).filter(o => o);
+                    // 对于情景式问答，选项是一个完整的情景描述，不需要分割
+                    if (cleanParts[2] === "scenario") {
+                        options = [cleanParts[5]];
+                    } else {
+                        // 对于其他类型的题目，按逗号分割选项
+                        options = cleanParts[5].split(",").map(o => o.trim()).filter(o => o);
+                    }
                 }
                 
                 // 解析答案（逗号分隔）
