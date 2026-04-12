@@ -322,6 +322,49 @@
             margin-right: 8px;
         }
         
+        /* 情景式问答样式 */
+        .scenario-container {
+            margin-bottom: 25px;
+        }
+        .scenario-description {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .scenario-input {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            resize: vertical;
+            font-size: 14px;
+            line-height: 1.6;
+            font-family: inherit;
+        }
+        .scenario-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+        .word-count {
+            text-align: right;
+            font-size: 12px;
+            color: var(--text-medium);
+            margin-top: 8px;
+            font-weight: 600;
+        }
+        .word-count.warning {
+            color: #f39c12;
+        }
+        .word-count.error {
+            color: #e74c3c;
+        }
+        
         /* 答案对比区域 */
         .answer-comparison {
             margin: 20px 0;
@@ -678,6 +721,7 @@
                     <span class="tag-item" data-value="single">单选题</span>
                     <span class="tag-item" data-value="multiple">多选题</span>
                     <span class="tag-item" data-value="judge">判断题</span>
+                    <span class="tag-item" data-value="scenario">情景式问答</span>
                 </div>
             </div>
             <div class="filter-btn-group">
@@ -834,13 +878,9 @@
 
         // 加载题库
         async function loadQuestionBank() {
-            // 尝试从缓存加载
-            const cachedData = loadFromCache();
-            if (cachedData && cachedData.length > 0) {
-                updateLoadingStatus("从缓存加载", `成功加载 ${cachedData.length} 道题目`);
-                setTimeout(() => initializeQuiz(cachedData), 1000);
-                return;
-            }
+            // 清除缓存，确保每次都加载最新数据
+            localStorage.removeItem(CACHE_KEY);
+            localStorage.removeItem(CACHE_TIME_KEY);
             
             // 从服务器加载
             updateLoadingStatus("正在加载题库...", "正在从服务器获取题库数据...");
@@ -944,7 +984,8 @@
                     correct = cleanParts[6].split(",").map(c => c.trim()).filter(c => c);
                 }
                 
-                if (!cleanParts[4] || options.length === 0) continue;
+                // 对于情景式问答，即使没有选项也可以创建题目
+                if (!cleanParts[4]) continue;
                 
                 questions.push({
                     id: parseInt(cleanParts[0]) || i,
@@ -1070,48 +1111,90 @@
             document.getElementById("type-tag").textContent = q.typeName;
             document.getElementById("question-title").textContent = q.title;
             
-            // 更新选项
+            // 更新选项/输入区域
             const optionsContainer = document.getElementById("options-container");
             optionsContainer.innerHTML = "";
             
-            const labels = ["A", "B", "C", "D", "E", "F"];
             const userAnswer = userAnswers[q.id];
             const isChecked = userAnswer && userAnswer.isCorrect !== undefined;
             
-            q.options.forEach((option, index) => {
-                const label = labels[index] || String.fromCharCode(65 + index);
-                const isSelected = userAnswer && userAnswer.selected.includes(label);
+            if (q.type === "scenario") {
+                // 情景式问答
+                const scenarioContainer = document.createElement("div");
+                scenarioContainer.className = "scenario-container";
                 
-                const optDiv = document.createElement("div");
-                optDiv.className = "option-item";
-                if (isSelected) optDiv.classList.add("selected");
-                if (isChecked) {
-                    optDiv.classList.add("disabled");
-                    if (q.correct.includes(label)) {
-                        optDiv.classList.add("correct");
-                    } else if (isSelected) {
-                        optDiv.classList.add("wrong");
-                    }
-                }
+                // 情景描述
+                const scenarioDesc = document.createElement("div");
+                scenarioDesc.className = "scenario-description";
+                let scenarioText = q.options[0] || "请根据提供的人工智能应用场景，提出问题并进行分析阐述。";
+                // 处理分点描述，添加换行
+                scenarioText = scenarioText.replace(/•/g, '<br>•').replace(/●/g, '<br>●');
+                scenarioDesc.innerHTML = `<strong>情景描述：</strong>${scenarioText}`;
+                scenarioContainer.appendChild(scenarioDesc);
                 
-                optDiv.innerHTML = `
-                    <input type="${q.type === 'multiple' ? 'checkbox' : 'radio'}" 
-                           class="option-input" 
-                           name="option" 
-                           id="opt-${index}"
-                           ${isSelected ? 'checked' : ''}
-                           ${isChecked ? 'disabled' : ''}>
-                    <label class="option-text" for="opt-${index}">
-                        <strong>${label}.</strong> ${option}
-                    </label>
-                `;
+                // 文本输入框
+                const textarea = document.createElement("textarea");
+                textarea.className = "scenario-input";
+                textarea.placeholder = "请在此输入您的回答...";
+                textarea.value = userAnswer && userAnswer.selected ? userAnswer.selected : "";
+                textarea.disabled = isChecked;
                 
                 if (!isChecked) {
-                    optDiv.addEventListener("click", () => selectOption(label, q.type));
+                    textarea.addEventListener("input", function() {
+                        updateWordCount(this.value);
+                        selectOption(this.value, q.type);
+                    });
                 }
                 
-                optionsContainer.appendChild(optDiv);
-            });
+                scenarioContainer.appendChild(textarea);
+                
+                // 字数统计
+                const wordCount = document.createElement("div");
+                wordCount.className = "word-count";
+                wordCount.id = "word-count";
+                updateWordCount(textarea.value);
+                scenarioContainer.appendChild(wordCount);
+                
+                optionsContainer.appendChild(scenarioContainer);
+            } else {
+                // 传统选择题
+                const labels = ["A", "B", "C", "D", "E", "F"];
+                
+                q.options.forEach((option, index) => {
+                    const label = labels[index] || String.fromCharCode(65 + index);
+                    const isSelected = userAnswer && userAnswer.selected.includes(label);
+                    
+                    const optDiv = document.createElement("div");
+                    optDiv.className = "option-item";
+                    if (isSelected) optDiv.classList.add("selected");
+                    if (isChecked) {
+                        optDiv.classList.add("disabled");
+                        if (q.correct.includes(label)) {
+                            optDiv.classList.add("correct");
+                        } else if (isSelected) {
+                            optDiv.classList.add("wrong");
+                        }
+                    }
+                    
+                    optDiv.innerHTML = `
+                        <input type="${q.type === 'multiple' ? 'checkbox' : 'radio'}" 
+                               class="option-input" 
+                               name="option" 
+                               id="opt-${index}"
+                               ${isSelected ? 'checked' : ''}
+                               ${isChecked ? 'disabled' : ''}>
+                        <label class="option-text" for="opt-${index}">
+                            <strong>${label}.</strong> ${option}
+                        </label>
+                    `;
+                    
+                    if (!isChecked) {
+                        optDiv.addEventListener("click", () => selectOption(label, q.type));
+                    }
+                    
+                    optionsContainer.appendChild(optDiv);
+                });
+            }
             
             // 更新答案对比区域
             const comparisonEl = document.getElementById("answer-comparison");
@@ -1122,12 +1205,12 @@
                 analysisSection.classList.add("show");
                 
                 // 显示用户答案
-                const userAnswerText = userAnswer.selected.join("、") || "未作答";
+                const userAnswerText = userAnswer.selected || "未作答";
                 document.getElementById("user-answer").textContent = userAnswerText;
                 document.getElementById("user-answer").className = "comparison-value " + (userAnswer.isCorrect ? "correct" : "wrong");
                 
-                // 显示正确答案
-                document.getElementById("correct-answer").textContent = q.correct.join("、");
+                // 显示正确答案/示例答案
+                document.getElementById("correct-answer").textContent = q.correct.join("、") || "示例答案：" + q.analysis;
                 document.getElementById("correct-answer").className = "comparison-value correct";
                 
                 // 显示答题结果
@@ -1150,28 +1233,56 @@
             // 更新按钮状态
             document.getElementById("next-btn").disabled = currentIndex === filteredQuestions.length - 1;
         }
+        
+        // 更新字数统计
+        function updateWordCount(text) {
+            const wordCount = document.getElementById("word-count");
+            if (!wordCount) return;
+            
+            const count = text.length;
+            let maxLength = 300; // 小学组默认限制
+            
+            // 根据题目或用户级别调整字数限制
+            // 这里可以根据实际需求修改逻辑
+            
+            wordCount.textContent = `字数：${count}/${maxLength}`;
+            
+            // 更新字数状态
+            if (count > maxLength) {
+                wordCount.classList.remove("warning");
+                wordCount.classList.add("error");
+            } else if (count > maxLength * 0.8) {
+                wordCount.classList.remove("error");
+                wordCount.classList.add("warning");
+            } else {
+                wordCount.classList.remove("warning", "error");
+            }
+        }
 
         // 选择选项
-        function selectOption(label, type) {
+        function selectOption(value, type) {
             const q = filteredQuestions[currentIndex];
             
             if (!userAnswers[q.id]) {
-                userAnswers[q.id] = { selected: [], isCorrect: undefined };
+                userAnswers[q.id] = { selected: type === "scenario" ? "" : [], isCorrect: undefined };
             }
             
             const answer = userAnswers[q.id];
             
-            if (type === "multiple") {
+            if (type === "scenario") {
+                // 情景式问答：直接保存文本
+                answer.selected = value;
+            } else if (type === "multiple") {
                 // 多选题：切换选择状态
-                const idx = answer.selected.indexOf(label);
+                const idx = answer.selected.indexOf(value);
                 if (idx === -1) {
-                    answer.selected.push(label);
+                    answer.selected.push(value);
                 } else {
                     answer.selected.splice(idx, 1);
                 }
             } else {
                 // 单选题：直接选择
-                answer.selected = [label];
+                answer.selected = [value];
             }
             
             renderQuestion();
@@ -1181,13 +1292,32 @@
         function submitAnswer() {
             const q = filteredQuestions[currentIndex];
             
-            if (!userAnswers[q.id] || userAnswers[q.id].selected.length === 0) {
-                alert("请先选择答案！");
+            if (!userAnswers[q.id]) {
+                alert("请先回答问题！");
                 return;
             }
             
-            const userSelected = userAnswers[q.id].selected;
-            const isCorrect = arraysEqual([...userSelected].sort(), [...q.correct].sort());
+            let isCorrect = false;
+            
+            if (q.type === "scenario") {
+                // 情景式问答：检查是否有输入
+                if (!userAnswers[q.id].selected || userAnswers[q.id].selected.trim() === "") {
+                    alert("请先输入您的回答！");
+                    return;
+                }
+                // 对于情景式问答，我们暂时将所有提交都视为正确
+                // 实际应用中可能需要人工评分或更复杂的判断逻辑
+                isCorrect = true;
+            } else {
+                // 传统选择题
+                if (userAnswers[q.id].selected.length === 0) {
+                    alert("请先选择答案！");
+                    return;
+                }
+                const userSelected = userAnswers[q.id].selected;
+                isCorrect = arraysEqual([...userSelected].sort(), [...q.correct].sort());
+            }
+            
             userAnswers[q.id].isCorrect = isCorrect;
             
             renderQuestion();
