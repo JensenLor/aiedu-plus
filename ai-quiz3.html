@@ -667,32 +667,33 @@
     </style>
 </head>
 <body>
-    <!-- 导航栏 -->
-    <nav>
-        <div class="nav-brand">
-            <img src="images/罗辑智造社二次元头部形象.png" alt="Logo" class="nav-logo">
-            <span class="nav-title">罗辑智造社</span>
-        </div>
-        <ul>
-            <li><a href="index.html">🏠 首页</a></li>
-            <li><a href="resources.html">🎓 学习资源</a></li>
-            <li><a href="works.html">MakerVerse</a></li>
-            <li><a href="ai-quiz.html" class="active">🧠 AI竞赛答题</a></li>
-        </ul>
-    </nav>
+    <div class="container">
+        <!-- 导航栏 -->
+        <nav>
+            <div class="nav-brand">
+                <img src="images/罗辑智造社二次元头部形象.png" alt="Logo" class="nav-logo">
+                <span class="nav-title">罗辑智造社</span>
+            </div>
+            <ul>
+                <li><a href="index.html">🏠 首页</a></li>
+                <li><a href="resources.html">🎓 学习资源</a></li>
+                <li><a href="works.html">MakerVerse</a></li>
+                <li><a href="ai-quiz.html" class="active">🧠 AI竞赛答题</a></li>
+            </ul>
+        </nav>
 
-    <!-- 加载状态 -->
-    <div class="loading-wrapper" id="loading-wrapper">
-        <div class="loading-card">
-            <div class="loading-spinner"></div>
-            <h2 class="loading-title" id="loading-title">正在加载题库...</h2>
-            <p class="loading-desc" id="loading-desc">系统正在从服务器获取题库数据，请稍候...</p>
-            <div class="loading-status" id="loading-status"></div>
+        <!-- 加载状态 -->
+        <div class="loading-wrapper" id="loading-wrapper">
+            <div class="loading-card">
+                <div class="loading-spinner"></div>
+                <h2 class="loading-title" id="loading-title">正在加载题库...</h2>
+                <p class="loading-desc" id="loading-desc">系统正在从服务器获取题库数据，请稍候...</p>
+                <div class="loading-status" id="loading-status"></div>
+            </div>
         </div>
-    </div>
 
-    <!-- 答题区域 -->
-    <div class="quiz-container hidden" id="quiz-area">
+        <!-- 答题区域 -->
+        <div class="quiz-container hidden" id="quiz-area">
         <!-- 用户标识区域 -->
         <div class="user-identity">
             <h3>👤 用户标识</h3>
@@ -972,10 +973,16 @@
                 // 清理引号
                 const cleanParts = parts.map(p => p.replace(/^"+|"+$/g, '').trim());
                 
-                // 解析选项（逗号分隔）
+                // 解析选项
                 let options = [];
                 if (cleanParts[5]) {
-                    options = cleanParts[5].split(",").map(o => o.trim()).filter(o => o);
+                    // 对于情景式问答，选项是一个完整的情景描述，不需要分割
+                    if (cleanParts[2] === "scenario") {
+                        options = [cleanParts[5]];
+                    } else {
+                        // 对于其他类型的题目，按逗号分割选项
+                        options = cleanParts[5].split(",").map(o => o.trim()).filter(o => o);
+                    }
                 }
                 
                 // 解析答案（逗号分隔）
@@ -1210,10 +1217,7 @@
                 document.getElementById("user-answer").className = "comparison-value " + (userAnswer.isCorrect ? "correct" : "wrong");
                 
                 // 显示正确答案/示例答案
-                let correctAnswerText = q.correct.join("、") || "示例答案：" + q.analysis;
-                // 对●进行换行处理
-                correctAnswerText = correctAnswerText.replace(/●/g, '<br>●');
-                document.getElementById("correct-answer").innerHTML = correctAnswerText;
+                document.getElementById("correct-answer").textContent = q.correct.join("、") || "示例答案：" + q.analysis;
                 document.getElementById("correct-answer").className = "comparison-value correct";
                 
                 // 显示答题结果
@@ -1223,10 +1227,7 @@
                     "comparison-value " + (userAnswer.isCorrect ? "correct" : "wrong");
                 
                 // 显示解析
-                let analysisText = q.analysis;
-                // 对●进行换行处理
-                analysisText = analysisText.replace(/●/g, '<br>●');
-                document.getElementById("analysis-content").innerHTML = analysisText;
+                document.getElementById("analysis-content").textContent = q.analysis;
                 
                 // 隐藏提交按钮
                 document.getElementById("submit-btn").style.display = "none";
@@ -1480,5 +1481,6 @@
             return sortedA.every((val, idx) => val === sortedB[idx]);
         }
     </script>
+    </div>
 </body>
 </html>
