@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生个人主页 - 罗辑智造社</title>
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 个人主页特有样式 */
+        .profile-header {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 4px 4px 0px var(--shadow-color);
+            border: 3px solid var(--border-color);
+            position: relative;
+        }
+        
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .back-button:hover {
+            background: var(--hover-color);
+            transform: translateY(-2px);
+        }
+        
+        .profile-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        @media (min-width: 768px) {
+            .profile-content {
+                flex-direction: row;
+                align-items: flex-start;
+                text-align: left;
+            }
+        }
+        
+        .profile-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--border-color);
+            box-shadow: 4px 4px 0px var(--accent-color);
+            margin-bottom: 20px;
+        }
+        
+        @media (min-width: 768px) {
+            .profile-avatar {
+                margin-right: 40px;
+                margin-bottom: 0;
+            }
+        }
+        
+        .profile-info {
+            flex: 1;
+        }
+        
+        .profile-name {
+            font-family: var(--font-hand);
+            font-size: 36px;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .profile-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+            color: var(--text-medium);
+        }
+        
+        .profile-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .profile-description {
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+        
+        .profile-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .profile-tag {
+            background: var(--accent-color);
+            color: var(--text-dark);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+            border: 2px solid var(--border-color);
+        }
+        
+        /* 证书和作品区域 */
+        .profile-section {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 4px 4px 0px var(--shadow-color);
+            border: 3px solid var(--border-color);
+        }
+        
+        .section-title {
+            font-family: var(--font-hand);
+            font-size: 28px;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .certificates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .certificate-item {
+            background: var(--light-bg);
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid var(--border-color);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .certificate-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 3px 3px 0px var(--shadow-color);
+        }
+        
+        .certificate-icon {
+            font-size: 40px;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .certificate-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .certificate-download {
+            display: inline-block;
+            margin-top: 10px;
+            background: var(--primary-color);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .certificate-download:hover {
+            background: var(--hover-color);
+        }
+        
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+        
+        .work-card {
+            background: var(--light-bg);
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid var(--border-color);
+            transition: all 0.3s;
+        }
+        
+        .work-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 3px 3px 0px var(--shadow-color);
+        }
+        
+        .work-cover {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border: 2px solid var(--border-color);
+        }
+        
+        .work-title {
+            font-family: var(--font-hand);
+            font-size: 22px;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .work-description {
+            font-size: 14px;
+            color: var(--text-medium);
+            margin-bottom: 15px;
+            height: 60px;
+            overflow: hidden;
+        }
+        
+        .work-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .work-tag {
+            background: var(--accent-color);
+            color: var(--text-dark);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .work-download {
+            display: block;
+            text-align: center;
+            background: var(--primary-color);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .work-download:hover {
+            background: var(--hover-color);
+        }
+        
+        .no-items {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-light);
+            font-style: italic;
+        }
+        
+        /* 学生作品数量统计 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-item {
+            background: var(--light-bg);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            border: 2px solid var(--border-color);
+        }
+        
+        .stat-value {
+            font-family: var(--font-hand);
+            font-size: 32px;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-medium);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 导航栏 -->
+        <nav>
+            <div class="nav-brand">
+                <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/user-graduate.svg" alt="Logo" class="nav-logo">
+                <span class="nav-title">罗辑智造社</span>
+            </div>
+            <ul>
+                <li><a href="index.html">🏠 首页</a></li>
+                <li><a href="works.html">MakerVerse</a></li>
+                <li><a href="resources.html">🎓 学习资源</a></li>
+            </ul>
+        </nav>
+
+        <!-- 个人主页内容 -->
+        <div class="profile-header">
+            <button class="back-button" onclick="window.history.back()">
+                <i class="fas fa-arrow-left"></i> 返回作品展示
+            </button>
+            
+            <div class="profile-content">
+                <img id="studentAvatar" src="images/default_avatar.jpg" alt="学生头像" class="profile-avatar">
+                <div class="profile-info">
+                    <h1 id="studentName" class="profile-name">加载中...</h1>
+                    
+                    <div class="profile-meta">
+                        <div class="profile-meta-item">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span id="studentGrade">加载中...</span>
+                        </div>
+                        <div class="profile-meta-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            学习时长: <span id="studyMonths">0</span>个月
+                        </div>
+                        <div class="profile-meta-item">
+                            <i class="fas fa-puzzle-piece"></i>
+                            作品: <span id="worksCount">0</span>个
+                        </div>
+                        <div class="profile-meta-item">
+                            <i class="fas fa-calendar-plus"></i>
+                            加入时间: <span id="joinDate">加载中...</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value" id="certCount">0</div>
+                            <div class="stat-label">证书数量</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="worksCount2">0</div>
+                            <div class="stat-label">作品数量</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="studyTime">0</div>
+                            <div class="stat-label">学习时长(月)</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="skillCount">0</div>
+                            <div class="stat-label">技能数量</div>
+                        </div>
+                    </div>
+                    
+                    <p id="studentDescription" class="profile-description">加载中...</p>
+                    
+                    <div class="profile-tags" id="skillTags">
+                        <!-- 技能标签动态生成 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 证书区域 -->
+        <div class="profile-section">
+            <h2 class="section-title">
+                <i class="fas fa-award"></i> 证书与荣誉
+            </h2>
+            <div id="certificatesContainer" class="certificates-grid">
+                <div class="no-items" id="noCertificates">
+                    <i class="fas fa-award fa-3x" style="color: #ddd; margin-bottom: 15px;"></i>
+                    <p>暂无证书</p>
+                    <p style="font-size: 14px; margin-top: 10px;">家长可上传证书到学生文件夹</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 作品区域 -->
+        <div class="profile-section">
+            <h2 class="section-title">
+                <i class="fas fa-code"></i> 学生作品
+            </h2>
+            <div id="worksContainer" class="works-grid">
+                <div class="no-items" id="noWorks">
+                    <i class="fas fa-code fa-3x" style="color: #ddd; margin-bottom: 15px;"></i>
+                    <p>暂无作品</p>
+                    <p style="font-size: 14px; margin-top: 10px;">学生正在创作中...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 从URL获取学生ID
+        function getStudentIdFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('id');
+        }
+
+        // 加载学生数据
+        async function loadStudentData() {
+            const studentId = getStudentIdFromUrl();
+            if (!studentId) {
+                alert('未找到学生信息');
+                window.location.href = 'cases.html';
+                return;
+            }
+
+            try {
+                // 加载学生JSON数据
+                const response = await fetch('students-works/generated/students.json');
+                const students = await response.json();
+                
+                // 查找对应学生
+                const student = students.find(s => s.id === studentId);
+                if (!student) {
+                    alert('未找到该学生信息');
+                    window.location.href = 'cases.html';
+                    return;
+                }
+
+                // 加载作品JSON数据
+                const worksResponse = await fetch('students-works/generated/works.json');
+                const allWorks = await worksResponse.json();
+                
+                // 筛选该学生的作品
+                const studentWorks = allWorks.filter(work => work.student_id === studentId);
+
+                // 更新页面信息
+                updatePage(student, studentWorks);
+            } catch (error) {
+                console.error('加载数据失败:', error);
+                alert('数据加载失败，请稍后重试');
+            }
+        }
+
+        // 更新页面内容
+        function updatePage(student, works) {
+            // 基本学生信息
+            document.getElementById('studentName').textContent = student.name;
+            document.getElementById('studentGrade').textContent = student.grade;
+            document.getElementById('studyMonths').textContent = student.study_months;
+            document.getElementById('worksCount').textContent = student.works_count;
+            document.getElementById('joinDate').textContent = student.join_date;
+            document.getElementById('studentDescription').textContent = student.description;
+            
+            // 统计信息
+            document.getElementById('certCount').textContent = student.certificates ? student.certificates.length : 0;
+            document.getElementById('worksCount2').textContent = student.works_count;
+            document.getElementById('studyTime').textContent = student.study_months;
+            document.getElementById('skillCount').textContent = student.tags ? student.tags.length : 0;
+            
+            // 设置头像
+            if (student.has_avatar) {
+                document.getElementById('studentAvatar').src = `students-works/students/${student.id}_${student.name}/${student.avatar_file}`;
+            }
+
+            // 更新技能标签
+            const skillTagsContainer = document.getElementById('skillTags');
+            if (student.tags && student.tags.length > 0) {
+                skillTagsContainer.innerHTML = '';
+                student.tags.forEach(tag => {
+                    const tagElement = document.createElement('div');
+                    tagElement.className = 'profile-tag';
+                    tagElement.textContent = tag;
+                    skillTagsContainer.appendChild(tagElement);
+                });
+            } else {
+                skillTagsContainer.innerHTML = '<div class="profile-tag">暂无技能标签</div>';
+            }
+
+            // 更新证书
+            updateCertificates(student);
+
+            // 更新作品
+            updateWorks(works);
+        }
+
+        // 更新证书展示
+        function updateCertificates(student) {
+            const container = document.getElementById('certificatesContainer');
+            const noCertElement = document.getElementById('noCertificates');
+            
+            if (student.certificates && student.certificates.length > 0) {
+                noCertElement.style.display = 'none';
+                container.innerHTML = '';
+                
+                student.certificates.forEach(cert => {
+                    const certElement = document.createElement('div');
+                    certElement.className = 'certificate-item';
+                    
+                    const icon = cert.type === 'pdf' ? 'fas fa-file-pdf' : 'fas fa-file-image';
+                    certElement.innerHTML = `
+                        <div class="certificate-icon">
+                            <i class="${icon}"></i>
+                        </div>
+                        <div class="certificate-name">${cert.file}</div>
+                        <a href="${cert.path}" class="certificate-download" download>
+                            <i class="fas fa-download"></i> 下载
+                        </a>
+                    `;
+                    
+                    container.appendChild(certElement);
+                });
+            } else {
+                noCertElement.style.display = 'block';
+            }
+        }
+
+        // 更新作品展示
+        function updateWorks(works) {
+            const container = document.getElementById('worksContainer');
+            const noWorksElement = document.getElementById('noWorks');
+            
+            if (works.length > 0) {
+                noWorksElement.style.display = 'none';
+                container.innerHTML = '';
+                
+                works.forEach(work => {
+                    const workElement = document.createElement('div');
+                    workElement.className = 'work-card';
+                    
+                    // 构建作品封面图路径
+                    const coverImage = `images/work-default-${work.tech_tags && work.tech_tags.length > 0 ? 'code' : 'general'}.jpg`;
+                    
+                    // 构建技术标签
+                    let tagsHtml = '';
+                    if (work.tech_tags && work.tech_tags.length > 0) {
+                        work.tech_tags.forEach(tag => {
+                            tagsHtml += `<span class="work-tag">${tag}</span>`;
+                        });
+                    }
+                    
+                    workElement.innerHTML = `
+                        <img src="${coverImage}" alt="${work.title}" class="work-cover">
+                        <h3 class="work-title">${work.title}</h3>
+                        <p class="work-description">${work.description || work.preview_summary || '暂无描述'}</p>
+                        ${tagsHtml ? `<div class="work-tags">${tagsHtml}</div>` : ''}
+                        <a href="students-works/downloads/${work.download_file || '#'}" class="work-download" download>
+                            <i class="fas fa-download"></i> 下载作品
+                        </a>
+                    `;
+                    
+                    container.appendChild(workElement);
+                });
+            } else {
+                noWorksElement.style.display = 'block';
+            }
+        }
+
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', loadStudentData);
+    </script>
+</body>
+</html>
