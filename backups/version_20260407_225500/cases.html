@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>重定向中 - 罗辑智造社</title>
+    <meta http-equiv="refresh" content="0; url=works.html">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "PingFang SC", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #FFF9F5;
+            color: #333;
+        }
+        
+        .redirect-container {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 6px 6px 0px #FF8C42;
+            border: 3px solid #333;
+        }
+        
+        .loading {
+            font-size: 24px;
+            color: #FF6B35;
+            margin-bottom: 20px;
+        }
+        
+        .message {
+            font-size: 16px;
+            color: #555;
+        }
+        
+        .link {
+            color: #FF6B35;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="redirect-container">
+        <div class="loading">⏳ 正在重定向...</div>
+        <div class="message">
+            页面已更新，正在跳转到作品展示页。
+            <br><br>
+            如果3秒内没有跳转，请点击
+            <a href="works.html" class="link">这里手动跳转</a>
+        </div>
+    </div>
+    
+    <script>
+        // 3秒后自动跳转
+        setTimeout(function() {
+            window.location.href = "works.html";
+        }, 3000);
+        
+        // 立即跳转（如果用户点击）
+        document.querySelector('.link').addEventListener('click', function() {
+            window.location.href = "works.html";
+        });
+    </script>
+</body>
+</html>

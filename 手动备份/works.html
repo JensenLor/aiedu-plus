@@ -444,7 +444,6 @@
                 <li><a href="index.html">🏠 首页</a></li>
                 <li><a href="resources.html">🎓 学习资源</a></li>
                 <li><a href="works.html" class="active">MakerVerse</a></li>
-                <li><a href="ai-quiz.html">🧠 AI竞赛答题</a></li>
             </ul>
         </nav>
 
@@ -457,7 +456,7 @@
         <!-- 搜索、筛选和排序区域 -->
         <div class="search-filter">
             <div class="search-box">
-                <input type="text" id="searchInput" placeholder="搜索作品名称、技术标签或作者..." autocomplete="off">
+                <input type="text" id="searchInput" placeholder="搜索作品名称或技术标签..." autocomplete="off">
             </div>
             
             <div class="sort-controls">
@@ -476,18 +475,265 @@
 
         <!-- 作品网格 -->
         <div class="works-grid" id="worksGrid">
+            <!-- 作品卡片由JavaScript动态加载 -->
             <div class="no-works">
-                <h3>🎉 MakerVerse 暂未上线</h3>
-                <p>内容正在丰富中，敬请期待！</p>
+                <p>正在加载作品数据...</p>
             </div>
         </div>
 
         <!-- 统计信息 -->
         <footer style="text-align: center; padding: 20px; color: var(--text-medium);">
-            <p>罗辑智造社 - 创意无限</p>
+            <p>当前展示 <span id="worksCount">0</span> 个作品，来自 <span id="authorsCount">0</span> 位创作者</p>
         </footer>
     </div>
 
+    <!-- JavaScript -->
+    <script>
+        // 加载作品数据并渲染
+        let allWorks = [];
+        let allStudents = {};
+        let uniqueTags = new Set();
 
+        // 获取所有技术标签
+        function extractTags(works) {
+            const tags = new Set();
+            works.forEach(work => {
+                if (work.tech_tags && Array.isArray(work.tech_tags)) {
+                    work.tech_tags.forEach(tag => tags.add(tag));
+                }
+            });
+            return Array.from(tags);
+        }
+
+        // 渲染作品卡片
+        function renderWorkCard(work, studentInfo) {
+            const coverColor = getCoverColor(work.id);
+            const authorInitial = studentInfo.name ? studentInfo.name.charAt(0) : '?';
+            const studentId = studentInfo.student_id || '';
+            
+            // 获取作品封面图
+            const coverImage = work.cover_image ? `<img src="${work.cover_image}" alt="${work.title}">` : 
+                `<div class="default-cover" style="background: ${coverColor}">
+                    <div style="font-size: 14px; margin-top: 5px;">${work.tech_tags ? work.tech_tags[0] || '作品' : '作品'}</div>
+                </div>`;
+            
+            const tagsHTML = work.tech_tags && work.tech_tags.length > 0 
+                ? work.tech_tags.map(tag => `<span class="work-tag">${tag}</span>`).join('')
+                : '';
+            
+            const date = work.created_date ? new Date(work.created_date).toLocaleDateString('zh-CN') : '日期未知';
+            
+            return `
+                <article class="work-card" data-id="${work.id}" data-tags="${work.tech_tags ? work.tech_tags.join(',') : ''}" onclick="event.stopPropagation(); showWorkDetail('${work.id}')" style="cursor: pointer;">
+                    <div class="work-cover">
+                        ${coverImage}
+                    </div>
+                    <div class="work-info">
+                        <h3 class="work-title">${work.title}</h3>
+                        <div class="work-author">
+                            <div class="author-avatar">${authorInitial}</div>
+                            <a href="profile.html?id=${studentId}" class="author-name" onclick="event.stopPropagation()">${studentInfo.name || '未知学生'}</a>
+                        </div>
+                        <p class="work-description">${work.description || '暂无详细描述'}</p>
+                        <div class="work-tags">
+                            ${tagsHTML}
+                        </div>
+                    </div>
+                    <div class="work-footer">
+                        <span class="work-date">${date}</span>
+                        <div class="work-actions">
+                            ${work.download_file ? `<a href="../students-works/downloads/${work.download_file}" class="btn-download" download onclick="event.stopPropagation()">下载</a>` : ''}
+                            <button class="btn-detail" onclick="event.stopPropagation(); showWorkDetail('${work.id}')">详情</button>
+                        </div>
+                    </div>
+                </article>
+            `;
+        }
+
+        // 为每个作品生成不同的封面颜色
+        function getCoverColor(id) {
+            const colors = [
+                'linear-gradient(135deg, #FF6B35, #FFD93D)',
+                'linear-gradient(135deg, #36D1DC, #5B86E5)',
+                'linear-gradient(135deg, #834D9B, #D04ED6)',
+                'linear-gradient(135deg, #2E3192, #1BFFFF)',
+                'linear-gradient(135deg, #009245, #FCEE21)',
+                'linear-gradient(135deg, #662D8C, #ED1E79)',
+                'linear-gradient(135deg, #EE9CA7, #FFDDE1)',
+                'linear-gradient(135deg, #614385, #516395)'
+            ];
+            const hash = id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+            return colors[hash % colors.length];
+        }
+
+        // 显示作品详情 - 跳转到详情页
+        function showWorkDetail(workId) {
+            window.location.href = `work-detail.html?id=${workId}`;
+        }
+
+        // 渲染作品网格
+        function renderWorks(works) {
+            const grid = document.getElementById('worksGrid');
+            if (!works || works.length === 0) {
+                grid.innerHTML = '<div class="no-works"><p>暂无作品展示</p></div>';
+                return;
+            }
+            
+            grid.innerHTML = works.map(work => {
+                const studentInfo = allStudents[work.student_id] || {};
+                return renderWorkCard(work, studentInfo);
+            }).join('');
+            
+            // 更新统计信息
+            document.getElementById('worksCount').textContent = works.length;
+            const uniqueAuthors = new Set(works.map(w => w.student_id)).size;
+            document.getElementById('authorsCount').textContent = uniqueAuthors;
+        }
+
+        // 渲染标签过滤器
+        function renderTagFilters(tags) {
+            const container = document.getElementById('filterTags');
+            container.innerHTML = `
+                <div class="tag-filter active" data-tag="all">全部</div>
+                ${tags.map(tag => `<div class="tag-filter" data-tag="${tag}">${tag}</div>`).join('')}
+            `;
+            
+            // 添加点击事件 - 支持多选
+            container.querySelectorAll('.tag-filter').forEach(filter => {
+                filter.addEventListener('click', () => {
+                    const tag = filter.dataset.tag;
+                    
+                    if (tag === 'all') {
+                        // 点击"全部"，清除所有其他标签的选择
+                        container.querySelectorAll('.tag-filter').forEach(f => {
+                            f.classList.remove('active', 'multi-active');
+                        });
+                        filter.classList.add('active');
+                    } else {
+                        // 移除"全部"的选中状态
+                        const allFilter = container.querySelector('[data-tag="all"]');
+                        allFilter.classList.remove('active');
+                        
+                        // 切换当前标签的选中状态
+                        if (filter.classList.contains('multi-active')) {
+                            filter.classList.remove('multi-active');
+                        } else {
+                            filter.classList.add('multi-active');
+                        }
+                        
+                        // 如果没有任何标签被选中，则选中"全部"
+                        const activeTags = container.querySelectorAll('.tag-filter.multi-active');
+                        if (activeTags.length === 0) {
+                            allFilter.classList.add('active');
+                        }
+                    }
+                    
+                    applySortAndFilter();
+                });
+            });
+        }
+
+
+
+        // 搜索功能
+        function setupSearch() {
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', function() {
+                applySortAndFilter();
+            });
+        }
+        
+        // 排序功能
+        function setupSort() {
+            const sortSelect = document.getElementById('sortSelect');
+            sortSelect.addEventListener('change', function() {
+                applySortAndFilter();
+            });
+        }
+        
+        // 应用排序和筛选
+        function applySortAndFilter() {
+            let filteredWorks = [...allWorks];
+            
+            // 应用标签筛选（支持多选）
+            const activeTags = document.querySelectorAll('.tag-filter.multi-active');
+            if (activeTags.length > 0) {
+                const selectedTags = Array.from(activeTags).map(tag => tag.dataset.tag);
+                filteredWorks = filteredWorks.filter(work => 
+                    work.tech_tags && selectedTags.some(tag => work.tech_tags.includes(tag))
+                );
+            }
+            
+            // 应用搜索筛选
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase().trim();
+            if (searchQuery) {
+                filteredWorks = filteredWorks.filter(work => {
+                    const titleMatch = work.title.toLowerCase().includes(searchQuery);
+                    const descMatch = work.description && work.description.toLowerCase().includes(searchQuery);
+                    const tagsMatch = work.tech_tags && work.tech_tags.some(tag => tag.toLowerCase().includes(searchQuery));
+                    return titleMatch || descMatch || tagsMatch;
+                });
+            }
+            
+            // 应用排序
+            const sortType = document.getElementById('sortSelect').value;
+            filteredWorks.sort((a, b) => {
+                switch(sortType) {
+                    case 'newest':
+                        // 使用created_date字段排序
+                        return new Date(b.created_date) - new Date(a.created_date);
+                    case 'popular':
+                        // 使用模拟的热度指标：有下载文件的作品优先
+                        const aPopular = a.download_file && a.download_file.trim() !== "" ? 10 : 0;
+                        const bPopular = b.download_file && b.download_file.trim() !== "" ? 10 : 0;
+                        // 再按标签数量和难度加权
+                        const aBonus = (a.tech_tags?.length || 0) + (a.difficulty === "困难" ? 5 : 0);
+                        const bBonus = (b.tech_tags?.length || 0) + (b.difficulty === "困难" ? 5 : 0);
+                        return (bPopular + bBonus) - (aPopular + aBonus);
+                    case 'random':
+                        return Math.random() - 0.5;
+                    default:
+                        return 0;
+                }
+            });
+            
+            renderWorks(filteredWorks);
+        }
+
+        // 页面加载完成后初始化
+        async function initialize() {
+            try {
+                // 加载作品数据
+                const worksResponse = await fetch('students-works/generated/works.json');
+                allWorks = await worksResponse.json();
+                
+                // 加载学生数据
+                const studentsResponse = await fetch('students-works/generated/students.json');
+                const students = await studentsResponse.json();
+                
+                // 将学生数据转换为对象，方便查找
+                students.forEach(student => {
+                    allStudents[student.id] = student;
+                });
+                
+                // 提取所有技术标签
+                const tags = extractTags(allWorks);
+                
+                // 渲染页面
+                renderWorks(allWorks);
+                renderTagFilters(tags);
+                setupSearch();
+                setupSort();
+                
+            } catch (error) {
+                console.error('加载数据失败:', error);
+                document.getElementById('worksGrid').innerHTML = 
+                    '<div class="no-works"><p>加载作品数据失败，请稍后重试</p></div>';
+            }
+        }
+
+        // 页面加载完成后执行初始化
+        document.addEventListener('DOMContentLoaded', initialize);
+    </script>
 </body>
 </html>

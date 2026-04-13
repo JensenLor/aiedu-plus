@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试作品详情页</title>
+</head>
+<body>
+    <h1>作品详情页测试链接</h1>
+    <ul>
+        <li><a href="work-detail.html?id=work001">作品1：抢十秒挑战</a></li>
+        <li><a href="work-detail.html?id=work002">作品2：计算机2.0</a></li>
+        <li><a href="work-detail.html?id=work003">作品3：智能笔盒</a></li>
+        <li><a href="work-detail.html?id=work004">作品4：深海</a></li>
+    </ul>
+    
+    <p>打开浏览器开发者工具（F12）查看console日志和网络请求</p>
+    
+    <script>
+        // 测试JSON文件路径
+        async function testPaths() {
+            const testFiles = [
+                '../students-works/generated/works.json',
+                'students-works/generated/works.json',
+                './students-works/generated/works.json',
+                'generated/works.json'
+            ];
+            
+            for (const file of testFiles) {
+                try {
+                    const response = await fetch(file);
+                    if (response.ok) {
+                        console.log(`✓ 成功访问: ${file}`);
+                    } else {
+                        console.log(`✗ 无法访问: ${file} (状态码: ${response.status})`);
+                    }
+                } catch (error) {
+                    console.log(`✗ 访问失败: ${file} (错误: ${error.message})`);
+                }
+            }
+        }
+        
+        testPaths();
+    </script>
+</body>
+</html>
