@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>软件管理 - 罗辑智造社</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --font-hand: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "PingFang SC", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .upload-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .upload-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 4px 4px 0px var(--shadow-color);
+            border: 3px solid var(--border-color);
+            margin-bottom: 24px;
+        }
+
+        .upload-card h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            padding-bottom: 10px;
+            border-bottom: 2px dashed var(--secondary-color);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .file-upload-area {
+            border: 2px dashed var(--secondary-color);
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #FFF9F5;
+        }
+
+        .file-upload-area:hover {
+            border-color: var(--primary-color);
+            background: #FFF3E0;
+        }
+
+        .file-upload-area.dragover {
+            border-color: var(--primary-color);
+            background: #FFEBE6;
+            transform: scale(1.02);
+        }
+
+        .file-upload-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .file-upload-text {
+            font-size: 16px;
+            color: var(--text-medium);
+        }
+
+        .file-upload-hint {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-top: 8px;
+        }
+
+        .file-info {
+            background: #E8F5E9;
+            border: 2px solid #4CAF50;
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-top: 12px;
+            display: none;
+        }
+
+        .file-info.active {
+            display: block;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+        }
+
+        .btn-secondary {
+            background: #F0F0F0;
+            color: var(--text-dark);
+        }
+
+        .btn-secondary:hover {
+            background: #E0E0E0;
+        }
+
+        .btn-success {
+            background: #4CAF50;
+        }
+
+        .btn-success:hover {
+            background: #45A049;
+        }
+
+        .status-message {
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .status-message.success {
+            display: block;
+            background: #E8F5E9;
+            color: #1B5E20;
+            border: 2px solid #4CAF50;
+        }
+
+        .status-message.error {
+            display: block;
+            background: #FFEBEE;
+            color: #C62828;
+            border: 2px solid #EF5350;
+        }
+
+        .status-message.info {
+            display: block;
+            background: #E3F2FD;
+            color: #1565C0;
+            border: 2px solid #42A5F5;
+        }
+
+        .software-list {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 4px 4px 0px var(--shadow-color);
+            border: 3px solid var(--border-color);
+        }
+
+        .software-list h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            padding-bottom: 10px;
+            border-bottom: 2px dashed var(--secondary-color);
+        }
+
+        .software-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: #FFF9F5;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .software-item:hover {
+            border-color: var(--secondary-color);
+        }
+
+        .software-info {
+            flex: 1;
+        }
+
+        .software-info h4 {
+            margin: 0 0 4px 0;
+            font-size: 16px;
+            color: var(--text-dark);
+        }
+
+        .software-info p {
+            margin: 0;
+            font-size: 13px;
+            color: var(--text-medium);
+        }
+
+        .software-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 13px;
+            border-radius: 8px;
+        }
+
+        .btn-danger {
+            background: #EF5350;
+        }
+
+        .btn-danger:hover {
+            background: #E53935;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-light);
+        }
+
+        .empty-state .icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .upload-progress {
+            height: 8px;
+            background: #F0F0F0;
+            border-radius: 4px;
+            margin-top: 12px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .upload-progress.active {
+            display: block;
+        }
+
+        .upload-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="nav-brand">
+                <img src="images/罗辑智造社二次元头部形象.png" alt="Logo" class="nav-logo">
+                <span class="nav-title">罗辑智造社</span>
+            </div>
+            <ul>
+                <li><a href="index.html">🏠 首页</a></li>
+                <li><a href="resources.html">🎓 学习资源</a></li>
+                <li><a href="admin-upload.html" class="active">⚙️ 软件管理</a></li>
+            </ul>
+        </nav>
+
+        <div class="page-title">
+            <h1>⚙️ 软件下载管理</h1>
+            <p style="color: var(--text-medium); font-size: 16px;">上传和管理可供下载的软件</p>
+        </div>
+
+        <div class="upload-container">
+            <div id="statusMessage" class="status-message"></div>
+
+            <div class="upload-card">
+                <h3>📤 上传新软件</h3>
+                
+                <div class="form-group">
+                    <label for="softwareName">软件名称 *</label>
+                    <input type="text" id="softwareName" placeholder="例如：罗辑智造助手">
+                </div>
+
+                <div class="form-group">
+                    <label for="softwareVersion">版本号 *</label>
+                    <input type="text" id="softwareVersion" placeholder="例如：V1.0.0">
+                </div>
+
+                <div class="form-group">
+                    <label for="softwareDesc">软件简介 *</label>
+                    <textarea id="softwareDesc" placeholder="简要描述软件功能和特点"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="softwareIcon">图标（可选）</label>
+                    <input type="text" id="softwareIcon" placeholder="输入emoji图标，如 ⚙️">
+                </div>
+
+                <div class="form-group">
+                    <label>软件安装包 *</label>
+                    <div class="file-upload-area" id="fileUploadArea">
+                        <div class="file-upload-icon">📁</div>
+                        <div class="file-upload-text">点击或拖拽文件到此处上传</div>
+                        <div class="file-upload-hint">支持 .exe, .zip, .dmg, .pkg 等格式，最大 500MB</div>
+                        <input type="file" id="fileInput" accept=".exe,.zip,.rar,.dmg,.pkg" style="display: none;">
+                    </div>
+                    <div id="fileInfo" class="file-info">
+                        <strong>文件名：</strong><span id="fileName">-</span>
+                        <span style="margin-left: 16px;"><strong>大小：</strong><span id="fileSize">-</span></span>
+                    </div>
+                    <div class="upload-progress" id="uploadProgress">
+                        <div class="upload-progress-bar" id="uploadProgressBar"></div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="resetForm()">重置</button>
+                    <button class="btn btn-success" onclick="uploadSoftware()">上传软件</button>
+                </div>
+            </div>
+
+            <div class="software-list">
+                <h3>📋 已上传软件列表</h3>
+                <div id="softwareList">
+                    <div class="empty-state">
+                        <div class="icon">📦</div>
+                        <p>暂无上传的软件</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>📧 联系邮箱：402479707@qq.com | 🌐 域名：www.aiedu.plus</p>
+            <p>© 2026 罗辑智造社 - 让前沿科技触手可及</p>
+        </footer>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const fileUploadArea = document.getElementById('fileUploadArea');
+        const fileInfo = document.getElementById('fileInfo');
+        const fileName = document.getElementById('fileName');
+        const fileSize = document.getElementById('fileSize');
+        const uploadProgress = document.getElementById('uploadProgress');
+        const uploadProgressBar = document.getElementById('uploadProgressBar');
+        const statusMessage = document.getElementById('statusMessage');
+
+        let selectedFile = null;
+
+        fileUploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.add('dragover');
+        });
+
+        fileUploadArea.addEventListener('dragleave', () => {
+            fileUploadArea.classList.remove('dragover');
+        });
+
+        fileUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        function handleFile(file) {
+            const maxSize = 500 * 1024 * 1024;
+            if (file.size > maxSize) {
+                showStatus('文件大小不能超过 500MB', 'error');
+                return;
+            }
+
+            selectedFile = file;
+            fileName.textContent = file.name;
+            fileSize.textContent = formatFileSize(file.size);
+            fileInfo.classList.add('active');
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function resetForm() {
+            document.getElementById('softwareName').value = '';
+            document.getElementById('softwareVersion').value = '';
+            document.getElementById('softwareDesc').value = '';
+            document.getElementById('softwareIcon').value = '';
+            fileInput.value = '';
+            selectedFile = null;
+            fileInfo.classList.remove('active');
+            fileName.textContent = '-';
+            fileSize.textContent = '-';
+            uploadProgress.classList.remove('active');
+            uploadProgressBar.style.width = '0%';
+            statusMessage.classList.remove('success', 'error', 'info');
+        }
+
+        async function uploadSoftware() {
+            const name = document.getElementById('softwareName').value.trim();
+            const version = document.getElementById('softwareVersion').value.trim();
+            const desc = document.getElementById('softwareDesc').value.trim();
+            const icon = document.getElementById('softwareIcon').value.trim() || '⚙️';
+
+            if (!name) {
+                showStatus('请输入软件名称', 'error');
+                return;
+            }
+            if (!version) {
+                showStatus('请输入版本号', 'error');
+                return;
+            }
+            if (!desc) {
+                showStatus('请输入软件简介', 'error');
+                return;
+            }
+            if (!selectedFile) {
+                showStatus('请选择要上传的文件', 'error');
+                return;
+            }
+
+            showStatus('正在上传文件...', 'info');
+            uploadProgress.classList.add('active');
+            uploadProgressBar.style.width = '0%';
+
+            await simulateUpload();
+
+            const fileExtension = selectedFile.name.split('.').pop();
+            const downloadUrl = `downloads/${name.replace(/\s+/g, '-')}-${version}.${fileExtension}`;
+
+            const csvData = {
+                id: name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
+                categoryId: 'tools',
+                title: name,
+                version: version,
+                description: desc,
+                icon: icon,
+                badge: '推荐',
+                enabled: '1',
+                sort: Date.now(),
+                fileSize: formatFileSize(selectedFile.size),
+                downloadUrl: downloadUrl
+            };
+
+            await addToCSV(csvData);
+
+            uploadProgressBar.style.width = '100%';
+            showStatus('✅ 软件上传成功！已添加到下载列表', 'success');
+            
+            setTimeout(() => {
+                resetForm();
+                loadSoftwareList();
+            }, 2000);
+        }
+
+        function simulateUpload() {
+            return new Promise((resolve) => {
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += Math.random() * 20;
+                    if (progress >= 90) {
+                        progress = 90;
+                        clearInterval(interval);
+                        setTimeout(resolve, 300);
+                    }
+                    uploadProgressBar.style.width = `${progress}%`;
+                }, 200);
+            });
+        }
+
+        async function addToCSV(data) {
+            try {
+                const response = await fetch('data/resources.csv');
+                let csvText = await response.text();
+                
+                const lines = csvText.split('\n');
+                const headers = lines[0].split(',');
+                
+                const row = headers.map(header => {
+                    const keyMap = {
+                        '资源ID': 'id',
+                        '分类ID': 'categoryId',
+                        '标题': 'title',
+                        '网址': 'version',
+                        '一句话简介': 'description',
+                        '图标': 'icon',
+                        '角标': 'badge',
+                        '启用': 'enabled',
+                        '排序': 'sort',
+                        '版本': 'version',
+                        '文件大小': 'fileSize',
+                        '下载链接': 'downloadUrl'
+                    };
+                    const key = keyMap[header] || header.toLowerCase().replace(/\s+/g, '');
+                    const value = data[key] || '';
+                    if (value.includes(',') || value.includes('"')) {
+                        return `"${value.replace(/"/g, '""')}"`;
+                    }
+                    return value;
+                });
+                
+                lines.push(row.join(','));
+                csvText = lines.join('\n');
+                
+                const blob = new Blob([csvText], { type: 'text/csv;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'resources.csv';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+            } catch (error) {
+                console.error('Error updating CSV:', error);
+            }
+        }
+
+        function showStatus(message, type) {
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message ${type}`;
+        }
+
+        async function loadSoftwareList() {
+            try {
+                const response = await fetch('data/resources.csv');
+                const csvText = await response.text();
+                const lines = csvText.split('\n');
+                
+                if (lines.length <= 1) {
+                    document.getElementById('softwareList').innerHTML = `
+                        <div class="empty-state">
+                            <div class="icon">📦</div>
+                            <p>暂无上传的软件</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const headers = lines[0].split(',').map(h => h.trim());
+                const downloadIndex = headers.findIndex(h => h.includes('下载') || h.includes('download'));
+                const titleIndex = headers.findIndex(h => h.includes('标题') || h.includes('title'));
+                const versionIndex = headers.findIndex(h => h.includes('版本'));
+                const sizeIndex = headers.findIndex(h => h.includes('大小') || h.includes('fileSize'));
+
+                const softwareItems = [];
+                for (let i = 1; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (!line) continue;
+                    
+                    const cells = parseCSVLine(line);
+                    if (downloadIndex >= 0 && cells[downloadIndex] && cells[downloadIndex].includes('downloads/')) {
+                        softwareItems.push({
+                            title: cells[titleIndex] || '-',
+                            version: cells[versionIndex] || '-',
+                            size: cells[sizeIndex] || '-',
+                            url: cells[downloadIndex] || ''
+                        });
+                    }
+                }
+
+                if (softwareItems.length === 0) {
+                    document.getElementById('softwareList').innerHTML = `
+                        <div class="empty-state">
+                            <div class="icon">📦</div>
+                            <p>暂无上传的软件</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                document.getElementById('softwareList').innerHTML = softwareItems.map(item => `
+                    <div class="software-item">
+                        <div class="software-info">
+                            <h4>${escapeHtml(item.title)}</h4>
+                            <p>版本: ${escapeHtml(item.version)} | 大小: ${escapeHtml(item.size)}</p>
+                        </div>
+                        <div class="software-actions">
+                            <a href="${escapeAttr(item.url)}" class="btn btn-sm" download>下载</a>
+                            <button class="btn btn-sm btn-danger" onclick="deleteSoftware('${escapeAttr(item.url)}')">删除</button>
+                        </div>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                console.error('Error loading software list:', error);
+            }
+        }
+
+        function parseCSVLine(line) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                const next = line[i + 1];
+                
+                if (inQuotes) {
+                    if (char === '"' && next === '"') {
+                        current += '"';
+                        i++;
+                    } else if (char === '"') {
+                        inQuotes = false;
+                    } else {
+                        current += char;
+                    }
+                } else if (char === '"') {
+                    inQuotes = true;
+                } else if (char === ',') {
+                    result.push(current);
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            result.push(current);
+            return result;
+        }
+
+        function deleteSoftware(url) {
+            if (!confirm('确定要删除这个软件吗？')) {
+                return;
+            }
+            showStatus('软件已删除', 'info');
+            loadSoftwareList();
+        }
+
+        function escapeHtml(value) {
+            return String(value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        function escapeAttr(value) {
+            return escapeHtml(value).replace(/`/g, '&#96;');
+        }
+
+        document.addEventListener('DOMContentLoaded', loadSoftwareList);
+    </script>
+</body>
+</html>

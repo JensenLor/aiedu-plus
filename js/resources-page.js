@@ -16,6 +16,8 @@ document.addEventListener("DOMContentLoaded", () => {
     elements.grid = document.getElementById("resourceGrid");
     elements.status = document.getElementById("resourceStatus");
     elements.empty = document.getElementById("emptyState");
+    elements.downloadSection = document.getElementById("downloadSection");
+    elements.downloadGrid = document.getElementById("downloadGrid");
 
     initializePage();
 });
@@ -50,6 +52,7 @@ async function initializePage() {
             .map(row => {
                 const categoryId = getCell(row, ["category_id", "分类ID"]);
                 const categoryIcon = categoryMap.get(categoryId)?.icon || getDefaultCategoryIcon(categoryId);
+                const downloadUrl = getCell(row, ["download_url", "下载链接", "downloadLink"]);
                 return {
                     id: getCell(row, ["id", "资源ID"]),
                     categoryId,
@@ -64,7 +67,10 @@ async function initializePage() {
                     sort: toNumber(getCell(row, ["sort", "排序"]), 9999),
                     enabled: toBoolean(getCell(row, ["enabled", "启用"])),
                     categoryName: categoryMap.get(categoryId)?.name || "未分类",
-                    categoryIcon
+                    categoryIcon,
+                    version: getCell(row, ["version", "版本", "版本号"]) || "",
+                    fileSize: getCell(row, ["file_size", "文件大小", "大小"]) || "",
+                    downloadUrl
                 };
             })
             .filter(item => item.id && item.title && item.enabled)
@@ -315,18 +321,48 @@ function renderResources() {
         ? state.resources
         : state.resources.filter((item) => item.categoryId === state.activeCategory);
 
-    if (filteredResources.length === 0) {
+    const downloadResources = filteredResources.filter(item => item.downloadUrl);
+    const normalResources = filteredResources.filter(item => !item.downloadUrl);
+
+    if (downloadResources.length > 0) {
+        elements.downloadSection.hidden = false;
+        elements.downloadGrid.innerHTML = downloadResources.map(renderDownloadCard).join("");
+    } else {
+        elements.downloadSection.hidden = true;
+    }
+
+    if (normalResources.length === 0) {
         elements.grid.innerHTML = "";
         elements.empty.hidden = false;
         return;
     }
 
     elements.empty.hidden = true;
-    elements.grid.innerHTML = filteredResources.map(renderCard).join("");
+    elements.grid.innerHTML = normalResources.map(renderNormalCard).join("");
     attachCardIconFallbacks();
 }
 
-function renderCard(item) {
+function renderDownloadCard(item) {
+    return `
+        <article class="resource-card download-card" data-resource-id="${escapeAttr(item.id)}">
+            ${item.badge ? `<span class="card-badge">${escapeHtml(item.badge)}</span>` : ""}
+            <div class="download-card-header">
+                <div class="download-card-icon">${escapeHtml(item.icon || item.categoryIcon || "⚙️")}</div>
+                <h3 class="download-card-title">${escapeHtml(item.title)}</h3>
+            </div>
+            <p class="download-card-desc">${escapeHtml(item.description)}</p>
+            <div class="download-card-meta">
+                ${item.version ? `<div class="download-meta-item"><span>📦</span> ${escapeHtml(item.version)}</div>` : ""}
+                ${item.fileSize ? `<div class="download-meta-item"><span>💾</span> ${escapeHtml(item.fileSize)}</div>` : ""}
+            </div>
+            <button class="download-btn" onclick="openDownloadModal(${JSON.stringify(item).replace(/"/g, '&quot;')})">
+                <span>⬇️</span> 立即下载
+            </button>
+        </article>
+    `;
+}
+
+function renderNormalCard(item) {
     const content = `
         ${item.badge ? `<span class="card-badge">${escapeHtml(item.badge)}</span>` : ""}
         ${renderCardIcon(item.icon, item.categoryIcon)}
@@ -458,3 +494,86 @@ function escapeHtml(value) {
 function escapeAttr(value) {
     return escapeHtml(value).replace(/`/g, "&#96;");
 }
+
+let currentDownloadItem = null;
+let downloadInterval = null;
+
+function openDownloadModal(item) {
+    currentDownloadItem = item;
+    
+    document.getElementById("confirmIcon").textContent = item.icon || item.categoryIcon || "⚙️";
+    document.getElementById("confirmName").textContent = item.title;
+    document.getElementById("confirmDesc").textContent = item.description;
+    document.getElementById("confirmVersion").textContent = item.version || "未知版本";
+    document.getElementById("confirmSize").textContent = item.fileSize || "未知大小";
+    
+    document.getElementById("confirmContent").hidden = false;
+    document.getElementById("progressContent").hidden = true;
+    document.getElementById("successContent").hidden = true;
+    
+    document.getElementById("downloadModal").hidden = false;
+    document.body.style.overflow = "hidden";
+}
+
+function closeDownloadModal() {
+    document.getElementById("downloadModal").hidden = true;
+    document.body.style.overflow = "";
+    
+    if (downloadInterval) {
+        clearInterval(downloadInterval);
+        downloadInterval = null;
+    }
+    
+    document.getElementById("progressFill").style.width = "0%";
+    document.getElementById("progressText").textContent = "0%";
+    
+    currentDownloadItem = null;
+}
+
+function startDownload() {
+    if (!currentDownloadItem) return;
+    
+    document.getElementById("confirmContent").hidden = true;
+    document.getElementById("progressContent").hidden = false;
+    document.getElementById("successContent").hidden = true;
+    
+    let progress = 0;
+    downloadInterval = setInterval(() => {
+        progress += Math.random() * 15 + 5;
+        if (progress >= 100) {
+            progress = 100;
+            clearInterval(downloadInterval);
+            downloadInterval = null;
+            
+            setTimeout(() => {
+                simulateDownloadComplete();
+            }, 300);
+        }
+        
+        document.getElementById("progressFill").style.width = `${progress}%`;
+        document.getElementById("progressText").textContent = `${Math.round(progress)}%`;
+    }, 200);
+}
+
+function simulateDownloadComplete() {
+    if (!currentDownloadItem) return;
+    
+    document.getElementById("progressContent").hidden = true;
+    document.getElementById("successContent").hidden = false;
+    
+    const downloadLink = document.createElement("a");
+    downloadLink.href = currentDownloadItem.downloadUrl;
+    downloadLink.download = currentDownloadItem.title;
+    downloadLink.target = "_blank";
+    downloadLink.rel = "noopener noreferrer";
+    
+    setTimeout(() => {
+        downloadLink.click();
+    }, 500);
+}
+
+document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !document.getElementById("downloadModal").hidden) {
+        closeDownloadModal();
+    }
+});

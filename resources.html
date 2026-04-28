@@ -263,6 +263,45 @@
             }
         }
 
+        .download-section {
+            margin-bottom: 30px;
+        }
+
+        .section-header {
+            margin-bottom: 20px;
+        }
+
+        .section-header h2 {
+            font-size: 28px;
+            color: var(--primary-color);
+            margin: 0 0 8px 0;
+            border-bottom: 3px dashed var(--secondary-color);
+            padding-bottom: 10px;
+        }
+
+        .section-desc {
+            color: var(--text-medium);
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        @media (max-width: 992px) {
+            .resource-container {
+                flex-direction: column;
+            }
+
+            .resource-nav {
+                width: 100%;
+                position: static;
+            }
+        }
+
         @media (max-width: 768px) {
             .page-title h1 {
                 font-size: 36px;
@@ -270,6 +309,14 @@
 
             .resource-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .download-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-header h2 {
+                font-size: 24px;
             }
         }
     </style>
@@ -307,6 +354,14 @@
                     <p>你可以直接去 <code>data/resources.csv</code> 新增一行资料，保存后页面就会自动显示。</p>
                 </section>
 
+                <section id="downloadSection" class="download-section" hidden>
+                    <div class="section-header">
+                        <h2>📥 软件下载</h2>
+                        <p class="section-desc">以下是我们推荐的实用软件，点击下载按钮即可获取安装包</p>
+                    </div>
+                    <div id="downloadGrid" class="download-grid"></div>
+                </section>
+
                 <section id="resourceGrid" class="resource-grid"></section>
             </main>
         </div>
@@ -315,6 +370,58 @@
             <p>📧 联系邮箱：402479707@qq.com | 🌐 域名：www.aiedu.plus</p>
             <p>© 2026 罗辑智造社 - 让前沿科技触手可及</p>
         </footer>
+
+        <div id="downloadModal" class="modal-overlay" hidden>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modalTitle">确认下载</h3>
+                    <button class="modal-close" onclick="closeDownloadModal()">×</button>
+                </div>
+                <div class="modal-body">
+                    <div id="confirmContent" class="confirm-view">
+                        <div class="software-info">
+                            <div class="software-icon" id="confirmIcon">⚙️</div>
+                            <div class="software-details">
+                                <h4 id="confirmName">软件名称</h4>
+                                <p id="confirmDesc">软件简介</p>
+                                <div class="software-meta">
+                                    <span class="meta-item">版本：<span id="confirmVersion">V1.0.0</span></span>
+                                    <span class="meta-item">大小：<span id="confirmSize">0 MB</span></span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="confirm-warning">⚠️ 下载文件可能需要一些时间，请耐心等待。下载完成后请按提示安装。</p>
+                        <div class="modal-actions">
+                            <button class="btn btn-cancel" onclick="closeDownloadModal()">取消</button>
+                            <button class="btn btn-primary" id="startDownloadBtn" onclick="startDownload()">开始下载</button>
+                        </div>
+                    </div>
+
+                    <div id="progressContent" class="progress-view" hidden>
+                        <div class="progress-header">
+                            <span class="progress-icon">📥</span>
+                            <span id="progressTitle">正在下载...</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progressFill"></div>
+                            </div>
+                            <span class="progress-text" id="progressText">0%</span>
+                        </div>
+                        <p class="progress-hint">请不要关闭此窗口，下载完成后将自动提示。</p>
+                    </div>
+
+                    <div id="successContent" class="success-view" hidden>
+                        <div class="success-icon">✅</div>
+                        <h4 id="successTitle">下载完成！</h4>
+                        <p id="successMsg">文件已成功下载到您的设备。</p>
+                        <div class="success-actions">
+                            <button class="btn btn-primary" onclick="closeDownloadModal()">确定</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="js/resources-page.js"></script>
