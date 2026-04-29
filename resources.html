@@ -228,6 +228,49 @@
             display: flex;
         }
 
+        .card-download-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: auto;
+            padding-top: 8px;
+            border-top: 1px dashed rgba(230, 126, 34, 0.3);
+        }
+
+        .meta-tag {
+            font-size: 12px;
+            color: var(--text-medium);
+            background: #FFF3E0;
+            padding: 3px 8px;
+            border-radius: 6px;
+        }
+
+        .card-download-btn {
+            margin-left: auto;
+            padding: 6px 14px;
+            background: var(--primary-color);
+            color: white;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 2px 2px 0px var(--shadow-color);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            white-space: nowrap;
+        }
+
+        .card-download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 3px 3px 0px var(--shadow-color);
+        }
+
+        .card-download-btn:active {
+            transform: translateY(0px);
+            box-shadow: 1px 1px 0px var(--shadow-color);
+        }
+
         .card-title {
             font-size: 20px;
             line-height: 1.5;
@@ -310,14 +353,6 @@
             .resource-grid {
                 grid-template-columns: 1fr;
             }
-
-            .download-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .section-header h2 {
-                font-size: 24px;
-            }
         }
     </style>
 </head>
@@ -352,14 +387,6 @@
                 <section id="emptyState" class="empty-state" hidden>
                     <h3>这个分类暂时还没有内容</h3>
                     <p>你可以直接去 <code>data/resources.csv</code> 新增一行资料，保存后页面就会自动显示。</p>
-                </section>
-
-                <section id="downloadSection" class="download-section" hidden>
-                    <div class="section-header">
-                        <h2>📥 软件下载</h2>
-                        <p class="section-desc">以下是我们推荐的实用软件，点击下载按钮即可获取安装包</p>
-                    </div>
-                    <div id="downloadGrid" class="download-grid"></div>
                 </section>
 
                 <section id="resourceGrid" class="resource-grid"></section>

@@ -321,54 +321,42 @@ function renderResources() {
         ? state.resources
         : state.resources.filter((item) => item.categoryId === state.activeCategory);
 
-    const downloadResources = filteredResources.filter(item => item.downloadUrl);
-    const normalResources = filteredResources.filter(item => !item.downloadUrl);
-
-    if (downloadResources.length > 0) {
-        elements.downloadSection.hidden = false;
-        elements.downloadGrid.innerHTML = downloadResources.map(renderDownloadCard).join("");
-    } else {
-        elements.downloadSection.hidden = true;
-    }
-
-    if (normalResources.length === 0) {
+    if (filteredResources.length === 0) {
         elements.grid.innerHTML = "";
         elements.empty.hidden = false;
         return;
     }
 
     elements.empty.hidden = true;
-    elements.grid.innerHTML = normalResources.map(renderNormalCard).join("");
+    elements.grid.innerHTML = filteredResources.map(renderCard).join("");
     attachCardIconFallbacks();
 }
 
-function renderDownloadCard(item) {
-    return `
-        <article class="resource-card download-card" data-resource-id="${escapeAttr(item.id)}">
-            ${item.badge ? `<span class="card-badge">${escapeHtml(item.badge)}</span>` : ""}
-            <div class="download-card-header">
-                <div class="download-card-icon">${escapeHtml(item.icon || item.categoryIcon || "⚙️")}</div>
-                <h3 class="download-card-title">${escapeHtml(item.title)}</h3>
-            </div>
-            <p class="download-card-desc">${escapeHtml(item.description)}</p>
-            <div class="download-card-meta">
-                ${item.version ? `<div class="download-meta-item"><span>📦</span> ${escapeHtml(item.version)}</div>` : ""}
-                ${item.fileSize ? `<div class="download-meta-item"><span>💾</span> ${escapeHtml(item.fileSize)}</div>` : ""}
-            </div>
-            <button class="download-btn" onclick="openDownloadModal(${JSON.stringify(item).replace(/"/g, '&quot;')})">
-                <span>⬇️</span> 立即下载
-            </button>
-        </article>
-    `;
-}
-
-function renderNormalCard(item) {
+function renderCard(item) {
+    const hasDownload = !!item.downloadUrl;
     const content = `
         ${item.badge ? `<span class="card-badge">${escapeHtml(item.badge)}</span>` : ""}
         ${renderCardIcon(item.icon, item.categoryIcon)}
         <h3 class="card-title">${escapeHtml(item.title)}</h3>
         <p class="card-description">${escapeHtml(item.description)}</p>
+        ${hasDownload ? `
+        <div class="card-download-meta">
+            ${item.version ? `<span class="meta-tag">📦 ${escapeHtml(item.version)}</span>` : ""}
+            ${item.fileSize ? `<span class="meta-tag">💾 ${escapeHtml(item.fileSize)}</span>` : ""}
+            <button class="card-download-btn" onclick="openDownloadModal(${JSON.stringify(item).replace(/"/g, '&quot;')})">
+                ⬇️ 立即下载
+            </button>
+        </div>
+        ` : ""}
     `;
+
+    if (hasDownload) {
+        return `
+            <article class="resource-card" data-resource-id="${escapeAttr(item.id)}">
+                ${content}
+            </article>
+        `;
+    }
 
     if (item.url) {
         return `
