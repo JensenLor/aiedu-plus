@@ -35,6 +35,11 @@ students-works/操作指南*
 test-*.html
 preview.html
 
+# ========== 大文件（超过GitHub 100MB限制）==========
+downloads/*.exe
+downloads/*.dmg
+downloads/*.msi
+
 # ========== 系统 ==========
 .DS_Store
 Thumbs.db
