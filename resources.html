@@ -228,49 +228,6 @@
             display: flex;
         }
 
-        .card-download-meta {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-top: auto;
-            padding-top: 8px;
-            border-top: 1px dashed rgba(230, 126, 34, 0.3);
-        }
-
-        .meta-tag {
-            font-size: 12px;
-            color: var(--text-medium);
-            background: #FFF3E0;
-            padding: 3px 8px;
-            border-radius: 6px;
-        }
-
-        .card-download-btn {
-            margin-left: auto;
-            padding: 6px 14px;
-            background: var(--primary-color);
-            color: white;
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 2px 2px 0px var(--shadow-color);
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
-            white-space: nowrap;
-        }
-
-        .card-download-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 3px 3px 0px var(--shadow-color);
-        }
-
-        .card-download-btn:active {
-            transform: translateY(0px);
-            box-shadow: 1px 1px 0px var(--shadow-color);
-        }
-
         .card-title {
             font-size: 20px;
             line-height: 1.5;
@@ -293,45 +250,6 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
             min-height: 5.25em;
-        }
-
-        @media (max-width: 992px) {
-            .resource-container {
-                flex-direction: column;
-            }
-
-            .resource-nav {
-                width: 100%;
-                position: static;
-            }
-        }
-
-        .download-section {
-            margin-bottom: 30px;
-        }
-
-        .section-header {
-            margin-bottom: 20px;
-        }
-
-        .section-header h2 {
-            font-size: 28px;
-            color: var(--primary-color);
-            margin: 0 0 8px 0;
-            border-bottom: 3px dashed var(--secondary-color);
-            padding-bottom: 10px;
-        }
-
-        .section-desc {
-            color: var(--text-medium);
-            font-size: 14px;
-            margin: 0;
-        }
-
-        .download-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 24px;
         }
 
         @media (max-width: 992px) {
@@ -397,58 +315,6 @@
             <p>📧 联系邮箱：402479707@qq.com | 🌐 域名：www.aiedu.plus</p>
             <p>© 2026 罗辑智造社 - 让前沿科技触手可及</p>
         </footer>
-
-        <div id="downloadModal" class="modal-overlay" hidden>
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 id="modalTitle">确认下载</h3>
-                    <button class="modal-close" onclick="closeDownloadModal()">×</button>
-                </div>
-                <div class="modal-body">
-                    <div id="confirmContent" class="confirm-view">
-                        <div class="software-info">
-                            <div class="software-icon" id="confirmIcon">⚙️</div>
-                            <div class="software-details">
-                                <h4 id="confirmName">软件名称</h4>
-                                <p id="confirmDesc">软件简介</p>
-                                <div class="software-meta">
-                                    <span class="meta-item">版本：<span id="confirmVersion">V1.0.0</span></span>
-                                    <span class="meta-item">大小：<span id="confirmSize">0 MB</span></span>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="confirm-warning">⚠️ 下载文件可能需要一些时间，请耐心等待。下载完成后请按提示安装。</p>
-                        <div class="modal-actions">
-                            <button class="btn btn-cancel" onclick="closeDownloadModal()">取消</button>
-                            <button class="btn btn-primary" id="startDownloadBtn" onclick="startDownload()">开始下载</button>
-                        </div>
-                    </div>
-
-                    <div id="progressContent" class="progress-view" hidden>
-                        <div class="progress-header">
-                            <span class="progress-icon">📥</span>
-                            <span id="progressTitle">正在下载...</span>
-                        </div>
-                        <div class="progress-bar-container">
-                            <div class="progress-bar">
-                                <div class="progress-fill" id="progressFill"></div>
-                            </div>
-                            <span class="progress-text" id="progressText">0%</span>
-                        </div>
-                        <p class="progress-hint">请不要关闭此窗口，下载完成后将自动提示。</p>
-                    </div>
-
-                    <div id="successContent" class="success-view" hidden>
-                        <div class="success-icon">✅</div>
-                        <h4 id="successTitle">下载完成！</h4>
-                        <p id="successMsg">文件已成功下载到您的设备。</p>
-                        <div class="success-actions">
-                            <button class="btn btn-primary" onclick="closeDownloadModal()">确定</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script src="js/resources-page.js"></script>
